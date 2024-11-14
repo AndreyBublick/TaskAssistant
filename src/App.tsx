@@ -32,16 +32,26 @@ export const  App:FC =()=> {
     }
 
     const tasksForTodoList = useMemo(() => {
-        if (filter === "active") {
-            return tasks.filter(t => !t.isDone);
-        }
-        if (filter === "completed") {
-            return tasks.filter(t => t.isDone/* === true*/);
-        }
-        if (filter === "three") {
-            return tasks.filter((t,index) => index < 3);
-        }
-        return tasks;
+
+        switch (filter){
+            case "active":{
+                return tasks.filter(t => !t.isDone);
+
+            }
+            case "completed":{
+                return tasks.filter(t => t.isDone/* === true*/);
+
+            }
+            case "three":{
+                return tasks.filter((t,index) => index < 3);
+
+            }
+            default:{
+                return tasks;
+            }
+        };
+
+
     },[filter,tasks]);
 
 
@@ -49,14 +59,20 @@ export const  App:FC =()=> {
         let filteredTasks = tasks.filter(t => t.id !== id);
         setTasks(filteredTasks);
     }
+
+
     const addNewTask = (title: string) => {
+        console.log(1);
         setTasks(prev => [{id: uuid(), title: title, isDone: false},...prev ]);
     };
 
+    const changeTaskDone = (id:string,isDone:boolean)=>{
+        setTasks(tasks.map(task => task.id === id ? {...task,isDone:isDone} : task));
+    };
 
     return (
         <div className="App">
-            <Todolist  setTasks={setTasks} addNewTask={addNewTask} tasks={tasksForTodoList} changeFilter={changeFilter} removeTask={removeTask} title="What to learn"/>
+            <Todolist filter={filter} changeTaskDone={changeTaskDone} setTasks={setTasks} addNewTask={addNewTask} tasks={tasksForTodoList} changeFilter={changeFilter} removeTask={removeTask} title="What to learn"/>
         </div>
     );
 }
