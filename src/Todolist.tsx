@@ -8,13 +8,14 @@ import {Button} from "./components/button/Button";
 type PropsType = {
     title: string,
     tasks: Array<TaskType>,
-    removeTask: (taskId: string) => void,
-    changeFilter: (value: FilterValuesType) => void,
-    addNewTask: (title: string) => void,
-    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>,
-    changeTaskDone: (id: string, isDone: boolean) => void,
+    removeTask: (taskId: string,idTodoLists:string) => void,
+    changeFilter: (value: FilterValuesType,idTodoLists:string) => void,
+    addNewTask: (title: string,idTodoLists:string) => void,
+   
+    changeTaskDone: (id: string, isDone: boolean,idTodoLists:string) => void,
     filter:FilterValuesType,
-
+    id:string,
+    removeAllTasks:(idTodoLists:string)=>void,
 }
 
 
@@ -25,8 +26,9 @@ export const Todolist: FC<PropsType> = ({
                                             tasks,
                                             removeTask,
                                             changeFilter,
-                                            setTasks,
-                                            addNewTask
+                                            removeAllTasks,
+                                            addNewTask,
+                                            id
                                         }) => {
 
 
@@ -36,7 +38,7 @@ export const Todolist: FC<PropsType> = ({
     const addNewTaskHandler = () => {
 
         if (!!value) {
-            addNewTask(value.trim());
+            addNewTask(value.trim(),id);
             setValue('');
             setError(null);
 
@@ -48,7 +50,7 @@ export const Todolist: FC<PropsType> = ({
 
     };
     const removeTasks = () => {
-        setTasks([]);
+        removeAllTasks(id);
     };
     /*
     const changeFilterHandler = (filter:FilterValuesType)=>{};
@@ -68,10 +70,10 @@ const resetErrorHandler = ()=>{
             {
                 tasks.map(t => {
                     const onClickRemoveTaskHandler = () => {
-                        removeTask(t.id);
+                        removeTask(t.id,id);
                     };
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        changeTaskDone(t.id, e.currentTarget.checked);
+                        changeTaskDone(t.id, e.currentTarget.checked,id);
                     };
 
                     return <li style={{opacity: `${t.isDone ? 0.5 : 1}`}} key={t.id}>
@@ -88,16 +90,16 @@ const resetErrorHandler = ()=>{
         <div>
 
             <Button isActive={filter === 'all'} title={'all'} onClick={() => {
-                changeFilter("all");
+                changeFilter("all",id);
             }}/>
             <Button isActive={filter === 'active'} title={'Active'} onClick={() => {
-                changeFilter("active");
+                changeFilter("active",id);
             }}/>
             <Button isActive={filter === "completed"} title={'Completed'} onClick={() => {
-                changeFilter("completed");
+                changeFilter("completed",id);
             }}/>
             <Button isActive={filter === 'three'} title={'first 3'} onClick={() => {
-                changeFilter("three");
+                changeFilter("three",id);
             }}/>
 
 
