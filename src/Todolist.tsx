@@ -2,6 +2,7 @@ import React, {ChangeEvent, FC, useState} from 'react';
 import {FilterValuesType, TaskType} from './App';
 import {Input} from "./components/Input";
 import {Button} from "./components/button/Button";
+import styled from "styled-components";
 
 
 
@@ -11,7 +12,7 @@ type PropsType = {
     removeTask: (taskId: string,idTodoLists:string) => void,
     changeFilter: (value: FilterValuesType,idTodoLists:string) => void,
     addNewTask: (title: string,idTodoLists:string) => void,
-   
+    deleteTodoList:(idTodoLists:string)=>void,
     changeTaskDone: (id: string, isDone: boolean,idTodoLists:string) => void,
     filter:FilterValuesType,
     id:string,
@@ -28,7 +29,8 @@ export const Todolist: FC<PropsType> = ({
                                             changeFilter,
                                             removeAllTasks,
                                             addNewTask,
-                                            id
+                                            deleteTodoList,
+                                            id,
                                         }) => {
 
 
@@ -59,9 +61,12 @@ const resetErrorHandler = ()=>{
     setError(null);
 };
     return <div>
-        <h3>{title}</h3>
+        <FlexWrapper>
+            <h3>{title}</h3>
+            <Button title={'X'} onClick={() => deleteTodoList(id)}/>
+        </FlexWrapper>
         <div>
-            <Input onChange={resetErrorHandler}  error = { error} req={true} value={value} setValue={setValue}/>
+            <Input onChange={resetErrorHandler} error={error} req={true} value={value} setValue={setValue}/>
             <Button disabled={!!error} title={'+'} onClick={addNewTaskHandler}/>
             { error && <span style={{color:"red",display:"block"}}>this field required</span>}
 
@@ -106,6 +111,14 @@ const resetErrorHandler = ()=>{
         </div>
     </div>
 }
+
+
+
+const FlexWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+`;
 
 
 //------------------------------------------------------------------------------------------------

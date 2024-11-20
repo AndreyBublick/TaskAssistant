@@ -1,4 +1,4 @@
-import React, {FC, useMemo, useState} from 'react';
+import React, {FC, useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 
@@ -20,11 +20,9 @@ type TodoListType = {
 
 
 export const App: FC = () => {
-    /*let [filter, setFilter] = useState<FilterValuesType>("all");*/
     const IdForFirstTask = v1();
     const IdForSecondTask = v1();
     const IdForThirdTask = v1();
-    /*let [tasks, setTasks] = useState<TaskType[]>([]);*/
 
     const [todoLists, setTodoLists] = useState<TodoListType[]>([
 
@@ -129,6 +127,12 @@ export const App: FC = () => {
                 const removeAllTasks = (idTodoLists: string) => {
                     setTodoTasks(prev=>({...prev,[idTodoLists]:[]}));
                 };
+
+                const deleteTodoList = (idTodoLists: string)=>{
+
+                    delete todoTasks[idTodoLists];
+                    setTodoLists( prev=>prev.filter(tL=> tL.id !== idTodoLists));
+                };
                     let tasksForTodoList = [];
 
                     switch (todoList.filter) {
@@ -161,6 +165,7 @@ export const App: FC = () => {
                                      removeTask={removeTask}
                                      title={todoList.title}
                                      removeAllTasks={removeAllTasks}
+                                     deleteTodoList={deleteTodoList}
                     />
                 }
             )}
