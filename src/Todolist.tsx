@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent,KeyboardEvent,FC, useState} from 'react';
 import {FilterValuesType, TaskType} from './App';
 import {Input} from "./components/Input";
 import {Button} from "./components/button/Button";
@@ -54,6 +54,9 @@ export const Todolist: FC<PropsType> = ({
     const removeTasks = () => {
         removeAllTasks(id);
     };
+
+
+
     /*
     const changeFilterHandler = (filter:FilterValuesType)=>{};
     */
@@ -66,7 +69,7 @@ const resetErrorHandler = ()=>{
             <Button title={'X'} onClick={() => deleteTodoList(id)}/>
         </FlexWrapper>
         <div>
-            <Input onChange={resetErrorHandler} error={error} req={true} value={value} setValue={setValue}/>
+            <Input onKeyDown={addNewTaskHandler} onChange={resetErrorHandler} error={error} req={true} value={value} setValue={setValue}/>
             <Button disabled={!!error} title={'+'} onClick={addNewTaskHandler}/>
             { error && <span style={{color:"red",display:"block"}}>this field required</span>}
 
@@ -82,7 +85,7 @@ const resetErrorHandler = ()=>{
                     };
 
                     return <li style={{opacity: `${t.isDone ? 0.5 : 1}`}} key={t.id}>
-                        <input onChange={onChangeHandler} type="checkbox"
+                        <input  onChange={onChangeHandler} type="checkbox"
                                checked={t.isDone}/>
                         <span>{t.title}</span>
                         <button onClick={onClickRemoveTaskHandler}>x</button>

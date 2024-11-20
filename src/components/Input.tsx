@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC} from 'react';
+import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
 
 import styled, {css} from "styled-components";
 
@@ -9,9 +9,10 @@ type PropsType = {
     req?:boolean
     error?:null|string,
     onChange?:()=>void,
+    onKeyDown?:()=>void,
 };
 
-export const Input: FC<PropsType> = ({setValue,onChange,value,req=false,error}) => {
+export const Input: FC<PropsType> = ({setValue,onChange,onKeyDown,value,req=false,error}) => {
 
     /*const {value, changeHandler} = useInput();*/
 
@@ -19,8 +20,13 @@ export const Input: FC<PropsType> = ({setValue,onChange,value,req=false,error}) 
        setValue(e.target.value);
        onChange && onChange();
    };
+    const onKeyDownHandler = (e:KeyboardEvent<HTMLInputElement>)=>{
 
-    return <InputStyled  isError={!!error} required={req} type="text" value={value} onChange={onChangeHandler}/>
+
+        (e.key === 'Enter' && onKeyDown) && onKeyDown();
+    };
+
+    return <InputStyled onKeyDown={onKeyDownHandler}  isError={!!error} required={req} type="text" value={value} onChange={onChangeHandler}/>
 };
 const InputStyled = styled.input<{isError:boolean|undefined}>`
 
