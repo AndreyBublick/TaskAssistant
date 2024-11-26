@@ -10,9 +10,11 @@ type PropsType = {
     error?:null|string,
     onChange?:()=>void,
     onKeyDown?:()=>void,
+    autoFocus?:boolean,
+    onBlur?:()=>void,
 };
 
-export const Input: FC<PropsType> = ({setValue,onChange,onKeyDown,value,req=false,error}) => {
+export const Input: FC<PropsType> = ({setValue,onBlur,autoFocus,onChange,onKeyDown,value,req=false,error}) => {
 
     /*const {value, changeHandler} = useInput();*/
 
@@ -26,7 +28,7 @@ export const Input: FC<PropsType> = ({setValue,onChange,onKeyDown,value,req=fals
         (e.key === 'Enter' && onKeyDown) && onKeyDown();
     };
 
-    return <InputStyled onKeyDown={onKeyDownHandler}  isError={!!error} required={req} type="text" value={value} onChange={onChangeHandler}/>
+    return <InputStyled autoFocus={autoFocus} onBlur={onBlur} onKeyDown={onKeyDownHandler}  isError={!!error} required={req} type="text" value={value} onChange={onChangeHandler}/>
 };
 const InputStyled = styled.input<{isError:boolean|undefined}>`
 

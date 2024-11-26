@@ -17,7 +17,36 @@ type TodoListType = {
     filter: FilterValuesType,
     title: string,
 };
+/*
+type TestType = {
+    id: string,
+    userFirstName: string,
+    userLastName: string,
+};
+const arrayForAss: TestType[] = [
+    {id: v1(), userFirstName: 'asd', userLastName: 'asd'},
+    {
+    id: v1(),
+    userFirstName: 'asd',
+    userLastName: 'asd'
+},
 
+];
+type asdType = {
+    [key:string]: TestType,
+};
+
+
+const makeAssArray=(array:TestType[])=>{
+
+  return array.reduce((acc:asdType,arrayItem:TestType)=>{
+      acc[arrayItem.id] = arrayItem
+        return acc;
+    },{});
+
+};
+
+console.log(makeAssArray(arrayForAss));*/
 
 export const App: FC = () => {
     const IdForFirstTask = v1();
@@ -60,79 +89,70 @@ export const App: FC = () => {
 
 
 
-
     return (
         <div className="App">
 
             {todoLists.map(todoList => {
 
-                const changeFilter = (value: FilterValuesType,idTodoLists:string) => {
+                    const changeFilter = (value: FilterValuesType, idTodoLists: string) => {
 
-                    setTodoLists( prev=> prev.map(todoList=> todoList.id===idTodoLists ? {...todoList,filter:value} : todoList));
+                        setTodoLists(prev => prev.map(todoList => todoList.id === idTodoLists ? {
+                            ...todoList,
+                            filter: value
+                        } : todoList));
 
-                }/*---------------------------*/
-
-                /*const tasksForTodoList = useMemo(() => {
-
-                    switch (filter) {
-                        case "active": {
-                            return tasks.filter(t => !t.isDone);
-
-                        }
-                        case "completed": {
-                            return tasks.filter(t => t.isDone/!* === true*!/);
-
-                        }
-                        case "three": {
-                            return tasks.filter((t, index) => index < 3);
-
-                        }
-                        default: {
-                            return tasks;
-                        }
                     }
-                    ;
+
+                    const removeTask = (id: string, idTodoLists: string) => {
+
+                        setTodoTasks({
+                            ...todoTasks,
+                            [idTodoLists]: todoTasks[idTodoLists].filter(list => list.id !== id)
+                        });
 
 
-                }, [filter, tasks]);*/
 
 
-                const removeTask = (id: string,idTodoLists:string) => {
+                    }
 
-                    setTodoTasks({...todoTasks,[idTodoLists]:todoTasks[idTodoLists].filter(list => list.id !== id)});
+                    const addNewTask = (title: string, idTodoLists: string) => {
 
-                    /* setTasks(todoTasks[idTodoLists].filter(t => t.id !== id));*/
-
-                    /*
-                     let filteredTasks = tasks.filter(t => t.id !== id);
-                     setTasks(filteredTasks);*/
-                }/*------------------*/
-
-                const addNewTask = (title: string,idTodoLists:string) => {
-
-                    setTodoTasks( prev=> ({...prev, [idTodoLists]: [{id: v1(), title: title, isDone: false},...prev[idTodoLists]] }));
+                        setTodoTasks(prev => ({
+                            ...prev,
+                            [idTodoLists]: [{id: v1(), title: title, isDone: false}, ...prev[idTodoLists]]
+                        }));
 
 
-                    /*setTasks(prev => [{id: v1(), title: title, isDone: false}, ...prev]);*/
-                };/*-----------*/
 
-                const changeTaskDone = (id: string, isDone: boolean,idTodoLists:string) => {
+                    };
+
+                    const changeTaskDone = (id: string, isDone: boolean, idTodoLists: string) => {
 
 
-                    setTodoTasks(prev=> ({...prev,[idTodoLists]:prev[idTodoLists].map(tL=> tL.id===id ? {...tL,isDone:isDone} : tL)}));
+                        setTodoTasks(prev => ({
+                            ...prev,
+                            [idTodoLists]: prev[idTodoLists].map(tL => tL.id === id ? {...tL, isDone: isDone} : tL)
+                        }));
 
-                    /*setTasks(tasks.map(task => task.id === id ? {...task, isDone: isDone} : task));*/
-                };
 
-                const removeAllTasks = (idTodoLists: string) => {
-                    setTodoTasks(prev=>({...prev,[idTodoLists]:[]}));
-                };
+                    };
 
-                const deleteTodoList = (idTodoLists: string)=>{
+                    const removeAllTasks = (idTodoLists: string) => {
+                        setTodoTasks(prev => ({...prev, [idTodoLists]: []}));
+                    };
 
-                    delete todoTasks[idTodoLists];
-                    setTodoLists( prev=>prev.filter(tL=> tL.id !== idTodoLists));
-                };
+                    const deleteTodoList = (idTodoLists: string) => {
+
+                        delete todoTasks[idTodoLists];
+                        setTodoLists(prev => prev.filter(tL => tL.id !== idTodoLists));
+                    };
+
+                    const changeTitleTodoList = (idTodo:string,title:string)=> {
+
+                        setTodoLists(p=>p.map(tl=>tl.id===idTodo ? {...tl,title:title} : tl));
+
+                    };
+
                     let tasksForTodoList = [];
 
                     switch (todoList.filter) {
@@ -155,10 +175,10 @@ export const App: FC = () => {
                     };
 
 
-                    /*const tasksForTodoList = todoTasks[todoList.id].filter(tT=> todoList.filter );*/
 
 
-                    return <Todolist key={todoList.id} id={todoList.id} filter={todoList.filter} changeTaskDone={changeTaskDone}
+                    return <Todolist key={todoList.id} id={todoList.id} filter={todoList.filter}
+                                     changeTaskDone={changeTaskDone}
                                      tasks={tasksForTodoList}
                                      addNewTask={addNewTask}
                                      changeFilter={changeFilter}
@@ -166,6 +186,7 @@ export const App: FC = () => {
                                      title={todoList.title}
                                      removeAllTasks={removeAllTasks}
                                      deleteTodoList={deleteTodoList}
+                                     changeTitleTodoList={changeTitleTodoList}
                     />
                 }
             )}
