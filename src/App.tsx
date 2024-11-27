@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useCallback, useState} from 'react';
 import './App.css';
 import {Todolist} from "./Todolist";
 
@@ -37,7 +37,7 @@ type asdType = {
 };
 
 
-const makeAssArray=(array:TestType[])=>{
+const makeAssociativeArray=(array:TestType[])=>{
 
   return array.reduce((acc:asdType,arrayItem:TestType)=>{
       acc[arrayItem.id] = arrayItem
@@ -88,7 +88,6 @@ export const App: FC = () => {
     });
 
 
-
     return (
         <div className="App">
 
@@ -111,8 +110,6 @@ export const App: FC = () => {
                         });
 
 
-
-
                     }
 
                     const addNewTask = (title: string, idTodoLists: string) => {
@@ -121,7 +118,6 @@ export const App: FC = () => {
                             ...prev,
                             [idTodoLists]: [{id: v1(), title: title, isDone: false}, ...prev[idTodoLists]]
                         }));
-
 
 
                     };
@@ -147,11 +143,16 @@ export const App: FC = () => {
                         setTodoLists(prev => prev.filter(tL => tL.id !== idTodoLists));
                     };
 
-                    const changeTitleTodoList = (idTodo:string,title:string)=> {
+                    const changeTitleTodoList = (idTodo: string, title: string) => {
 
-                        setTodoLists(p=>p.map(tl=>tl.id===idTodo ? {...tl,title:title} : tl));
+                        setTodoLists(p => p.map(tl => tl.id === idTodo ? {...tl, title: title} : tl));
 
                     };
+
+                    const changeTaskTitle = (idTodoList: string,idTask:string, newTaskTitle: string) => {
+                        setTodoTasks(p=>({...p,[idTodoList]:p[idTodoList].map(t=>t.id===idTask ? {...t,title:newTaskTitle} : t)}));
+                    };
+
 
                     let tasksForTodoList = [];
 
@@ -172,9 +173,7 @@ export const App: FC = () => {
                             tasksForTodoList = todoTasks[todoList.id];
                             break;
                         }
-                    };
-
-
+                    }
 
 
                     return <Todolist key={todoList.id} id={todoList.id} filter={todoList.filter}
@@ -187,6 +186,7 @@ export const App: FC = () => {
                                      removeAllTasks={removeAllTasks}
                                      deleteTodoList={deleteTodoList}
                                      changeTitleTodoList={changeTitleTodoList}
+                                     changeTaskTitle={changeTaskTitle}
                     />
                 }
             )}
