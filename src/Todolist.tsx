@@ -21,6 +21,7 @@ type PropsType = {
     removeAllTasks: (idTodoLists: string) => void,
     changeTitleTodoList: (idTodoList: string, newTodoTitle: string) => void,
     changeTaskTitle:(idTodoList: string,idTask:string, newTaskTitle: string)=>void,
+
 }
 
 
@@ -37,8 +38,8 @@ export const Todolist: FC<PropsType> = ({
                                             id,
                                             changeTitleTodoList,
                                             changeTaskTitle,
-                                        }) => {
 
+                                        }) => {
 
     const removeTasks = () => {
         removeAllTasks(id);
@@ -59,12 +60,10 @@ export const Todolist: FC<PropsType> = ({
 
 
 
-
-
     return <div>
         <FlexWrapper>
             <TodoTitle>
-                {editMode ? <AddItemForm autoFocus defaultValue={title} callBack={changeTitleInThisTODO}/> :
+                {editMode ? <AddItemForm isDisabledOnBlur={false} autoFocus defaultValue={title} callBack={changeTitleInThisTODO}/> :
                     <h3 onDoubleClick={() => {
                         setEditMode(true)
                     }}>{title}</h3>}
@@ -73,7 +72,7 @@ export const Todolist: FC<PropsType> = ({
             <Button title={'X'} onClick={() => deleteTodoList(id)}/>
         </FlexWrapper>
 
-        <AddItemForm callBack={addNewTaskInThisTODO} isDisabledOnBlur/>
+        <AddItemForm callBack={addNewTaskInThisTODO}  />
         {tasks.length > 0 ? <ul>
             {
                 tasks.map(t => {
@@ -91,7 +90,7 @@ export const Todolist: FC<PropsType> = ({
                         };
 
                         return selectedTask === t.id ?
-                            <AddItemForm key={t.id} autoFocus defaultValue={t.title} callBack={changeTaskTitleHandler}/> :
+                            <AddItemForm key={t.id} autoFocus isDisabledOnBlur={false} defaultValue={t.title} callBack={changeTaskTitleHandler}/> :
                             <li style={{opacity: `${t.isDone ? 0.5 : 1}`}} key={t.id}>
                                 <input onChange={onChangeHandler} type="checkbox"
                                        checked={t.isDone}/>

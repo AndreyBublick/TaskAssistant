@@ -10,7 +10,7 @@ type PropsType = {
 
 };
 
-export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlur,defaultValue}) => {
+export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlur=true,defaultValue}) => {
 
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<null | string>(null);
@@ -46,6 +46,7 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
         setError(null);
     };
     const onBlurHandler = () => {
+
         if (!isDisabledOnBlur) {
 
             if (!!value) {
@@ -56,12 +57,13 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
                 setError(null);
 
             }
+
             else {
                 setError('this field is required');
 
             }
-
         }
+
     };
 
 

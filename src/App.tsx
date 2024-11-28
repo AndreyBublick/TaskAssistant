@@ -3,6 +3,7 @@ import './App.css';
 import {Todolist} from "./Todolist";
 
 import {v1} from "uuid";
+import {AddItemForm} from "./components/addItemForm/AddItemForm";
 
 
 export type FilterValuesType = "all" | "active" | "completed" | 'three';
@@ -87,11 +88,19 @@ export const App: FC = () => {
 
     });
 
+    const addNewTodoList = useCallback((titleTodo:string)=>{
 
+        const id= v1();
+        setTodoTasks(p=>({...p,[id]:[]}));
+        setTodoLists(p=>[...p,{id:id, filter: 'all', title: titleTodo}]);
+
+    },[]);
     return (
         <div className="App">
-
+            <AddItemForm callBack={addNewTodoList} />
             {todoLists.map(todoList => {
+
+                    let tasksForTodoList:TaskType[] = [];
 
                     const changeFilter = (value: FilterValuesType, idTodoLists: string) => {
 
@@ -149,12 +158,17 @@ export const App: FC = () => {
 
                     };
 
-                    const changeTaskTitle = (idTodoList: string,idTask:string, newTaskTitle: string) => {
-                        setTodoTasks(p=>({...p,[idTodoList]:p[idTodoList].map(t=>t.id===idTask ? {...t,title:newTaskTitle} : t)}));
+                    const changeTaskTitle = (idTodoList: string, idTask: string, newTaskTitle: string) => {
+                        setTodoTasks(p => ({
+                            ...p,
+                            [idTodoList]: p[idTodoList].map(t => t.id === idTask ? {...t, title: newTaskTitle} : t),
+
+
+                        }));
                     };
 
 
-                    let tasksForTodoList = [];
+
 
                     switch (todoList.filter) {
                         case "active": {
@@ -170,7 +184,9 @@ export const App: FC = () => {
                             break;
                         }
                         default: {
+                            console.log(todoList.id)
                             tasksForTodoList = todoTasks[todoList.id];
+
                             break;
                         }
                     }
@@ -187,6 +203,7 @@ export const App: FC = () => {
                                      deleteTodoList={deleteTodoList}
                                      changeTitleTodoList={changeTitleTodoList}
                                      changeTaskTitle={changeTaskTitle}
+
                     />
                 }
             )}
