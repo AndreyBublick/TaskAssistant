@@ -4,6 +4,7 @@ import {FilterValuesType, TaskType} from './App';
 import {Button} from "./components/button/Button";
 import styled from "styled-components";
 import {AddItemForm} from "./components/addItemForm/AddItemForm";
+import {EditableString} from "./components/editableString/EditableString";
 
 
 type PropsType = {
@@ -45,7 +46,7 @@ export const Todolist: FC<PropsType> = ({
         removeAllTasks(id);
     };
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [selectedTask, setSelectedTask] = useState<string | null>(null);
+   /* const [selectedTask, setSelectedTask] = useState<string | null>(null);*/
 
 
     const addNewTaskInThisTODO = useCallback((inputValue: string) => {
@@ -63,10 +64,8 @@ export const Todolist: FC<PropsType> = ({
     return <div>
         <FlexWrapper>
             <TodoTitle>
-                {editMode ? <AddItemForm isDisabledOnBlur={false} autoFocus defaultValue={title} callBack={changeTitleInThisTODO}/> :
-                    <h3 onDoubleClick={() => {
-                        setEditMode(true)
-                    }}>{title}</h3>}
+
+                <EditableString autoFocus isDisabledOnBlur={false}  changeString={changeTitleInThisTODO}  title={title}  />
             </TodoTitle>
 
             <Button title={'X'} onClick={() => deleteTodoList(id)}/>
@@ -85,19 +84,13 @@ export const Todolist: FC<PropsType> = ({
                         const changeTaskTitleHandler = (inputValue: string) => {
 
                             changeTaskTitle(id,t.id,inputValue);
-                            setSelectedTask(null);
+
 
                         };
 
-                        return selectedTask === t.id ?
-                            <AddItemForm key={t.id} autoFocus isDisabledOnBlur={false} defaultValue={t.title} callBack={changeTaskTitleHandler}/> :
-                            <li style={{opacity: `${t.isDone ? 0.5 : 1}`}} key={t.id}>
-                                <input onChange={onChangeHandler} type="checkbox"
-                                       checked={t.isDone}/>
+                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}} >
 
-                                <span onDoubleClick={() => {
-                                    setSelectedTask(t.id);
-                                }}>{t.title}</span>
+                                <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler} isDone={t.isDone} title={t.title}  />
                                 <button onClick={onClickRemoveTaskHandler}>x</button>
                             </li>
 
@@ -132,10 +125,7 @@ const FlexWrapper = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-
-    h3 {
-        margin: 0;
-    }
+    
 `;
 
 const TodoTitle = styled.div`

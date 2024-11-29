@@ -15,7 +15,7 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<null | string>(null);
 
-    const onClickHandler = () => {
+   /* const onClickHandler = () => {
 
         if (!!value) {
             callBack(value.trim());
@@ -27,8 +27,8 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
             setError('this field is required');
 
         }
-    };
-    const onKeyDownHandler = () => {
+    };*/
+    const diactivateEditMode = () => {
 
         if (!!value) {
             callBack(value.trim());
@@ -42,6 +42,8 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
         }
 
     };
+
+
     const onChangeHandler = () => {
         setError(null);
     };
@@ -73,10 +75,10 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
     }, [defaultValue]);
 
     return <div>
-        <Input autoFocus={autoFocus} onKeyDown={onKeyDownHandler} onBlur={onBlurHandler} onChange={onChangeHandler}
+        <Input autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler}
                error={error} req={true} value={value}
                setValue={setValue}/>
-        <Button disabled={!!error} title={'+'} onClick={onClickHandler}/>
+        <Button disabled={!!error} title={'+'} onClick={diactivateEditMode}/>
         {error && <span style={{color: "red", display: "block"}}>this field required</span>}
 
     </div>;

@@ -13,7 +13,7 @@ export type TaskType = {
     title: string
     isDone: boolean
 }
-type TodoListType = {
+export type TodoListType = {
     id: string,
     filter: FilterValuesType,
     title: string,
@@ -92,7 +92,7 @@ export const App: FC = () => {
 
         const id= v1();
         setTodoTasks(p=>({...p,[id]:[]}));
-        setTodoLists(p=>[...p,{id:id, filter: 'all', title: titleTodo}]);
+        setTodoLists(p=>[{id:id, filter: 'all', title: titleTodo},...p]);
 
     },[]);
     return (
