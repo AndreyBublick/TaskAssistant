@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dopTask_02_todolist/static/css/main.e6c13ad2.css",
+    "main.js": "/dopTask_02_todolist/static/js/main.7f977ff0.js",
+    "index.html": "/dopTask_02_todolist/index.html",
+    "main.e6c13ad2.css.map": "/dopTask_02_todolist/static/css/main.e6c13ad2.css.map",
+    "main.7f977ff0.js.map": "/dopTask_02_todolist/static/js/main.7f977ff0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.7f977ff0.js"
+  ]
+}
