@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC, useState} from 'react';
 import {AddItemForm} from "../addItemForm/AddItemForm";
 import styled from "styled-components";
+import {Checkbox} from "@mui/material";
 
 
 type PropsType = {
@@ -12,25 +13,31 @@ type PropsType = {
     autoFocus?: boolean,
 };
 
-export const EditableString: FC<PropsType> = ({onChange, isDone=false, title, changeString}) => {
+export const EditableString: FC<PropsType> = ({onChange, isDone = false, title, changeString}) => {
 
     const [editMode, setEditMode] = useState(false);
 
-    const diactivateEditMode = (inputValue: string)=>{
+    const diactivateEditMode = (inputValue: string) => {
         setEditMode(false);
         changeString(inputValue);
     };
-    const activateEditMode = ()=>{
+    const activateEditMode = () => {
         setEditMode(true);
     };
 
 
     return editMode ?
-        <AddItemForm autoFocus isDisabledOnBlur={false} defaultValue={title} callBack={diactivateEditMode}/> : <>
+        <AddItemForm isShowButton={!editMode} autoFocus isDisabledOnBlur={false} defaultValue={title} callBack={diactivateEditMode}/> : <>
 
-            {onChange && <input onChange={onChange} type="checkbox" checked={isDone}/>}
+            {/* {onChange && <input onChange={onChange} type="checkbox" checked={isDone}/>}*/}
+            {onChange && <Checkbox
+                checked={isDone}
+                onChange={onChange}
+                inputProps={{'aria-label': 'controlled'}}
+            />}
 
-                {onChange ? <span onDoubleClick={activateEditMode}>{title}</span>: <TitleTodoList onDoubleClick={activateEditMode}>{title}</TitleTodoList> }
+            {onChange ? <span onDoubleClick={activateEditMode}>{title}</span> :
+                <TitleTodoList onDoubleClick={activateEditMode}>{title}</TitleTodoList>}
 
 
         </>

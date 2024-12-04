@@ -1,10 +1,12 @@
-import React, {ChangeEvent, FC, useCallback, useState} from 'react';
+import React, {ChangeEvent, FC, useCallback} from 'react';
 import {FilterValuesType, TaskType} from './App';
 
-import {Button} from "./components/button/Button";
+
 import styled from "styled-components";
 import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import {EditableString} from "./components/editableString/EditableString";
+import {Button, IconButton} from "@mui/material";
+import {Delete} from "@mui/icons-material";
 
 
 type PropsType = {
@@ -21,7 +23,7 @@ type PropsType = {
     changeTaskDone: (id: string, isDone: boolean, idTodoLists: string) => void,
     removeAllTasks: (idTodoLists: string) => void,
     changeTitleTodoList: (idTodoList: string, newTodoTitle: string) => void,
-    changeTaskTitle:(idTodoList: string,idTask:string, newTaskTitle: string)=>void,
+    changeTaskTitle: (idTodoList: string, idTask: string, newTaskTitle: string) => void,
 
 }
 
@@ -45,34 +47,36 @@ export const Todolist: FC<PropsType> = ({
     const removeTasks = () => {
         removeAllTasks(id);
     };
-    const [editMode, setEditMode] = useState<boolean>(false);
-   /* const [selectedTask, setSelectedTask] = useState<string | null>(null);*/
+
 
 
     const addNewTaskInThisTODO = useCallback((inputValue: string) => {
         addNewTask(inputValue, id);
-        setEditMode(false);
+
     }, [addNewTask, id]);
 
     const changeTitleInThisTODO = useCallback((inputValue: string) => {
         changeTitleTodoList(id, inputValue);
-        setEditMode(false);
-    }, [changeTitleTodoList,id]);
+
+    }, [changeTitleTodoList, id]);
 
 
-
-    return <div>
+    return <TodolistStyled>
         <FlexWrapper>
             <TodoTitle>
 
-                <EditableString autoFocus isDisabledOnBlur={false}  changeString={changeTitleInThisTODO}  title={title}  />
+                <EditableString autoFocus isDisabledOnBlur={false} changeString={changeTitleInThisTODO} title={title}/>
             </TodoTitle>
 
-            <Button title={'X'} onClick={() => deleteTodoList(id)}/>
-        </FlexWrapper>
+            <IconButton aria-label="delete" size="large" onClick={() => deleteTodoList(id)}>
+                <Delete fontSize="inherit"/>
+            </IconButton>
 
-        <AddItemForm callBack={addNewTaskInThisTODO}  />
-        {tasks.length > 0 ? <ul>
+
+        </FlexWrapper>
+            <AddItemForm callBack={addNewTaskInThisTODO}/>
+
+        {tasks.length > 0 ? <List>
             {
                 tasks.map(t => {
                         const onClickRemoveTaskHandler = () => {
@@ -83,51 +87,78 @@ export const Todolist: FC<PropsType> = ({
                         };
                         const changeTaskTitleHandler = (inputValue: string) => {
 
-                            changeTaskTitle(id,t.id,inputValue);
+                            changeTaskTitle(id, t.id, inputValue);
 
 
                         };
 
-                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}} >
+                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}}>
 
-                                <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler} isDone={t.isDone} title={t.title}  />
-                                <button onClick={onClickRemoveTaskHandler}>x</button>
-                            </li>
+                            <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler}
+                                            isDone={t.isDone} title={t.title} />
+                            <IconButton aria-label="delete" size="small" onClick={onClickRemoveTaskHandler}>
+                                <Delete fontSize="inherit"/>
+                            </IconButton>
+                        </li>
 
                     }
                 )
             }
-        </ul> : <h2>Задачи отсутсвуют</h2>}
-        <Button title={'delete all'} onClick={removeTasks}/>
+        </List> : <h2>Задачи отсутсвуют</h2>}
+        <Button title={'delete all'} variant={'contained'} onClick={removeTasks}>delete all</Button>
 
-        <div>
-
-            <Button isActive={filter === 'all'} title={'all'} onClick={() => {
+        <ButtonsWrapper>
+            {/*isActive={filter === 'all'}*/}
+            {/*isActive={filter === 'active'}*/}
+            {/*isActive={filter === "completed"}*/}
+            {/*isActive={filter === 'three'}*/}
+            <Button size={'small'} variant={ filter === 'all' ?'contained':'text'} title={'all'} onClick={() => {
                 changeFilter("all", id);
-            }}/>
-            <Button isActive={filter === 'active'} title={'Active'} onClick={() => {
+            }}>all</Button>
+            <Button size={'small'} variant={ filter === 'active' ?'contained':'text'} title={'Active'} onClick={() => {
                 changeFilter("active", id);
-            }}/>
-            <Button isActive={filter === "completed"} title={'Completed'} onClick={() => {
+            }}>Active</Button>
+            <Button size={'small'} variant={ filter === 'completed' ?'contained':'text'} title={'Completed'} onClick={() => {
                 changeFilter("completed", id);
-            }}/>
-            <Button isActive={filter === 'three'} title={'first 3'} onClick={() => {
+            }}>Completed</Button>
+            <Button size={'small'} variant={ filter === 'three' ?'contained':'text'} title={'first 3'} onClick={() => {
                 changeFilter("three", id);
-            }}/>
+            }}>first 3</Button>
 
 
-        </div>
-    </div>
+        </ButtonsWrapper>
+    </TodolistStyled>
 }
 
 
 const FlexWrapper = styled.div`
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 10px;
-    
+
 `;
 
 const TodoTitle = styled.div`
     margin: 10px 0;
 `;
+const ButtonsWrapper = styled.div`
+   /* padding: 20px 0;*/
+    margin-top: 15px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+`;
+const List = styled.ul`
+    /*padding: 0;*/
+
+    & > li {
+        display: flex;
+        align-items: center;
+        
+    }
+
+`;
+const TodolistStyled = styled.div`
+padding: 15px;
+`;
+

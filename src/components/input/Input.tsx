@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FC, KeyboardEvent} from 'react';
 
-import styled, {css} from "styled-components";
+
+import {TextField} from "@mui/material";
 
 type PropsType = {
 
@@ -16,7 +17,6 @@ type PropsType = {
 
 export const Input: FC<PropsType> = ({setValue,onBlur,autoFocus,onChange,onKeyDown,value,req=false,error}) => {
 
-    /*const {value, changeHandler} = useInput();*/
 
    const  onChangeHandler = (e:ChangeEvent<HTMLInputElement>)=>{
        setValue(e.target.value);
@@ -28,22 +28,10 @@ export const Input: FC<PropsType> = ({setValue,onBlur,autoFocus,onChange,onKeyDo
         (e.key === 'Enter' && onKeyDown) && onKeyDown();
     };
 
-    return <InputStyled autoFocus={autoFocus} onBlur={onBlur} onKeyDown={onKeyDownHandler}  isError={!!error} required={req} type="text" value={value} onChange={onChangeHandler}/>
-};
-const InputStyled = styled.input<{isError:boolean|undefined}>`
 
-    
-    ${props => props.isError && css<{isError:boolean|undefined}>`
-        border: 1px solid red;
-    &:focus-visible{
-        border: 1px solid red;  
-        outline: 1px solid red;
-        
-    }
-    
-    ` }
-    
-   
-`;
+    return  <TextField label="Your text for a new task" placeholder={'text...'} helperText={error}  variant="standard" autoFocus={autoFocus} error={!!error} onBlur={onBlur} onKeyDown={onKeyDownHandler} required={req} value={value} onChange={onChangeHandler} />
+};
+
+
 
 

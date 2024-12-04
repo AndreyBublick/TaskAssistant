@@ -1,16 +1,19 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Input} from "../input/Input";
-import {Button} from "../button/Button";
+import {Button} from "@mui/material";
+import styled from "styled-components";
+
 
 type PropsType = {
     callBack: (value: string) => void,
     autoFocus?: boolean,
     isDisabledOnBlur?: boolean,
     defaultValue?: string,
+    isShowButton?: boolean,
 
 };
 
-export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlur=true,defaultValue}) => {
+export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocus, isDisabledOnBlur=true,defaultValue}) => {
 
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<null | string>(null);
@@ -38,7 +41,6 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
 
         } else {
             setError('this field is required');
-
         }
 
     };
@@ -74,13 +76,20 @@ export const AddItemForm: FC<PropsType> = ({callBack, autoFocus, isDisabledOnBlu
         defaultValue && setValue(defaultValue);
     }, [defaultValue]);
 
-    return <div>
+    return <AddItemFormStyled>
         <Input autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler}
                error={error} req={true} value={value}
                setValue={setValue}/>
-        <Button disabled={!!error} title={'+'} onClick={diactivateEditMode}/>
-        {error && <span style={{color: "red", display: "block"}}>this field required</span>}
+        {isShowButton && <Button disabled={!!error} onClick={diactivateEditMode} variant={"contained"} size={"small"} >+</Button>}
+       {/* {error && <span style={{color: "red", display: "block"}}>this field required</span>}*/}{/*//Вывод ошибки//*/}
 
-    </div>;
+    </AddItemFormStyled>;
 };
+
+const AddItemFormStyled = styled.div`
+display: flex;
+align-items: flex-end;
+gap: 10px;
+`;
+
 
