@@ -5,9 +5,9 @@ import {TextField} from "@mui/material";
 
 type PropsType = {
 
-    setValue: (value: string) => void;
+    setValue: (value: string) => void,
     value:string,
-    req?:boolean
+    req?:boolean,
     error?:null|string,
     onChange?:()=>void,
     onKeyDown?:()=>void,

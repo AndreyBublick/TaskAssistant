@@ -77,9 +77,7 @@ export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocu
     }, [defaultValue]);
 
     return <AddItemFormStyled>
-        <Input autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler}
-               error={error} req={true} value={value}
-               setValue={setValue}/>
+        <Input autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler} error={error} req={true} value={value} setValue={setValue}/>
         {isShowButton && <Button disabled={!!error} onClick={diactivateEditMode} variant={"contained"} size={"small"} >+</Button>}
        {/* {error && <span style={{color: "red", display: "block"}}>this field required</span>}*/}{/*//Вывод ошибки//*/}
 

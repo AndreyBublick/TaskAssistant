@@ -21,42 +21,13 @@ export type TodoListType = {
     filter: FilterValuesType,
     title: string,
 };
-/*
-type TestType = {
-    id: string,
-    userFirstName: string,
-    userLastName: string,
-};
-const arrayForAss: TestType[] = [
-    {id: v1(), userFirstName: 'asd', userLastName: 'asd'},
-    {
-    id: v1(),
-    userFirstName: 'asd',
-    userLastName: 'asd'
-},
-
-];
-type asdType = {
-    [key:string]: TestType,
-};
 
 
-const makeAssociativeArray=(array:TestType[])=>{
-
-  return array.reduce((acc:asdType,arrayItem:TestType)=>{
-      acc[arrayItem.id] = arrayItem
-        return acc;
-    },{});
-
-};
-
-console.log(makeAssArray(arrayForAss));*/
 
 export const App: FC = () => {
     const IdForFirstTask = v1();
     const IdForSecondTask = v1();
     const IdForThirdTask = v1();
-
     const [todoLists, setTodoLists] = useState<TodoListType[]>([
 
         {id: IdForFirstTask, filter: 'all', title: 'todo all'},
@@ -128,6 +99,7 @@ export const App: FC = () => {
 
                             const changeFilter = (value: FilterValuesType, idTodoLists: string) => {
 
+
                                 setTodoLists(prev => prev.map(todoList => todoList.id === idTodoLists ? {
                                     ...todoList,
                                     filter: value
@@ -136,7 +108,6 @@ export const App: FC = () => {
                             }
 
                             const removeTask = (id: string, idTodoLists: string) => {
-
                                 setTodoTasks({
                                     ...todoTasks,
                                     [idTodoLists]: todoTasks[idTodoLists].filter(list => list.id !== id)
