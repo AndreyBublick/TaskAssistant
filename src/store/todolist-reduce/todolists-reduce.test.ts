@@ -21,6 +21,7 @@ test('correct todolist should be removed', () => {
         {id: IdForSecondTask, filter: 'completed', title: 'todo completed'},
         {id: IdForThirdTask, filter: 'active', title: 'todo active'},
     ];
+
     const endState = todoListsReduce(todoLists,removeTodoListAC(IdForSecondTask));
 
     expect(endState.length).toBe(2);
@@ -86,3 +87,5 @@ test('correct todolist should change its filter', () => {
     expect(endState[1].filter).toBe('completed');
     expect(endState[2].filter).toBe('active');
 });
+
+

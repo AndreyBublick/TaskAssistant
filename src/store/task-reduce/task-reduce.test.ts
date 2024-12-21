@@ -1,9 +1,17 @@
 import {v1} from "uuid";
 
-import {TaskType} from "../../App";
-import {addTaskAC, changeStatusTaskAC, changeTitleTaskAC, removeTaskAC, taskReduce} from "./task-reduce";
+import {TaskType, TodoListType} from "../../App";
+import {
+    addTaskAC,
 
-test('chould remove task',()=>{
+    changeStatusTaskAC,
+    changeTitleTaskAC,
+    removeTaskAC,
+    taskReduce
+} from "./task-reduce";
+import {addTodoListAC, removeTodoListAC, todoListsReduce} from "../todolist-reduce/todolists-reduce";
+
+test('should remove task',()=>{
 
     const IdForFirstTodoList = v1();
     const IdForSecondTodoList = v1();
@@ -47,7 +55,7 @@ expect(endState[IdForThirdTodoList][3].title).toBe("Rest API");
 expect(endState[IdForThirdTodoList][4].title).toBe("GraphQL2");
 expect(endState[IdForThirdTodoList][5]).toBe(undefined);
 });
-test('chould add task',()=>{
+test('should add task',()=>{
 
     const IdForFirstTodoList = v1();
     const IdForSecondTodoList = v1();
@@ -93,7 +101,7 @@ expect(endState[IdForThirdTodoList].length).toBe(6);
 
 
 });
-test('chould change task isDone status',()=>{
+test('should change task isDone status',()=>{
 
     const IdForFirstTodoList = v1();
     const IdForSecondTodoList = v1();
@@ -137,7 +145,7 @@ test('chould change task isDone status',()=>{
 
 
 });
-test('chould change task title',()=>{
+test('should change task title',()=>{
 
     const IdForFirstTodoList = v1();
     const IdForSecondTodoList = v1();
@@ -188,3 +196,94 @@ test('chould change task title',()=>{
 
 
 });
+test('should delete tasks by ID TodoLists ',()=>{
+
+    const IdForFirstTodoList = v1();
+    const IdForSecondTodoList = v1();
+    const IdForThirdTodoList = v1();
+
+    const todoTasks:{ [key: string]: TaskType[] } ={
+
+        [IdForFirstTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForSecondTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForThirdTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL1", isDone: false},
+            {id: v1(), title: "GraphQL2", isDone: false},],
+
+    };
+
+    expect(Object.keys(todoTasks).length).toBe(3);
+    const endState = taskReduce(todoTasks,removeTodoListAC(IdForFirstTodoList));
+    expect(Object.keys(endState).length).toBe(2);
+    expect(endState[IdForFirstTodoList]).toBe(undefined);
+
+});
+
+test('should added new array in tasks width new todolist',()=>{
+
+
+    const IdForFirstTodoList = v1();
+    const IdForSecondTodoList = v1();
+    const IdForThirdTodoList = v1();
+
+    const todoLists: TodoListType[] = [
+        {id: IdForFirstTodoList, filter: 'all', title: 'todo all'},
+        {id: IdForSecondTodoList, filter: 'completed', title: 'todo completed'},
+        {id: IdForThirdTodoList, filter: 'active', title: 'todo active'},
+    ];
+    const todoTasks:{ [key: string]: TaskType[] } ={
+
+        [IdForFirstTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForSecondTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForThirdTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL1", isDone: false},
+            {id: v1(), title: "GraphQL2", isDone: false},],
+
+    };
+
+    const action = addTodoListAC('new Todo');
+
+const endStateTodoLists = todoListsReduce(todoLists,action);
+const endStateNewTodoListTasks = taskReduce(todoTasks,action);
+
+
+
+ expect(Object.keys(endStateNewTodoListTasks).length).toBe(4);
+ expect(endStateNewTodoListTasks[Object.keys(endStateNewTodoListTasks)[0]].length).toBe(0);
+ expect(endStateNewTodoListTasks[Object.keys(endStateNewTodoListTasks)[0]]).toEqual([]);
+});
+
+
+

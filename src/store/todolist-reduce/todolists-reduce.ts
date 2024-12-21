@@ -1,29 +1,40 @@
 import {FilterValuesType, TodoListType} from "../../App";
 import {v1} from "uuid";
 
-const REMOVE_TODOLIST = 'REMOVE-TODOLIST';
-const ADD_TODOLIST = 'ADD-TODOLIST';
+export const REMOVE_TODOLIST = 'REMOVE-TODOLIST';
+export const ADD_TODOLIST = 'ADD-TODOLIST';
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE';
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
-
+export const ADD_TODOLIST_AND_TASKS = 'ADD-TODOLIST-AND-TASKS';
 /*[key: string]: any;*/
-export type ActionType =removeTodoListACType|addTodoListACType|changeTodolistTitleACType|changeTodolistFilterACType;
+export type ActionType =RemoveTodoListACType|AddTodoListACType|ChangeTodolistTitleACType|ChangeTodolistFilterACType|AddTodoListAndTasksACType;
 
-type removeTodoListACType = {
+export type RemoveTodoListACType = {
     type: typeof REMOVE_TODOLIST,
     id: string,
 };
-type addTodoListACType = {
+export type AddTodoListACType = {
     type: typeof ADD_TODOLIST,
-    title: string,
+    payload:{
+        id: string,
+        title: string,
+
+    },
 };
-type changeTodolistTitleACType = {
+type ChangeTodolistTitleACType = {
     type: typeof CHANGE_TODOLIST_TITLE,
     payload: {id:string,title:string},
 };
-type changeTodolistFilterACType = {
+type ChangeTodolistFilterACType = {
     type: typeof CHANGE_TODOLIST_FILTER,
     payload: {id:string,filter:FilterValuesType},
+};
+export type AddTodoListAndTasksACType = {
+    type: typeof ADD_TODOLIST_AND_TASKS,
+    payload:{
+        idTodo:string,
+        title: string,
+    },
 };
 
 
@@ -36,7 +47,7 @@ export const todoListsReduce = (state: TodoListType[], action: ActionType): Todo
             return state.filter(td => td.id !== action.id);
         }
         case ADD_TODOLIST: {
-            return [...state, {id: v1(), title: action.title, filter: 'all'}];
+            return [...state, {id: action.payload.id, title: action.payload.title, filter: 'all'}];
         }
         case CHANGE_TODOLIST_TITLE: {
             return state.map(td => td.id === action.payload.id ? {...td, title: action.payload.title} : td);
@@ -48,6 +59,7 @@ export const todoListsReduce = (state: TodoListType[], action: ActionType): Todo
 
         }
 
+
         default: {
             return state
         }
@@ -55,19 +67,25 @@ export const todoListsReduce = (state: TodoListType[], action: ActionType): Todo
 
 };
 
-export const removeTodoListAC = (id:string):removeTodoListACType=> ({
+export const removeTodoListAC = (id:string):RemoveTodoListACType=> ({
     type:REMOVE_TODOLIST,
     id,
 } as const);
-export const addTodoListAC = (title:string):addTodoListACType=> ({
+export const addTodoListAC = (title:string):AddTodoListACType=> ({
     type:ADD_TODOLIST,
-   title,
+    payload:{
+        id:v1(),
+        title,
+    },
+
 } as const);
-export const changeTodolistTitleAC = (id:string,title:string):changeTodolistTitleACType=> ({
+export const changeTodolistTitleAC = (id:string,title:string):ChangeTodolistTitleACType=> ({
     type:CHANGE_TODOLIST_TITLE,
     payload:{id,title},
 } as const);
-export const changeTodolistFilterAC = (id:string,filter:FilterValuesType):changeTodolistFilterACType=> ({
+export const changeTodolistFilterAC = (id:string,filter:FilterValuesType):ChangeTodolistFilterACType=> ({
     type:CHANGE_TODOLIST_FILTER,
     payload:{id,filter},
 } as const);
+
+

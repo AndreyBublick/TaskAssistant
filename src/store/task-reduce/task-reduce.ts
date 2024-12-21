@@ -1,5 +1,12 @@
 import {v1} from "uuid";
 import {TaskType} from "../../App";
+import {
+    ADD_TODOLIST,
+    REMOVE_TODOLIST,
+    AddTodoListACType,
+    AddTodoListAndTasksACType,
+    RemoveTodoListACType
+} from "../todolist-reduce/todolists-reduce";
 
 
 const REMOVE_TASK = 'REMOVE_TASK';
@@ -34,7 +41,7 @@ const defaultState = {
 };
 
 
-type ActionType = RemoveTaskACType | AddTaskACType | ChangeStatusTaskACType | ChangeTitleTaskACType;
+type ActionType = RemoveTaskACType | AddTaskACType | ChangeStatusTaskACType | ChangeTitleTaskACType| AddTodoListACType|AddTodoListAndTasksACType|RemoveTodoListACType;
 
 type StateType = {
     [key: string]: TaskType[];
@@ -104,6 +111,15 @@ export const taskReduce = (state: StateType = defaultState, action: ActionType):
 
             };
         }
+        case ADD_TODOLIST: {
+            return {[action.payload.id]:[],...state}
+        }
+        case REMOVE_TODOLIST:{
+            const stateCopy = {...state};
+            delete stateCopy[action.id];
+            return  stateCopy;
+        }
+
         default: {
             return state;
         }
@@ -143,3 +159,4 @@ export const changeTitleTaskAC = (idTodoLists: string, id: string, title: string
         title,
     },
 });
+
