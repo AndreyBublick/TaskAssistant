@@ -117,7 +117,7 @@ export const AppWithReducers: FC = () => {
                             }
 
                             const removeTask = (id: string, idTodoLists: string) => {
-                                dispatchTodoTasks(removeTaskAC(id,idTodoLists));
+                                dispatchTodoTasks(removeTaskAC(idTodoLists,id));
 
 
                             }
