@@ -79,10 +79,12 @@ export const addTodoListAC = (title:string):AddTodoListACType=> ({
     },
 
 } as const);
+
 export const changeTodolistTitleAC = (id:string,title:string):ChangeTodolistTitleACType=> ({
     type:CHANGE_TODOLIST_TITLE,
     payload:{id,title},
 } as const);
+
 export const changeTodolistFilterAC = (id:string,filter:FilterValuesType):ChangeTodolistFilterACType=> ({
     type:CHANGE_TODOLIST_FILTER,
     payload:{id,filter},

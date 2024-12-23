@@ -11,6 +11,7 @@ import {
 
 const REMOVE_TASK = 'REMOVE_TASK';
 const ADD_TASK = 'ADD_TASK';
+const ADD_TASKS_DELETE = 'ADD_TASKS_DELETE';
 const CHANGE_STATUS_TASK = 'CHANGE_STATUS_TASK';
 const CHANGE_TITLE_TASK = 'CHANGE_TITLE_TASK';
 
@@ -41,7 +42,15 @@ const defaultState = {
 };
 
 
-type ActionType = RemoveTaskACType | AddTaskACType | ChangeStatusTaskACType | ChangeTitleTaskACType| AddTodoListACType|AddTodoListAndTasksACType|RemoveTodoListACType;
+type ActionType =
+    RemoveTaskACType
+    | AddTaskACType
+    | ChangeStatusTaskACType
+    | ChangeTitleTaskACType
+    | AddTodoListACType
+    | AddTodoListAndTasksACType
+    | RemoveTodoListACType
+    | RemoveAllTasksACType;
 
 type StateType = {
     [key: string]: TaskType[];
@@ -49,7 +58,7 @@ type StateType = {
 type RemoveTaskACType = {
     type: typeof REMOVE_TASK,
     payload: {
-        idTodoLists: string,
+        idTodoList: string,
         id: string,
     },
 };
@@ -76,13 +85,18 @@ type ChangeTitleTaskACType = {
         title: string,
     },
 };
-
-export const taskReduce = (state: StateType = defaultState, action: ActionType):StateType => {
+type RemoveAllTasksACType = {
+    type: typeof ADD_TASKS_DELETE,
+    payload: {
+        idTodoLists: string,
+    },
+};
+export const taskReduce = (state: StateType = defaultState, action: ActionType): StateType => {
     switch (action.type) {
         case REMOVE_TASK: {
             return {
                 ...state,
-                [action.payload.idTodoLists]: state[action.payload.idTodoLists].filter(list => list.id !== action.payload.id)
+                [action.payload.idTodoList]: state[action.payload.idTodoList].filter(list => list.id !== action.payload.id)
             };
         }
         case ADD_TASK: {
@@ -100,24 +114,38 @@ export const taskReduce = (state: StateType = defaultState, action: ActionType):
 
         }
         case CHANGE_STATUS_TASK: {
-            return    {
+            return {
                 ...state,
-                [action.payload.idTodoLists]: state[action.payload.idTodoLists].map(tL => tL.id === action.payload.id ? {...tL, isDone: action.payload.isDone} : tL)
+                [action.payload.idTodoLists]: state[action.payload.idTodoLists].map(tL => tL.id === action.payload.id ? {
+                    ...tL,
+                    isDone: action.payload.isDone
+                } : tL)
             };
         }
-        case CHANGE_TITLE_TASK:{
+        case CHANGE_TITLE_TASK: {
 
-            return  {...state, [action.payload.idTodoLists]: state[action.payload.idTodoLists].map(t => t.id === action.payload.id ? {...t, title: action.payload.title} : t),
+            return {
+                ...state,
+                [action.payload.idTodoLists]: state[action.payload.idTodoLists].map(t => t.id === action.payload.id ? {
+                    ...t,
+                    title: action.payload.title
+                } : t),
 
             };
         }
         case ADD_TODOLIST: {
-            return {[action.payload.id]:[],...state}
+            return {[action.payload.id]: [], ...state}
         }
-        case REMOVE_TODOLIST:{
+        case REMOVE_TODOLIST: {
             const stateCopy = {...state};
             delete stateCopy[action.id];
-            return  stateCopy;
+            return stateCopy;
+        }
+        case ADD_TASKS_DELETE:{
+
+
+
+            return {...state,[action.payload.idTodoLists]:[]};
         }
 
         default: {
@@ -127,10 +155,10 @@ export const taskReduce = (state: StateType = defaultState, action: ActionType):
 };
 
 
-export const removeTaskAC = (idTodoLists: string, id: string,): RemoveTaskACType => ({
+export const removeTaskAC = (idTodoList: string, id: string,): RemoveTaskACType => ({
     type: REMOVE_TASK,
     payload: {
-        idTodoLists,
+        idTodoList,
         id,
     },
 });
@@ -143,7 +171,7 @@ export const addTaskAC = (idTodoLists: string, title: string): AddTaskACType => 
     },
 });
 
-export const changeStatusTaskAC = (idTodoLists: string, id: string, isDone: boolean):ChangeStatusTaskACType => ({
+export const changeStatusTaskAC = (idTodoLists: string, id: string, isDone: boolean): ChangeStatusTaskACType => ({
     type: CHANGE_STATUS_TASK,
     payload: {
         idTodoLists,
@@ -151,12 +179,19 @@ export const changeStatusTaskAC = (idTodoLists: string, id: string, isDone: bool
         isDone,
     },
 });
-export const changeTitleTaskAC = (idTodoLists: string, id: string, title: string):ChangeTitleTaskACType => ({
+
+export const changeTitleTaskAC = (idTodoLists: string, id: string, title: string): ChangeTitleTaskACType => ({
     type: CHANGE_TITLE_TASK,
     payload: {
         idTodoLists,
         id,
         title,
     },
+});
+
+
+export const removeAllTasksAC = (idTodoLists:string):RemoveAllTasksACType => ({
+    type: ADD_TASKS_DELETE,
+    payload: {idTodoLists},
 });
 

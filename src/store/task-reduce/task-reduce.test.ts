@@ -5,7 +5,7 @@ import {
     addTaskAC,
 
     changeStatusTaskAC,
-    changeTitleTaskAC,
+    changeTitleTaskAC, removeAllTasksAC,
     removeTaskAC,
     taskReduce
 } from "./task-reduce";
@@ -283,6 +283,52 @@ const endStateNewTodoListTasks = taskReduce(todoTasks,action);
  expect(Object.keys(endStateNewTodoListTasks).length).toBe(4);
  expect(endStateNewTodoListTasks[Object.keys(endStateNewTodoListTasks)[0]].length).toBe(0);
  expect(endStateNewTodoListTasks[Object.keys(endStateNewTodoListTasks)[0]]).toEqual([]);
+});
+
+
+
+test('should delete all the tasks in a todolist',()=>{
+
+
+    const IdForFirstTodoList = v1();
+    const IdForSecondTodoList = v1();
+    const IdForThirdTodoList = v1();
+
+
+    const todoTasks:{ [key: string]: TaskType[] } ={
+
+        [IdForFirstTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForSecondTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},
+            {id: v1(), title: "GraphQL", isDone: false},],
+        [IdForThirdTodoList]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "ReactJS", isDone: false},
+            {id: v1(), title: "Rest API", isDone: false},
+            {id: v1(), title: "GraphQL1", isDone: false},
+            {id: v1(), title: "GraphQL2", isDone: false},],
+
+    };
+
+
+const endState = taskReduce(todoTasks,removeAllTasksAC(IdForSecondTodoList));
+
+    expect(endState[IdForFirstTodoList].length > 0).toBeTruthy();
+    expect(endState[IdForSecondTodoList]).toEqual([]);
+    expect(endState[IdForSecondTodoList].length).toBe(0);
+    expect(endState[IdForThirdTodoList].length > 0).toBeTruthy();
+
 });
 
 
