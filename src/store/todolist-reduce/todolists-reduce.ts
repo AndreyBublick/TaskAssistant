@@ -7,6 +7,11 @@ const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE';
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
 export const ADD_TODOLIST_AND_TASKS = 'ADD-TODOLIST-AND-TASKS';
 /*[key: string]: any;*/
+
+
+
+
+
 export type ActionType =RemoveTodoListACType|AddTodoListACType|ChangeTodolistTitleACType|ChangeTodolistFilterACType|AddTodoListAndTasksACType;
 
 export type RemoveTodoListACType = {
@@ -37,9 +42,22 @@ export type AddTodoListAndTasksACType = {
     },
 };
 
+export const IdForFirstTask = v1();
+export const IdForSecondTask = v1();
+export const IdForThirdTask = v1();
+
+const initialState:TodoListType[] = [
+
+    {id: IdForFirstTask, filter: 'all', title: 'todo all'},
+    {id: IdForSecondTask, filter: 'completed', title: 'todo completed'},
+    {id: IdForThirdTask, filter: 'active', title: 'todo active'},
+
+];
 
 
-export const todoListsReduce = (state: TodoListType[], action: ActionType): TodoListType[] => {
+
+
+export const todoListsReduce = (state: TodoListType[] = initialState, action: ActionType): TodoListType[] => {
 
     switch (action.type) {
         case REMOVE_TODOLIST: {
@@ -66,6 +84,16 @@ export const todoListsReduce = (state: TodoListType[], action: ActionType): Todo
     }
 
 };
+
+
+
+
+
+
+
+
+
+
 
 export const removeTodoListAC = (id:string):RemoveTodoListACType=> ({
     type:REMOVE_TODOLIST,

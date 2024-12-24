@@ -18,19 +18,6 @@ export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocu
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<null | string>(null);
 
-   /* const onClickHandler = () => {
-
-        if (!!value) {
-            callBack(value.trim());
-
-            setValue('');
-            setError(null);
-
-        } else {
-            setError('this field is required');
-
-        }
-    };*/
     const diactivateEditMode = () => {
 
         if (!!value) {
@@ -79,7 +66,6 @@ export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocu
     return <AddItemFormStyled>
         <Input autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler} error={error} req={true} value={value} setValue={setValue}/>
         {isShowButton && <Button disabled={!!error} onClick={diactivateEditMode} variant={"contained"} size={"small"} >+</Button>}
-       {/* {error && <span style={{color: "red", display: "block"}}>this field required</span>}*/}{/*//Вывод ошибки//*/}
 
     </AddItemFormStyled>;
 };

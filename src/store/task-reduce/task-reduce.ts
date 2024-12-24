@@ -5,7 +5,7 @@ import {
     REMOVE_TODOLIST,
     AddTodoListACType,
     AddTodoListAndTasksACType,
-    RemoveTodoListACType
+    RemoveTodoListACType, IdForFirstTask, IdForSecondTask, IdForThirdTask
 } from "../todolist-reduce/todolists-reduce";
 
 
@@ -15,23 +15,23 @@ const ADD_TASKS_DELETE = 'ADD_TASKS_DELETE';
 const CHANGE_STATUS_TASK = 'CHANGE_STATUS_TASK';
 const CHANGE_TITLE_TASK = 'CHANGE_TITLE_TASK';
 
-const defaultState = {
+const initialState = {
 
-    [1]: [
+    [IdForFirstTask]: [
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
         {id: v1(), title: "Rest API", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false},],
-    [2]: [
+    [IdForSecondTask]: [
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
         {id: v1(), title: "Rest API", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false},
         {id: v1(), title: "GraphQL", isDone: false},],
-    [3]: [
+    [IdForThirdTask]: [
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
         {id: v1(), title: "ReactJS", isDone: false},
@@ -43,7 +43,7 @@ const defaultState = {
 
 
 type ActionType =
-    RemoveTaskACType
+      RemoveTaskACType
     | AddTaskACType
     | ChangeStatusTaskACType
     | ChangeTitleTaskACType
@@ -52,7 +52,7 @@ type ActionType =
     | RemoveTodoListACType
     | RemoveAllTasksACType;
 
-type StateType = {
+export type TaskItemType = {
     [key: string]: TaskType[];
 };
 type RemoveTaskACType = {
@@ -91,7 +91,9 @@ type RemoveAllTasksACType = {
         idTodoLists: string,
     },
 };
-export const taskReduce = (state: StateType = defaultState, action: ActionType): StateType => {
+
+
+export const taskReducer = (state: TaskItemType = initialState, action: ActionType): TaskItemType => {
     switch (action.type) {
         case REMOVE_TASK: {
             return {

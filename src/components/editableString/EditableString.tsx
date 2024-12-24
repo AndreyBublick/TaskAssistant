@@ -29,7 +29,6 @@ export const EditableString: FC<PropsType> = ({onChange, isDone = false, title, 
     return editMode ?
         <AddItemForm isShowButton={!editMode} autoFocus isDisabledOnBlur={false} defaultValue={title} callBack={diactivateEditMode}/> : <>
 
-            {/* {onChange && <input onChange={onChange} type="checkbox" checked={isDone}/>}*/}
             {onChange && <Checkbox
                 checked={isDone}
                 onChange={onChange}
@@ -38,8 +37,6 @@ export const EditableString: FC<PropsType> = ({onChange, isDone = false, title, 
 
             {onChange ? <span onDoubleClick={activateEditMode}>{title}</span> :
                 <TitleTodoList onDoubleClick={activateEditMode}>{title}</TitleTodoList>}
-
-
         </>
 };
 

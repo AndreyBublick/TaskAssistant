@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FC, useCallback} from 'react';
+import React, {ChangeEvent, FC, useCallback, useMemo} from 'react';
 import {FilterValuesType, TaskType} from './App';
 
 
@@ -7,58 +7,98 @@ import {AddItemForm} from "./components/addItemForm/AddItemForm";
 import {EditableString} from "./components/editableString/EditableString";
 import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {
+    addTaskAC,
+    changeStatusTaskAC,
+    changeTitleTaskAC,
+    removeAllTasksAC,
+    removeTaskAC, TaskItemType,
+} from "./store/task-reduce/task-reduce";
+import {useDispatch, useSelector} from "react-redux";
+import {StateType} from "./store/store";
 
 
 type PropsType = {
     id: string,
     title: string,
     filter: FilterValuesType,
-    tasks: Array<TaskType>,
 
-
-    removeTask: (taskId: string, idTodoLists: string) => void,
     changeFilter: (value: FilterValuesType, idTodoLists: string) => void,
-    addNewTask: (title: string, idTodoLists: string) => void,
     deleteTodoList: (idTodoList: string) => void,
-    changeTaskDone: (id: string, isDone: boolean, idTodoLists: string) => void,
-    removeAllTasks: (idTodoLists: string) => void,
     changeTitleTodoList: (idTodoList: string, newTodoTitle: string) => void,
-    changeTaskTitle: (idTodoList: string, idTask: string, newTaskTitle: string) => void,
 
 }
 
 
 export const Todolist: FC<PropsType> = ({
+                                            id,
                                             title,
                                             filter,
-                                            changeTaskDone,
-                                            tasks,
-                                            removeTask,
-                                            changeFilter,
-                                            removeAllTasks,
-                                            addNewTask,
-                                            deleteTodoList,
-                                            id,
-                                            changeTitleTodoList,
-                                            changeTaskTitle,
 
+                                            changeFilter,
+                                            deleteTodoList,
+                                            changeTitleTodoList,
                                         }) => {
 
-    const removeTasks = () => {
-        removeAllTasks(id);
-    };
 
+    const tasks = useSelector<StateType, TaskItemType>(state => state.tasks);
+    const dispatch = useDispatch();
+    let tasksForTodoList: TaskType[] = useMemo(()=>{
+
+        switch (filter) {
+            case "active": {
+              return   tasks[id].filter(t => !t.isDone);
+            }
+            case "completed": {
+                return  tasks[id].filter(t => t.isDone);
+            }
+            case "three": {
+                return  tasks[id].filter((t, index) => index < 3);
+            }
+            default: {
+
+                return  tasks[id];
+
+            }
+        }
+
+    },[filter,tasks]);
+
+
+
+    const removeTasks = useCallback(() => {
+        removeAllTasks(id);
+    },[]);
 
 
     const addNewTaskInThisTODO = useCallback((inputValue: string) => {
         addNewTask(inputValue, id);
 
-    }, [addNewTask, id]);
-
+    }, [id]);
     const changeTitleInThisTODO = useCallback((inputValue: string) => {
         changeTitleTodoList(id, inputValue);
 
     }, [changeTitleTodoList, id]);
+
+
+
+    const removeTask = (id: string, idTodoLists: string) => {
+        dispatch(removeTaskAC(idTodoLists, id));
+    }
+    const addNewTask = (title: string, idTodoLists: string) => {
+        dispatch(addTaskAC(idTodoLists, title));
+    };
+    const changeTaskDone = (id: string, isDone: boolean, idTodoLists: string) => {
+        dispatch(changeStatusTaskAC(idTodoLists, id, isDone));
+    };
+    const removeAllTasks = (idTodoLists: string) => {
+        dispatch(removeAllTasksAC(idTodoLists));
+    };
+    const changeTaskTitle = (idTodoList: string, idTask: string, newTaskTitle: string) => {
+        dispatch(changeTitleTaskAC(idTodoList, idTask, newTaskTitle));
+    };
+
+
 
 
     return <TodolistStyled>
@@ -76,9 +116,9 @@ export const Todolist: FC<PropsType> = ({
         </FlexWrapper>
             <AddItemForm callBack={addNewTaskInThisTODO}/>
 
-        {tasks.length > 0 ? <List>
+        {tasksForTodoList.length > 0 ? <List>
             {
-                tasks.map(t => {
+                tasksForTodoList.map(t => {
                         const onClickRemoveTaskHandler = () => {
                             removeTask(t.id, id);
                         };
@@ -104,7 +144,7 @@ export const Todolist: FC<PropsType> = ({
                     }
                 )
             }
-        </List> : <h2>Задачи отсутсвуют</h2>}
+        </List> : <h2>Задачи отсутствуют</h2>}
         <Button title={'delete all'} variant={'contained'} onClick={removeTasks}>delete all</Button>
 
         <ButtonsWrapper>
@@ -137,7 +177,6 @@ const FlexWrapper = styled.div`
     gap: 10px;
 
 `;
-
 const TodoTitle = styled.div`
     margin: 10px 0;
 `;
