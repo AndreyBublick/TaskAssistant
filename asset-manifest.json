@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/dopTask_02_todolist/static/css/main.e6c13ad2.css",
-    "main.js": "/dopTask_02_todolist/static/js/main.885856c2.js",
+    "main.js": "/dopTask_02_todolist/static/js/main.bf05fd5b.js",
     "index.html": "/dopTask_02_todolist/index.html",
     "main.e6c13ad2.css.map": "/dopTask_02_todolist/static/css/main.e6c13ad2.css.map",
-    "main.885856c2.js.map": "/dopTask_02_todolist/static/js/main.885856c2.js.map"
+    "main.bf05fd5b.js.map": "/dopTask_02_todolist/static/js/main.bf05fd5b.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.885856c2.js"
+    "static/js/main.bf05fd5b.js"
   ]
 }
