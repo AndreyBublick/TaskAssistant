@@ -34,8 +34,11 @@ export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocu
 
 
     const onChangeHandler = () => {
-        setError(null);
+       if(error!==null){
+           setError(null);
+       }
     };
+
     const onBlurHandler = () => {
 
         if (!isDisabledOnBlur) {

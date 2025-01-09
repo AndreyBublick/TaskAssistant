@@ -48,9 +48,6 @@ export const IdForThirdTask = v1();
 
 const initialState:TodoListType[] = [
 
-    {id: IdForFirstTask, filter: 'all', title: 'todo all'},
-    {id: IdForSecondTask, filter: 'completed', title: 'todo completed'},
-    {id: IdForThirdTask, filter: 'active', title: 'todo active'},
 
 ];
 

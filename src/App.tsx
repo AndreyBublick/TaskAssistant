@@ -16,6 +16,7 @@ import {
 
 import {useAppDispatch, useAppSelector} from "./hooks/Hooks";
 import {selectorGetTodoLists} from "./store/selectors/todoLists-selectors";
+import {TodoLists} from "./components/todoLists/TodoLists";
 
 
 export type FilterValuesType = "all" | "active" | "completed" | 'three';
@@ -37,7 +38,7 @@ export const App: FC = () => {
 
     const dispatch = useAppDispatch();
 
-    const todoLists = useAppSelector(selectorGetTodoLists);
+
 
 
 
@@ -45,19 +46,7 @@ export const App: FC = () => {
         dispatch(addTodoListAC(titleTodo));
     }, []);
 
-    const changeFilter = (value: FilterValuesType, idTodoLists: string) => {
-        dispatch(changeTodolistFilterAC(idTodoLists, value));
-    };
 
-    const deleteTodoList = (idTodoLists: string) => {
-        dispatch(removeTodoListAC(idTodoLists));
-    };
-
-    const changeTitleTodoList = (idTodo: string, title: string) => {
-
-        dispatch(changeTodolistTitleAC(idTodo, title));
-
-    };
 
 
 
@@ -85,27 +74,7 @@ export const App: FC = () => {
                     <AddItemForm callBack={addNewTodoList}/>
                 </AddItemFormWrapper>
                 <Grid2 container={true} spacing={2}>
-                    {todoLists.map(todoList => {
-
-
-                            return <Paper key={todoList.id}>
-                                <Todolist id={todoList.id}
-                                          filter={todoList.filter}
-                                          title={todoList.title}
-
-                                         /* tasks={tasksForTodoList}
-                                          addNewTask={addNewTask}*/
-                                          changeFilter={changeFilter}
-                                         /* removeTask={removeTask}
-                                          changeTaskDone={changeTaskDone}
-                                          removeAllTasks={removeAllTasks}*/
-                                          deleteTodoList={deleteTodoList} changeTitleTodoList={changeTitleTodoList}
-                                         /* changeTaskTitle={changeTaskTitle}*/
-
-                                />
-                            </Paper>
-                        }
-                    )}
+                    <TodoLists />
                 </Grid2>
             </ContainerStyled>
 

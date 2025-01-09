@@ -1,5 +1,5 @@
-import React, {ChangeEvent, FC, useCallback, useMemo} from 'react';
-import {FilterValuesType, TaskType} from './App';
+import React, { FC, memo, useCallback} from 'react';
+import {FilterValuesType} from './App';
 
 
 import styled from "styled-components";
@@ -9,15 +9,17 @@ import {Button, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {
     addTaskAC,
-    changeStatusTaskAC,
-    changeTitleTaskAC,
-    removeAllTasksAC,
-    removeTaskAC, TaskItemType,
-} from "./store/task-reducer/task-reducer";
 
-import {RootStateType} from "./store/store";
-import {useAppDispatch, useAppSelector} from "./hooks/Hooks";
-import {selectorGetTasks} from "./store/selectors/tasks-selectors";
+    removeAllTasksAC,
+
+} from "./store/task-reducer/task-reducer";
+import {useAppDispatch} from "./hooks/Hooks";
+import {Tasks} from "./components/tasks/Tasks";
+import {
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodoListAC
+} from "./store/todolist-reducer/todolists-reducer";
 
 
 type PropsType = {
@@ -25,83 +27,46 @@ type PropsType = {
     title: string,
     filter: FilterValuesType,
 
-    changeFilter: (value: FilterValuesType, idTodoLists: string) => void,
-    deleteTodoList: (idTodoList: string) => void,
-    changeTitleTodoList: (idTodoList: string, newTodoTitle: string) => void,
+
 
 }
 
 
-export const Todolist: FC<PropsType> = ({
+export const Todolist: FC<PropsType> = memo(({
                                             id,
                                             title,
                                             filter,
 
-                                            changeFilter,
-                                            deleteTodoList,
-                                            changeTitleTodoList,
+
                                         }) => {
 
     const dispatch = useAppDispatch();
 
-    const tasks = useAppSelector(selectorGetTasks);
-
-    let tasksForTodoList: TaskType[] = useMemo(()=>{
-
-        switch (filter) {
-            case "active": {
-              return   tasks[id].filter(t => !t.isDone);
-            }
-            case "completed": {
-                return  tasks[id].filter(t => t.isDone);
-            }
-            case "three": {
-                return  tasks[id].filter((t, index) => index < 3);
-            }
-            default: {
-
-                return  tasks[id];
-
-            }
-        }
-
-    },[filter,tasks]);
 
 
-    const removeTasks = useCallback(() => {
-        removeAllTasks(id);
+
+
+    const changeFilter = useCallback( (value: FilterValuesType, idTodoLists: string) => {
+        dispatch(changeTodolistFilterAC(idTodoLists, value));
     },[]);
 
+    const deleteTodoList = useCallback((idTodoLists: string) => {
+        dispatch(removeTodoListAC(idTodoLists));
+    },[]);
 
-    const addNewTaskInThisTODO = useCallback((inputValue: string) => {
-        addNewTask(inputValue, id);
+    const changeTitleTodoList = useCallback( ( title: string) => {
+        dispatch(changeTodolistTitleAC(id, title));
+    },[]);
 
-    }, [id]);
+    const addNewTask = useCallback((title: string) => {
 
-
-    const changeTitleInThisTODO = useCallback((inputValue: string) => {
-        changeTitleTodoList(id, inputValue);
-
-    }, [changeTitleTodoList, id]);
+        dispatch(addTaskAC(id, title));
+    }, []);
 
 
-
-    const removeTask = (id: string, idTodoLists: string) => {
-        dispatch(removeTaskAC(idTodoLists, id));
-    };
-    const addNewTask = (title: string, idTodoLists: string) => {
-        dispatch(addTaskAC(idTodoLists, title));
-    };
-    const changeTaskDone = (id: string, isDone: boolean, idTodoLists: string) => {
-        dispatch(changeStatusTaskAC(idTodoLists, id, isDone));
-    };
-    const removeAllTasks = (idTodoLists: string) => {
-        dispatch(removeAllTasksAC(idTodoLists));
-    };
-    const changeTaskTitle = (idTodoList: string, idTask: string, newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(idTodoList, idTask, newTaskTitle));
-    };
-
+    const removeAllTasks = useCallback (() => {
+        dispatch(removeAllTasksAC(id));
+    },[]);
 
 
 
@@ -109,7 +74,7 @@ export const Todolist: FC<PropsType> = ({
         <FlexWrapper>
             <TodoTitle>
 
-                <EditableString autoFocus isDisabledOnBlur={false} changeString={changeTitleInThisTODO} title={title}/>
+                <EditableString autoFocus isDisabledOnBlur={false} changeString={changeTitleTodoList} title={title}/>
             </TodoTitle>
 
             <IconButton aria-label="delete" size="large" onClick={() => deleteTodoList(id)}>
@@ -118,38 +83,10 @@ export const Todolist: FC<PropsType> = ({
 
 
         </FlexWrapper>
-            <AddItemForm callBack={addNewTaskInThisTODO}/>
+            <AddItemForm callBack={addNewTask}/>
 
-        {tasksForTodoList.length > 0 ? <List>
-            {
-                tasksForTodoList.map(t => {
-                        const onClickRemoveTaskHandler = () => {
-                            removeTask(t.id, id);
-                        };
-                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            changeTaskDone(t.id, e.currentTarget.checked, id);
-                        };
-                        const changeTaskTitleHandler = (inputValue: string) => {
-
-                            changeTaskTitle(id, t.id, inputValue);
-
-
-                        };
-
-                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}}>
-
-                            <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler}
-                                            isDone={t.isDone} title={t.title} />
-                            <IconButton aria-label="delete" size="small" onClick={onClickRemoveTaskHandler}>
-                                <Delete fontSize="inherit"/>
-                            </IconButton>
-                        </li>
-
-                    }
-                )
-            }
-        </List> : <h2>Задачи отсутствуют</h2>}
-        <Button title={'delete all'} variant={'contained'} onClick={removeTasks}>delete all</Button>
+        <Tasks id={id} filter={filter} />
+        <Button title={'delete all'} variant={'contained'} onClick={removeAllTasks}>delete all</Button>
 
         <ButtonsWrapper>
             {/*isActive={filter === 'all'}*/}
@@ -172,7 +109,7 @@ export const Todolist: FC<PropsType> = ({
 
         </ButtonsWrapper>
     </TodolistStyled>
-}
+});
 
 
 const FlexWrapper = styled.div`
@@ -191,16 +128,7 @@ const ButtonsWrapper = styled.div`
     gap: 5px;
     flex-wrap: wrap;
 `;
-const List = styled.ul`
-    /*padding: 0;*/
 
-    & > li {
-        display: flex;
-        align-items: center;
-        
-    }
-
-`;
 const TodolistStyled = styled.div`
 padding: 15px;
 `;

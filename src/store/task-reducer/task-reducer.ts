@@ -17,27 +17,7 @@ const CHANGE_TITLE_TASK = 'CHANGE_TITLE_TASK';
 
 const initialState = {
 
-    [IdForFirstTask]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},],
-    [IdForSecondTask]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},],
-    [IdForThirdTask]: [
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "ReactJS", isDone: false},
-        {id: v1(), title: "Rest API", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},
-        {id: v1(), title: "GraphQL", isDone: false},],
+
 
 };
 
