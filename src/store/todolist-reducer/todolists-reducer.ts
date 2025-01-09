@@ -6,7 +6,7 @@ export const ADD_TODOLIST = 'ADD-TODOLIST';
 const CHANGE_TODOLIST_TITLE = 'CHANGE-TODOLIST-TITLE';
 const CHANGE_TODOLIST_FILTER = 'CHANGE-TODOLIST-FILTER';
 export const ADD_TODOLIST_AND_TASKS = 'ADD-TODOLIST-AND-TASKS';
-/*[key: string]: any;*/
+
 
 
 
@@ -57,7 +57,7 @@ const initialState:TodoListType[] = [
 
 
 
-export const todoListsReduce = (state: TodoListType[] = initialState, action: ActionType): TodoListType[] => {
+export const todolistsReducer = (state: TodoListType[] = initialState, action: ActionType): TodoListType[] => {
 
     switch (action.type) {
         case REMOVE_TODOLIST: {

@@ -13,9 +13,11 @@ import {
     changeTitleTaskAC,
     removeAllTasksAC,
     removeTaskAC, TaskItemType,
-} from "./store/task-reduce/task-reduce";
-import {useDispatch, useSelector} from "react-redux";
-import {StateType} from "./store/store";
+} from "./store/task-reducer/task-reducer";
+
+import {RootStateType} from "./store/store";
+import {useAppDispatch, useAppSelector} from "./hooks/Hooks";
+import {selectorGetTasks} from "./store/selectors/tasks-selectors";
 
 
 type PropsType = {
@@ -40,9 +42,10 @@ export const Todolist: FC<PropsType> = ({
                                             changeTitleTodoList,
                                         }) => {
 
+    const dispatch = useAppDispatch();
 
-    const tasks = useSelector<StateType, TaskItemType>(state => state.tasks);
-    const dispatch = useDispatch();
+    const tasks = useAppSelector(selectorGetTasks);
+
     let tasksForTodoList: TaskType[] = useMemo(()=>{
 
         switch (filter) {
@@ -65,7 +68,6 @@ export const Todolist: FC<PropsType> = ({
     },[filter,tasks]);
 
 
-
     const removeTasks = useCallback(() => {
         removeAllTasks(id);
     },[]);
@@ -75,6 +77,8 @@ export const Todolist: FC<PropsType> = ({
         addNewTask(inputValue, id);
 
     }, [id]);
+
+
     const changeTitleInThisTODO = useCallback((inputValue: string) => {
         changeTitleTodoList(id, inputValue);
 
@@ -84,7 +88,7 @@ export const Todolist: FC<PropsType> = ({
 
     const removeTask = (id: string, idTodoLists: string) => {
         dispatch(removeTaskAC(idTodoLists, id));
-    }
+    };
     const addNewTask = (title: string, idTodoLists: string) => {
         dispatch(addTaskAC(idTodoLists, title));
     };

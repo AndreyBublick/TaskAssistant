@@ -6,7 +6,7 @@ import {
     AddTodoListACType,
     AddTodoListAndTasksACType,
     RemoveTodoListACType, IdForFirstTask, IdForSecondTask, IdForThirdTask
-} from "../todolist-reduce/todolists-reduce";
+} from "../todolist-reducer/todolists-reducer";
 
 
 const REMOVE_TASK = 'REMOVE_TASK';
@@ -93,7 +93,7 @@ type RemoveAllTasksACType = {
 };
 
 
-export const taskReducer = (state: TaskItemType = initialState, action: ActionType): TaskItemType => {
+export const tasksReducer = (state: TaskItemType = initialState, action: ActionType): TaskItemType => {
     switch (action.type) {
         case REMOVE_TASK: {
             return {

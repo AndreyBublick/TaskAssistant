@@ -9,11 +9,13 @@ import {Menu} from "@mui/icons-material";
 
 import {
     addTodoListAC,
-    changeTodolistFilterAC, changeTodolistTitleAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
     removeTodoListAC,
-} from "./store/todolist-reduce/todolists-reduce";
-import {useDispatch, useSelector} from "react-redux";
-import {StateType} from "./store/store";
+} from "./store/todolist-reducer/todolists-reducer";
+
+import {useAppDispatch, useAppSelector} from "./hooks/Hooks";
+import {selectorGetTodoLists} from "./store/selectors/todoLists-selectors";
 
 
 export type FilterValuesType = "all" | "active" | "completed" | 'three';
@@ -30,13 +32,14 @@ export type TodoListType = {
 };
 
 
+
 export const App: FC = () => {
 
-    const todoLists = useSelector<StateType, TodoListType[]>(state => state.todoLists);
+    const dispatch = useAppDispatch();
+
+    const todoLists = useAppSelector(selectorGetTodoLists);
 
 
-
-    const dispatch = useDispatch();
 
     const addNewTodoList = useCallback((titleTodo: string) => {
         dispatch(addTodoListAC(titleTodo));
@@ -44,10 +47,12 @@ export const App: FC = () => {
 
     const changeFilter = (value: FilterValuesType, idTodoLists: string) => {
         dispatch(changeTodolistFilterAC(idTodoLists, value));
-    }
+    };
+
     const deleteTodoList = (idTodoLists: string) => {
         dispatch(removeTodoListAC(idTodoLists));
     };
+
     const changeTitleTodoList = (idTodo: string, title: string) => {
 
         dispatch(changeTodolistTitleAC(idTodo, title));
@@ -83,8 +88,6 @@ export const App: FC = () => {
                     {todoLists.map(todoList => {
 
 
-
-
                             return <Paper key={todoList.id}>
                                 <Todolist id={todoList.id}
                                           filter={todoList.filter}
@@ -96,8 +99,7 @@ export const App: FC = () => {
                                          /* removeTask={removeTask}
                                           changeTaskDone={changeTaskDone}
                                           removeAllTasks={removeAllTasks}*/
-                                          deleteTodoList={deleteTodoList}
-                                          changeTitleTodoList={changeTitleTodoList}
+                                          deleteTodoList={deleteTodoList} changeTitleTodoList={changeTitleTodoList}
                                          /* changeTaskTitle={changeTaskTitle}*/
 
                                 />
@@ -106,7 +108,6 @@ export const App: FC = () => {
                     )}
                 </Grid2>
             </ContainerStyled>
-
 
         </div>
     );
