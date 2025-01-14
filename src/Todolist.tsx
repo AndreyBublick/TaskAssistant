@@ -20,6 +20,7 @@ import {
     changeTodolistTitleAC,
     removeTodoListAC
 } from "./store/todolist-reducer/todolists-reducer";
+import {TodolistContext} from "./contexts/TodolistContext";
 
 
 type PropsType = {
@@ -70,7 +71,8 @@ export const Todolist: FC<PropsType> = memo(({
 
 
 
-    return <TodolistStyled>
+    return <TodolistContext.Provider value={id}>
+        <TodolistStyled>
         <FlexWrapper>
             <TodoTitle>
 
@@ -85,7 +87,7 @@ export const Todolist: FC<PropsType> = memo(({
         </FlexWrapper>
             <AddItemForm callBack={addNewTask}/>
 
-        <Tasks id={id} filter={filter} />
+        <Tasks filter={filter} />
         <Button title={'delete all'} variant={'contained'} onClick={removeAllTasks}>delete all</Button>
 
         <ButtonsWrapper>
@@ -109,6 +111,7 @@ export const Todolist: FC<PropsType> = memo(({
 
         </ButtonsWrapper>
     </TodolistStyled>
+    </TodolistContext.Provider>
 });
 
 

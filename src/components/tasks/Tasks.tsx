@@ -1,28 +1,28 @@
-import React, {ChangeEvent, FC, memo, useMemo} from "react";
-import {EditableString} from "../editableString/EditableString";
-import {IconButton} from "@mui/material";
-import {Delete} from "@mui/icons-material";
+import React, {FC, memo, useContext, useMemo} from "react";
+
 import styled from "styled-components";
 import {FilterValuesType, TaskType} from "../../App";
-import {useAppDispatch, useAppSelector} from "../../hooks/Hooks";
+import {useAppSelector} from "../../hooks/Hooks";
 import {selectorGetTaskById} from "../../store/selectors/tasks-selectors";
-import {changeStatusTaskAC, changeTitleTaskAC, removeTaskAC} from "../../store/task-reducer/task-reducer";
+import {Task} from "./task/Task";
+import {TodolistContext} from "../../contexts/TodolistContext";
 
 
 
 
 type PropsType = {
 
-    id: string,
+
     filter:FilterValuesType,
 
 };
 
 
 
-export const Tasks: FC<PropsType> = memo(({id,filter}) => {
+export const Tasks: FC<PropsType> = memo(({filter}) => {
+    const id = useContext(TodolistContext);
     const tasksById = useAppSelector((state)=>selectorGetTaskById(state,id));
-    const dispatch = useAppDispatch();
+
 
     const tasksForTodoList: TaskType[] = useMemo(()=>{
 
@@ -45,21 +45,13 @@ export const Tasks: FC<PropsType> = memo(({id,filter}) => {
 
     },[filter,tasksById]);
 
-    const removeTask = (id: string, idTodoLists: string) => {
-        dispatch(removeTaskAC(idTodoLists, id));
-    };
-    const changeTaskDone = (id: string, isDone: boolean, idTodoLists: string) => {
-        dispatch(changeStatusTaskAC(idTodoLists, id, isDone));
-    };
-    const changeTaskTitle = (idTodoList: string, idTask: string, newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(idTodoList, idTask, newTaskTitle));
-    };
-    console.log('tasks')
+
+
     return <>
         {tasksForTodoList.length > 0 ? <List>
             {
                 tasksForTodoList.map(t => {
-                        const onClickRemoveTaskHandler = () => {
+                       /* const onClickRemoveTaskHandler = () => {
                             removeTask(t.id, id);
                         };
                         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,16 +62,9 @@ export const Tasks: FC<PropsType> = memo(({id,filter}) => {
                             changeTaskTitle(id, t.id, inputValue);
 
 
-                        };
+                        };*/
 
-                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}}>
-
-                            <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler}
-                                            isDone={t.isDone} title={t.title} />
-                            <IconButton aria-label="delete" size="small" onClick={onClickRemoveTaskHandler}>
-                                <Delete fontSize="inherit"/>
-                            </IconButton>
-                        </li>
+                        return <Task title={t.title} isDone={t.isDone} key={t.id} id={t.id} />
 
                     }
                 )

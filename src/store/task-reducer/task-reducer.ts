@@ -76,6 +76,7 @@ type RemoveAllTasksACType = {
 export const tasksReducer = (state: TaskItemType = initialState, action: ActionType): TaskItemType => {
     switch (action.type) {
         case REMOVE_TASK: {
+
             return {
                 ...state,
                 [action.payload.idTodoList]: state[action.payload.idTodoList].filter(list => list.id !== action.payload.id)

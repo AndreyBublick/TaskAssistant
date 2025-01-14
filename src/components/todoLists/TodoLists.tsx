@@ -18,8 +18,6 @@ export const TodoLists = memo (() => {
                     <Todolist id={todoList.id}
                               filter={todoList.filter}
                               title={todoList.title}
-
-
                     />
                 </Paper>
             }
