@@ -1,45 +1,44 @@
-import React, {ChangeEvent, FC, memo, useCallback, useState} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 import {AddItemForm} from "../addItemForm/AddItemForm";
 import styled from "styled-components";
 import {Checkbox} from "@mui/material";
 
 
 type PropsType = {
-
-
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void,
+    isDone?: boolean,
     title: string,
     changeString: (inputValue: string) => void,
     isDisabledOnBlur?: boolean,
     autoFocus?: boolean,
-    weightText?:boolean,
 };
 
-export const EditableString: FC<PropsType> = memo (({ title, changeString,weightText}) => {
+export const EditableString: FC<PropsType> = ({onChange, isDone = false, title, changeString}) => {
 
     const [editMode, setEditMode] = useState(false);
 
-
-    const deactivateEditMode = useCallback ((inputValue: string) => {
+    const diactivateEditMode = (inputValue: string) => {
         setEditMode(false);
         changeString(inputValue);
-    },[changeString]);
-
-
-    const activateEditMode = useCallback ( () => {
+    };
+    const activateEditMode = () => {
         setEditMode(true);
-    },[]);
+    };
 
 
     return editMode ?
-        <AddItemForm isShowButton={!editMode} autoFocus isDisabledOnBlur={false} defaultValue={title}
-                     callBack={deactivateEditMode}/> : <>
+        <AddItemForm isShowButton={!editMode} autoFocus isDisabledOnBlur={false} defaultValue={title} callBack={diactivateEditMode}/> : <>
 
+            {onChange && <Checkbox
+                checked={isDone}
+                onChange={onChange}
+                inputProps={{'aria-label': 'controlled'}}
+            />}
 
-        {weightText ?  <TitleTodoList onDoubleClick={activateEditMode}>{title}</TitleTodoList> : <span onDoubleClick={activateEditMode}>{title}</span>
-
-}
-</>
-});
+            {onChange ? <span onDoubleClick={activateEditMode}>{title}</span> :
+                <TitleTodoList onDoubleClick={activateEditMode}>{title}</TitleTodoList>}
+        </>
+};
 
 const TitleTodoList = styled.h2`
     font-size: 22px;

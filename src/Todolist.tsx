@@ -46,27 +46,27 @@ export const Todolist: FC<PropsType> = memo(({
 
 
 
-    const changeFilter = useCallback( (value: FilterValuesType) => {
-        dispatch(changeTodolistFilterAC(id, value));
-    },[dispatch,id]);
+    const changeFilter = useCallback( (value: FilterValuesType, idTodoLists: string) => {
+        dispatch(changeTodolistFilterAC(idTodoLists, value));
+    },[]);
 
-    const deleteTodoList = useCallback(() => {
-        dispatch(removeTodoListAC(id));
-    },[dispatch,id]);
+    const deleteTodoList = useCallback((idTodoLists: string) => {
+        dispatch(removeTodoListAC(idTodoLists));
+    },[]);
 
     const changeTitleTodoList = useCallback( ( title: string) => {
         dispatch(changeTodolistTitleAC(id, title));
-    },[dispatch,id]);
+    },[]);
 
     const addNewTask = useCallback((title: string) => {
 
         dispatch(addTaskAC(id, title));
-    }, [dispatch,id]);
+    }, []);
 
 
     const removeAllTasks = useCallback (() => {
         dispatch(removeAllTasksAC(id));
-    },[dispatch,id]);
+    },[]);
 
 
 
@@ -74,10 +74,10 @@ export const Todolist: FC<PropsType> = memo(({
         <FlexWrapper>
             <TodoTitle>
 
-                <EditableString autoFocus isDisabledOnBlur={false} changeString={changeTitleTodoList} title={title} weightText/>
+                <EditableString autoFocus isDisabledOnBlur={false} changeString={changeTitleTodoList} title={title}/>
             </TodoTitle>
 
-            <IconButton aria-label="delete" size="large" onClick={deleteTodoList}>
+            <IconButton aria-label="delete" size="large" onClick={() => deleteTodoList(id)}>
                 <Delete fontSize="inherit"/>
             </IconButton>
 
@@ -94,16 +94,16 @@ export const Todolist: FC<PropsType> = memo(({
             {/*isActive={filter === "completed"}*/}
             {/*isActive={filter === 'three'}*/}
             <Button size={'small'} variant={ filter === 'all' ?'contained':'text'} title={'all'} onClick={() => {
-                changeFilter("all");
+                changeFilter("all", id);
             }}>all</Button>
             <Button size={'small'} variant={ filter === 'active' ?'contained':'text'} title={'Active'} onClick={() => {
-                changeFilter("active");
+                changeFilter("active", id);
             }}>Active</Button>
             <Button size={'small'} variant={ filter === 'completed' ?'contained':'text'} title={'Completed'} onClick={() => {
-                changeFilter("completed");
+                changeFilter("completed", id);
             }}>Completed</Button>
             <Button size={'small'} variant={ filter === 'three' ?'contained':'text'} title={'first 3'} onClick={() => {
-                changeFilter("three");
+                changeFilter("three", id);
             }}>first 3</Button>
 
 
