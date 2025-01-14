@@ -7,6 +7,7 @@ import {FilterValuesType, TaskType} from "../../App";
 import {useAppDispatch, useAppSelector} from "../../hooks/Hooks";
 import {selectorGetTaskById} from "../../store/selectors/tasks-selectors";
 import {changeStatusTaskAC, changeTitleTaskAC, removeTaskAC} from "../../store/task-reducer/task-reducer";
+import {Task} from "./task/Task";
 
 
 
@@ -22,7 +23,6 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({id,filter}) => {
     const tasksById = useAppSelector((state)=>selectorGetTaskById(state,id));
-    const dispatch = useAppDispatch();
 
     const tasksForTodoList: TaskType[] = useMemo(()=>{
 
@@ -45,41 +45,14 @@ export const Tasks: FC<PropsType> = memo(({id,filter}) => {
 
     },[filter,tasksById]);
 
-    const removeTask = (id: string, idTodoLists: string) => {
-        dispatch(removeTaskAC(idTodoLists, id));
-    };
-    const changeTaskDone = (id: string, isDone: boolean, idTodoLists: string) => {
-        dispatch(changeStatusTaskAC(idTodoLists, id, isDone));
-    };
-    const changeTaskTitle = (idTodoList: string, idTask: string, newTaskTitle: string) => {
-        dispatch(changeTitleTaskAC(idTodoList, idTask, newTaskTitle));
-    };
-    console.log('tasks')
+
     return <>
         {tasksForTodoList.length > 0 ? <List>
             {
                 tasksForTodoList.map(t => {
-                        const onClickRemoveTaskHandler = () => {
-                            removeTask(t.id, id);
-                        };
-                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            changeTaskDone(t.id, e.currentTarget.checked, id);
-                        };
-                        const changeTaskTitleHandler = (inputValue: string) => {
-
-                            changeTaskTitle(id, t.id, inputValue);
 
 
-                        };
-
-                        return <li key={t.id} style={{opacity: `${t.isDone ? 0.5 : 1}`}}>
-
-                            <EditableString onChange={onChangeHandler} changeString={changeTaskTitleHandler}
-                                            isDone={t.isDone} title={t.title} />
-                            <IconButton aria-label="delete" size="small" onClick={onClickRemoveTaskHandler}>
-                                <Delete fontSize="inherit"/>
-                            </IconButton>
-                        </li>
+                        return <Task key={t.id} id={t.id} isDone={t.isDone} todoId={id} title={t.title} />
 
                     }
                 )
