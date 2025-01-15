@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 
-import {TaskType} from "../../App";
+import {TaskType} from "../../app/App";
 
 import {
     addTaskAC,

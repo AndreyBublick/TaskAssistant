@@ -1,11 +1,11 @@
 import {v1} from "uuid";
-import {TaskType} from "../../App";
+import {TaskType} from "../../app/App";
 import {
     ADD_TODOLIST,
     REMOVE_TODOLIST,
     AddTodoListACType,
-    AddTodoListAndTasksACType,
-    RemoveTodoListACType, IdForFirstTask, IdForSecondTask, IdForThirdTask
+
+    RemoveTodoListACType
 } from "../todolist-reducer/todolists-reducer";
 
 
@@ -28,7 +28,6 @@ type ActionType =
     | ChangeStatusTaskACType
     | ChangeTitleTaskACType
     | AddTodoListACType
-    | AddTodoListAndTasksACType
     | RemoveTodoListACType
     | RemoveAllTasksACType;
 

@@ -1,6 +1,6 @@
 import React, {memo} from 'react';
 import {Paper} from "@mui/material";
-import {Todolist} from "../../Todolist";
+import {Todolist} from "./todolist/Todolist";
 import { useAppSelector} from "../../hooks/Hooks";
 import {selectorGetTodoLists} from "../../store/selectors/todoLists-selectors";
 

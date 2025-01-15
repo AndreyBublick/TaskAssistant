@@ -1,7 +1,7 @@
 import React, {FC, memo, useContext, useMemo} from "react";
 
 import styled from "styled-components";
-import {FilterValuesType, TaskType} from "../../App";
+import {FilterValuesType, TaskType} from "../../app/App";
 import {useAppSelector} from "../../hooks/Hooks";
 import {selectorGetTaskById} from "../../store/selectors/tasks-selectors";
 import {Task} from "./task/Task";
@@ -51,18 +51,6 @@ export const Tasks: FC<PropsType> = memo(({filter}) => {
         {tasksForTodoList.length > 0 ? <List>
             {
                 tasksForTodoList.map(t => {
-                       /* const onClickRemoveTaskHandler = () => {
-                            removeTask(t.id, id);
-                        };
-                        const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            changeTaskDone(t.id, e.currentTarget.checked, id);
-                        };
-                        const changeTaskTitleHandler = (inputValue: string) => {
-
-                            changeTaskTitle(id, t.id, inputValue);
-
-
-                        };*/
 
                         return <Task title={t.title} isDone={t.isDone} key={t.id} id={t.id} />
 

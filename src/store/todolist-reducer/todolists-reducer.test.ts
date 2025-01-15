@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodoListType} from "../../App";
+import {FilterValuesType, TodoListType} from "../../app/App";
 import {
 
     addTodoListAC,
@@ -68,7 +68,7 @@ test('correct todolist should change its filter', () => {
 
 
     expect(todoLists[0].filter).toBe('all');
-    const endState = todolistsReducer(todoLists,changeTodolistFilterAC(IdForFirstTask,newFilterValue));
+    const endState = todolistsReducer(todoLists,changeTodolistFilterAC({idTodoLists:IdForFirstTask,filter:newFilterValue}));
     expect(endState.length).toBe(3);
     expect(endState[1].filter).toBe('completed');
     expect(endState[2].filter).toBe('active');

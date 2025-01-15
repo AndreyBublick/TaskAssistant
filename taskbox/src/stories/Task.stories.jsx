@@ -19,14 +19,7 @@ export const Default = {
     },
 };
 
-export const Default2 = {
-    args:{
-        id:'1',
-        title:'Test Task',
-        isDone:false,
 
-    },
-};
 
 
 

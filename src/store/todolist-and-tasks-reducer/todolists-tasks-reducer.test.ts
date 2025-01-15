@@ -1,4 +1,4 @@
-import {TaskType, TodoListType} from "../../App";
+import {TaskType, TodoListType} from "../../app/App";
 
 
 import {v1} from "uuid";
