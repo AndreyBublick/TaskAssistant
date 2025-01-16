@@ -1,14 +1,13 @@
-import React, {useCallback, useState} from 'react';
-import {AppBar, Box, Button, ButtonGroup, IconButton, Switch, Toolbar, Typography} from "@mui/material";
+import React, {memo, useCallback, useState} from 'react';
+import {AppBar, Box, Button, IconButton, Switch, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import styled from "styled-components";
 import {useDispatch} from "react-redux";
 import {useAppSelector} from "../hooks/Hooks";
-import {getTheme} from "./theme/Theme";
 import {getModeTheme} from "./app-selectors";
 import {changeThemeModeAC} from "./app-reducer";
 
-export const Header = () => {
+export const Header = memo(() => {
 
     const [value,setValue] = useState("1");
     const themeMode = useAppSelector(getModeTheme);
@@ -43,7 +42,7 @@ export const Header = () => {
 
         </Toolbar>
     </AppBarStyled>
-};
+});
 
 const AppBarStyled = styled(AppBar)`
     margin-bottom: 30px;
