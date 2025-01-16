@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, memo, useCallback, useEffect, useState} from 'react';
 import {Input} from "../input/Input";
 import {Button} from "@mui/material";
 import styled from "styled-components";
@@ -6,21 +6,20 @@ import styled from "styled-components";
 
 type PropsType = {
     callBack: (value: string) => void,
-    autoFocus?: boolean,
-    isDisabledOnBlur?: boolean,
-    defaultValue?: string,
-    isShowButton?: boolean,
+
+
+
 
 };
 
-export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocus, isDisabledOnBlur=true,defaultValue}) => {
+export const AddItemForm: FC<PropsType> = memo(({callBack}) => {
 
     const [value, setValue] = useState<string>('');
     const [error, setError] = useState<null | string>(null);
 
-    const diactivateEditMode = () => {
+    const diactivateEditMode = useCallback(() => {
 
-        if (!!value) {
+        if (value.trim()) {
             callBack(value.trim());
 
             setValue('');
@@ -30,48 +29,29 @@ export const AddItemForm: FC<PropsType> = ({callBack,isShowButton=true, autoFocu
             setError('this field is required');
         }
 
-    };
+    },[callBack,value]);
 
 
-    const onChangeHandler = () => {
+    const onChangeHandler = useCallback(() => {
        if(error!==null){
            setError(null);
        }
-    };
-
-    const onBlurHandler = () => {
-
-        if (!isDisabledOnBlur) {
-
-            if (!!value) {
-
-                callBack(value.trim());
-
-                setValue('');
-                setError(null);
-
-            }
-
-            else {
-                setError('this field is required');
-
-            }
-        }
-
-    };
+    },[error]);
 
 
-    useEffect(() => {
+
+  /*  useEffect(() => {
 
         defaultValue && setValue(defaultValue);
-    }, [defaultValue]);
+
+    }, [defaultValue]);*/
 
     return <AddItemFormStyled>
-        <Input  autoFocus={autoFocus} onKeyDown={diactivateEditMode} onBlur={onBlurHandler} onChange={onChangeHandler} error={error} req={true} value={value} setValue={setValue}/>
-        {isShowButton && <Button disabled={!!error} onClick={diactivateEditMode} variant={"contained"} size={"small"} >+</Button>}
+        <Input  onKeyDown={diactivateEditMode} onChange={onChangeHandler} error={error} req value={value} setValue={setValue}/>
+        <Button disabled={!!error} onClick={diactivateEditMode} variant={"contained"} size={"small"} >+</Button>
 
     </AddItemFormStyled>;
-};
+});
 
 const AddItemFormStyled = styled.div`
     display: flex;

@@ -9,19 +9,17 @@ export const TodoLists = memo (() => {
 
     const todoLists = useAppSelector(selectorGetTodoLists);
 
+    const todoListsMaped = todoLists.map(todoList => {
+
+
+            return <Paper key={todoList.id}>
+                <Todolist todoList={todoList}/>
+            </Paper>
+        }
+    );
 
     return <>
-        {todoLists.map(todoList => {
-
-
-                return <Paper key={todoList.id}>
-                    <Todolist id={todoList.id}
-                              filter={todoList.filter}
-                              title={todoList.title}
-                    />
-                </Paper>
-            }
-        )}
+        {todoListsMaped}
     </>
 });
 

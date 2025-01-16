@@ -1,10 +1,24 @@
-import React from 'react';
-import {AppBar, Button, IconButton, Toolbar, Typography} from "@mui/material";
+import React, {useCallback, useState} from 'react';
+import {AppBar, Box, Button, ButtonGroup, IconButton, Switch, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import styled from "styled-components";
+import {useDispatch} from "react-redux";
+import {useAppSelector} from "../hooks/Hooks";
+import {getTheme} from "./theme/Theme";
+import {getModeTheme} from "./app-selectors";
+import {changeThemeModeAC} from "./app-reducer";
 
 export const Header = () => {
-    return    <AppBarStyled position="static">
+
+    const [value,setValue] = useState("1");
+    const themeMode = useAppSelector(getModeTheme);
+    const dispatch = useDispatch();
+
+    const changeThemeMode = useCallback(()=>{
+        dispatch(changeThemeModeAC({themeMode: themeMode==='light'?'dark':'light'}));
+    },[dispatch,themeMode]);
+
+    return <AppBarStyled position="static" color="secondary">
         <Toolbar>
             <IconButton
                 size="large"
@@ -18,7 +32,15 @@ export const Header = () => {
             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                 News
             </Typography>
-            <Button color="inherit">Login</Button>
+
+            <Box sx={{display:'flex',gap:'15px'}}>
+                <Button  onClick={()=>setValue('1')} variant={value==='1'? 'contained':'outlined'} >Login</Button>
+                <Button  onClick={()=>setValue('2')} variant={value==='2'? 'contained':'outlined'}>Two</Button>
+                <Button  onClick={()=>setValue('3')} variant={value==='3'? 'contained':'outlined'}>Three</Button>
+                <Switch onChange={changeThemeMode} />
+            </Box>
+
+
         </Toolbar>
     </AppBarStyled>
 };

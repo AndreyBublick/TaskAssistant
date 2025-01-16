@@ -1,24 +1,13 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC, useEffect} from 'react';
 import './App.css';
-import {Todolist} from "../components/todoLists/todolist/Todolist";
-
-import {AddItemForm} from "../components/addItemForm/AddItemForm";
-import styled from "styled-components";
-import {AppBar, IconButton, Toolbar, Typography, Button, Container, Grid2, Paper} from "@mui/material";
-import {Menu} from "@mui/icons-material";
-
-import {
-    addTodoListAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodoListAC,
-} from "../store/todolist-reducer/todolists-reducer";
-
-import {useAppDispatch, useAppSelector} from "../hooks/Hooks";
-import {selectorGetTodoLists} from "../store/selectors/todoLists-selectors";
-import {TodoLists} from "../components/todoLists/TodoLists";
+import {CssBaseline, ThemeProvider} from "@mui/material";
 import {Header} from "./Header";
 import {Main} from "./Main";
+import {getTheme} from "./theme/Theme";
+import {useSelector} from "react-redux";
+import {getModeTheme} from "./app-selectors";
+import {useAppDispatch, useAppSelector} from "../hooks/Hooks";
+import {changeThemeModeAC} from "./app-reducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed" | 'three';
@@ -37,13 +26,19 @@ export type TodoListType = {
 
 export const App: FC = () => {
 
-    return (
+    const themeMode = useAppSelector(getModeTheme);
+    const theme = getTheme(themeMode);
+
+
+
+    return <ThemeProvider theme={theme}>
         <div className="App">
+            <CssBaseline/>
             <Header/>
             <Main/>
 
         </div>
-    );
+    </ThemeProvider>
 }
 
 

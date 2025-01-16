@@ -18,26 +18,26 @@ export const Main = memo(() => {
     }, [dispatch]);
 
 
-    return  <ContainerStyled fixed>
+    return  <Container fixed>
         <AddItemFormWrapper>
             <AddItemForm callBack={addNewTodoList}/>
         </AddItemFormWrapper>
         <Grid2 container={true} spacing={2}>
             <TodoLists />
         </Grid2>
-    </ContainerStyled>
+    </Container>
 });
 
 
 const AddItemFormWrapper = styled.div`
     & > div {
-        align-self: flex-start;
         margin-bottom: 30px;
+       
     }
 `;
 
 const ContainerStyled = styled(Container)`
-    margin: 0 auto;
+   /* margin: 0 auto;*/
 `;
 
 

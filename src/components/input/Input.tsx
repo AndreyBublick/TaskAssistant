@@ -15,7 +15,7 @@ type PropsType = /*InputHTMLAttributes<HTMLInputElement> &*/ {
     onBlur?:()=>void,
 };
 
-export const Input: FC<PropsType> = ({setValue,onBlur,autoFocus,onChange,onKeyDown,value,req=false,error}) => {
+export const Input: FC<PropsType> = ({setValue,onBlur,autoFocus,onChange,onKeyDown,value,req,error}) => {
 
 
    const  onChangeHandler = (e:ChangeEvent<HTMLInputElement>)=>{

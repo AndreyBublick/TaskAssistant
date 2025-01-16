@@ -13,11 +13,11 @@ type Props = {
 export const FilterButtons:FC<Props> = memo(({filter}) => {
 
     const dispatch = useAppDispatch();
-    const idTodoLists = useContext(TodolistContext);
+    const id = useContext(TodolistContext);
 
     const changeFilter = useCallback( (filter: FilterValuesType, ) => {
-        dispatch(changeTodolistFilterAC({idTodoLists, filter}));
-    },[dispatch,idTodoLists]);
+        dispatch(changeTodolistFilterAC({id, filter}));
+    },[dispatch,id]);
 
     return  <ButtonsWrapper>
 

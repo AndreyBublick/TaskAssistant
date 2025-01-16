@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 
-import {TaskType} from "../../app/App";
+import {TaskType} from "../app/App";
 
 import {
     addTaskAC,
@@ -8,8 +8,8 @@ import {
     changeTitleTaskAC, removeAllTasksAC,
     removeTaskAC,
     tasksReducer
-} from "./task-reducer";
-import { removeTodoListAC} from "../todolist-reducer/todolists-reducer";
+} from "../store/task-reducer/task-reducer";
+import { removeTodoListAC} from "../store/todolist-reducer/todolists-reducer";
 
 let IdForFirstTodoList:string;
 let IdForSecondTodoList:string;
@@ -66,7 +66,7 @@ const titleNewTask = 'new title';
 
     expect(todoTasks[IdForSecondTodoList].length).toBe(6);
 
-    const endState = tasksReducer(todoTasks,addTaskAC(IdForSecondTodoList,titleNewTask));
+    const endState = tasksReducer(todoTasks,addTaskAC({idTodoList:IdForSecondTodoList,title:titleNewTask}));
 
 expect(endState[IdForFirstTodoList].length).toBe(6);
 expect(endState[IdForSecondTodoList].length).toBe(7);
@@ -77,8 +77,8 @@ expect(endState[IdForThirdTodoList].length).toBe(6);
 });
 test('should change task isDone status',()=>{
 
-    expect(todoTasks[IdForSecondTodoList][3].isDone).toBe(false);
-    const endState = tasksReducer(todoTasks,changeStatusTaskAC(IdForFirstTodoList,id,true));
+    expect(todoTasks[IdForSecondTodoList][3].isDone).toBe(false);/*idTodoList: string, id: string, isDone: boolean*/
+    const endState = tasksReducer(todoTasks,changeStatusTaskAC({idTodoList:IdForFirstTodoList,id,isDone:true}));
     expect(endState[IdForSecondTodoList][0].isDone).toBe(true);
 
 
@@ -118,8 +118,8 @@ test('should change task title',()=>{
 
     expect(task.title).toBe("GraphQL");
     expect(task.id).toBe(id);
-
-    const endState = tasksReducer(todoTasks,changeTitleTaskAC(IdForSecondTodoList,id,newTitle));
+                                                                            /*idTodoList: string, id: string, title: string*/
+    const endState = tasksReducer(todoTasks,changeTitleTaskAC({idTodoList:IdForSecondTodoList,id,title:newTitle}));
 
     expect(endState[IdForSecondTodoList][5].title).toBe(newTitle);
     expect(endState[IdForSecondTodoList][5].id).toBe(id);

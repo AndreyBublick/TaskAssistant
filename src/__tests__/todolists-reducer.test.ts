@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {FilterValuesType, TodoListType} from "../../app/App";
+import {FilterValuesType, TodoListType} from "../app/App";
 import {
 
     addTodoListAC,
@@ -7,7 +7,7 @@ import {
     changeTodolistTitleAC,
     removeTodoListAC,
     todolistsReducer,
-} from "./todolists-reducer";
+} from "../store/todolist-reducer/todolists-reducer";
 
 let IdForFirstTask:string;
 let IdForSecondTask:string;
