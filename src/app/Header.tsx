@@ -1,11 +1,12 @@
-import React, {memo, useCallback, useState} from 'react';
+import React, {memo, useCallback, useMemo, useState} from 'react';
 import {AppBar, Box, Button, IconButton, Switch, Toolbar, Typography} from "@mui/material";
 import {Menu} from "@mui/icons-material";
 import styled from "styled-components";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useAppSelector} from "../hooks/Hooks";
 import {getModeTheme} from "./app-selectors";
 import {changeThemeModeAC} from "./app-reducer";
+import {getTheme} from "./theme/Theme";
 
 export const Header = memo(() => {
 
@@ -16,6 +17,10 @@ export const Header = memo(() => {
     const changeThemeMode = useCallback(()=>{
         dispatch(changeThemeModeAC({themeMode: themeMode==='light'?'dark':'light'}));
     },[dispatch,themeMode]);
+
+    const theme = useMemo(()=>{
+       return  getTheme(themeMode);
+    },[themeMode]) ;
 
     return <AppBarStyled position="static" color="secondary">
         <Toolbar>
@@ -33,9 +38,9 @@ export const Header = memo(() => {
             </Typography>
 
             <Box sx={{display:'flex',gap:'15px'}}>
-                <Button  onClick={()=>setValue('1')} variant={value==='1'? 'contained':'outlined'} >Login</Button>
-                <Button  onClick={()=>setValue('2')} variant={value==='2'? 'contained':'outlined'}>Two</Button>
-                <Button  onClick={()=>setValue('3')} variant={value==='3'? 'contained':'outlined'}>Three</Button>
+                <Button sx={{boxShadow: `4px 4px 2px 0px ${theme.palette.primary.dark}`}} onClick={()=>setValue('1')} variant={'contained'} >Login</Button>
+                <Button sx={{boxShadow: `4px 4px 2px 0px ${theme.palette.primary.dark}`}}  onClick={()=>setValue('2')} variant={'contained'}>Two</Button>
+                <Button sx={{boxShadow: `4px 4px 2px 0px ${theme.palette.primary.dark}`}}  onClick={()=>setValue('3')} variant={'contained'}>Three</Button>
                 <Switch onChange={changeThemeMode} />
             </Box>
 
