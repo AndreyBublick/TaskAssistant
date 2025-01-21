@@ -4,18 +4,19 @@ import {Decorator} from "../../.storybook/decorator/Decorator.jsx";
 
 
 export default {
-    title: 'Task/Loer',
+    title: 'Task/Layer',
     component: Task,
     decorators:[Decorator]
 
 };
 
-export const Default = {
+export const TaskDefault = {
     args:{
+        task:{
             id:'1',
             title:'Test Task',
             isDone:false,
-
+        }
     },
 };
 
