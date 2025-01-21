@@ -1,12 +1,12 @@
 import React, {FC, useEffect} from 'react';
-import './App.css';
+import '../App.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
-import {Header} from "./Header";
+import {Header} from "../common/components/header/Header";
 import {Main} from "./Main";
-import {getTheme} from "./theme/Theme";
+import {getTheme} from "../common/theme/Theme";
 import {useSelector} from "react-redux";
 import {getModeTheme} from "./app-selectors";
-import {useAppDispatch, useAppSelector} from "../hooks/Hooks";
+import {useAppDispatch, useAppSelector} from "../common/hooks/Hooks";
 import {changeThemeModeAC} from "./app-reducer";
 
 

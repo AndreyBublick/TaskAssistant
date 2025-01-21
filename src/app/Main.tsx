@@ -1,10 +1,10 @@
 import React, {memo, useCallback} from 'react';
-import {AddItemForm} from "../components/addItemForm/AddItemForm";
+import {AddItemForm} from "../common/components/addItemForm/AddItemForm";
 import {Container, Grid2} from "@mui/material";
-import {TodoLists} from "../components/todoLists/TodoLists";
+import {TodoLists} from "../features/todolists/ui/todoLists/TodoLists";
 import styled from "styled-components";
-import {addTodoListAC} from "../store/todolist-reducer/todolists-reducer";
-import {useAppDispatch} from "../hooks/Hooks";
+import {addTodoListAC} from "../features/todolists/model/todolist-reducer/todolists-reducer";
+import {useAppDispatch} from "../common/hooks/Hooks";
 
 
 

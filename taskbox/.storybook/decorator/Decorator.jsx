@@ -1,9 +1,9 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import {combineReducers, legacy_createStore} from "redux";
-import {todolistsReducer} from "../../../src/store/todolist-reducer/todolists-reducer.ts";
-import {tasksReducer} from "../../../src/store/task-reducer/task-reducer.ts";
-import { store} from "../../../src/store/store.ts"; // Путь к вашему хранилищу
+import {todolistsReducer} from "../../../src/features/todolists/model/todolist-reducer/todolists-reducer.ts";
+import {tasksReducer} from "../../../src/features/todolists/model/task-reducer/task-reducer.ts";
+import { store} from "../../../src/app/store.ts"; // Путь к вашему хранилищу
 
 
 const rootReducer = combineReducers({

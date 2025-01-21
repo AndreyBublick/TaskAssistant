@@ -1,4 +1,4 @@
-import {Task} from "../../../src/components/tasks/task/Task";
+import {Task} from "../../../src/features/todolists/ui/todoLists/todolist/tasks/task/Task";
 import {Decorator} from "../../.storybook/decorator/Decorator.jsx";
 
 

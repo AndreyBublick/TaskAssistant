@@ -1,5 +1,5 @@
 import {TaskType} from "./App";
-import {getTheme, ThemeModeType} from "./theme/Theme";
+import {getTheme, ThemeModeType} from "../common/theme/Theme";
 import {createTheme} from "@mui/material";
 
 
