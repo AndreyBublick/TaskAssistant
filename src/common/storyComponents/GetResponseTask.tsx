@@ -1,33 +1,37 @@
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from 'react';
 import {todolistsApi} from "../../features/todolists/model/api/todolists-api";
-import {Wrapper} from "./Wrapper/Wrapper";
 import {Button, TextField} from "@mui/material";
+import {Wrapper} from "./Wrapper/Wrapper";
 
-export const DeleteResponse = () => {
+export const GetResponseTask = () => {
 
-    const [state, setState] = useState<boolean>(false);
+    const [state, setState] = useState<Array<any> | null>(null);
     const [id, setId] = useState<string>('');
 
 
-
     const addNewTodolist = useCallback(()=>{
-        setState(false);
+        setState(null);
         setId('');
 
-        todolistsApi.deleteTodolist(id)
-            .then(()=> setState(true));
+        todolistsApi.getTasks(id)
+            .then((response)=>setState(response.data.items));
 
     },[id]);
 
-    return  <Wrapper>
-        {state ? 'Success' : 'Waiting...'}
+
+
+    return<Wrapper>
+        {state ? JSON.stringify(state) : 'Waiting...'}
         <div>
 
             <TextField id="standard-basic" onChange={(e)=>{setId(e.currentTarget.value)}} value={id} label="Id Todolist" variant="standard" />
+
+
 
             <Button disabled={!id} variant="contained" onClick={addNewTodolist}>Delete</Button>
         </div>
 
     </Wrapper>
+
 };
 

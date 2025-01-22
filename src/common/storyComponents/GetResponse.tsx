@@ -4,14 +4,15 @@ import {todolistsApi} from "../../features/todolists/model/api/todolists-api";
 
 export const GetResponse = () => {
 
-    const [state, setState] = useState<Array<any>>([]);
+    const [state, setState] = useState<any>([]);
 
     useEffect(()=>{
-        todolistsApi.get().then(response=>setState(response.data));
+        todolistsApi.getTodolists()
+            .then(response=>setState(response.data));
     },[]);
 
     return<div>
-        {state.length >= 0 ? 'Success' : 'Loading'}
+        {JSON.stringify(state)}
         </div>
 
 };
