@@ -58,10 +58,10 @@ export const todolistsApi = {
 
     },
 }
-
+type FieldError = {  error: string , field: string};
 type ResponseType<D = {}> = {
     data: D,
-    fieldsErrors: Array<string>,
+    fieldsErrors: Array<FieldError>,
     messages: Array<string>,
     resultCode: number,
 };
