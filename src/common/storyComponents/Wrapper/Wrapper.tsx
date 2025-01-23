@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
     font-size: 20px;
     gap: 10px;
 
-    div {
+   & > div {
     display: flex;
         align-items: flex-end;
         gap: 15px;

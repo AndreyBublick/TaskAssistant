@@ -52,12 +52,41 @@ export const todolistsApi = {
         return request.post<ResponseType<{ item: TaskType }>>(`${todolistId}/tasks`, {title});
     },
 
-    putTask(payload: { todolistId: string, id: string, model: any }) {
+    changeTaskTitle(payload:{todolistId:string,taskId:string,model:Model}){
 
-        return request.put('',{});
 
+        const {todolistId,taskId,model} = payload;
+       return request.put<ChangeTaskTitleResponse>(`${todolistId}/tasks/${taskId}`,model);
     },
+
+
 }
+
+
+
+///////////////////&&&&&&&&&/////////////////////////
+type ChangeTaskTitleResponse = {
+    resultCode: 1,
+    messages: Array<string>,
+    data: {items: Array<TaskType>},
+};
+///////////////////&&&&&&&&///////////////////////
+
+
+
+
+
+ export type Model = {
+    title: string,
+    description: string|null,
+    status: StatusTask,
+    priority: number,
+    startDate: string|null,
+    deadline: string|null,
+};
+
+
+
 type FieldError = {  error: string , field: string};
 type ResponseType<D = {}> = {
     data: D,
@@ -74,22 +103,21 @@ type GetTasksType = {
 };
 
 export type TaskType = {
-    description: string,
-    title: string,
-    completed: boolean,
-    status: number,
-    priority: number,
-    startDate: string,
-    deadline: string,
     id: string,
     todoListId: string,
     order: number,
     addedDate: string,
-};
+} & Model;
 export type TodolistType = {
     addedDate: string,
     id: string,
     order: number,
     title: string,
 };
+
+enum StatusTask {
+    New,
+    IsProcessing,
+    Completed,
+}
 
