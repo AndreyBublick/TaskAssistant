@@ -1,6 +1,4 @@
-import {TaskType} from "./App";
-import {getTheme, ThemeModeType} from "../common/theme/Theme";
-import {createTheme} from "@mui/material";
+import {ThemeModeType} from "../common/theme/Theme";
 
 
 const CHANGE_THEME_MODE = 'CHANGE_THEME_MODE';
@@ -21,10 +19,9 @@ export const appReducer = (state: AppStateType = initialState, action: ActionTyp
 
         case CHANGE_THEME_MODE:{
         const {themeMode} = action.payload;
-          /*  const stateCopy = {...state};*/
-            /*stateCopy.theme = {...state.theme,palette:{...state.theme.palette,mode:'dark'}};*/
+
             return {...state,themeMode};
-            ///todo
+
         }
 
         default: {
@@ -47,6 +44,3 @@ type ChangeThemeModeACType = ReturnType<typeof changeThemeModeAC>;
 type ActionType = ChangeThemeModeACType;
 
 
-export type TaskItemType = {
-    [key: string]: TaskType[];
-};

@@ -6,8 +6,7 @@ import {
     changeTitleTaskAC,
     removeTaskAC
 } from "../../features/todolists/model/task-reducer/task-reducer";
-
-
+import {StatusTask} from "../../features/todolists/model/api/todolists-api";
 
 
 export const useTask = (id:string) => {
@@ -19,7 +18,7 @@ export const useTask = (id:string) => {
         dispatch(removeTaskAC({idTodoList, id}));
     };
     const changeTaskDone = (e:ChangeEvent<HTMLInputElement>) => {
-        dispatch(changeStatusTaskAC({idTodoList, id, isDone:e.currentTarget.checked}));
+        dispatch(changeStatusTaskAC({idTodoList, id, status:e.currentTarget.checked ? StatusTask.Completed : StatusTask.New}));
     };
     const changeTaskTitle = (title: string) => {
         dispatch(changeTitleTaskAC({idTodoList, id, title}));

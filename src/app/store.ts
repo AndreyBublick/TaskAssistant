@@ -2,7 +2,6 @@ import {combineReducers, legacy_createStore as createStore, Store} from "redux";
 import {tasksReducer} from "../features/todolists/model/task-reducer/task-reducer";
 import {todolistsReducer} from "../features/todolists/model/todolist-reducer/todolists-reducer";
 import {appReducer} from "./app-reducer";
-import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 
 const rootReducer = combineReducers({

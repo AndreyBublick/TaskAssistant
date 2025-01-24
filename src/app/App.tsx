@@ -1,27 +1,11 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import '../App.css';
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {Header} from "../common/components/header/Header";
 import {Main} from "./Main";
 import {getTheme} from "../common/theme/Theme";
-import {useSelector} from "react-redux";
 import {getModeTheme} from "./app-selectors";
-import {useAppDispatch, useAppSelector} from "../common/hooks/Hooks";
-import {changeThemeModeAC} from "./app-reducer";
-
-
-export type FilterValuesType = "all" | "active" | "completed" | 'three';
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type TodoListType = {
-    id: string,
-    filter: FilterValuesType,
-    title: string,
-};
+import {useAppSelector} from "../common/hooks/Hooks";
 
 
 export const App: FC = () => {

@@ -65,13 +65,13 @@ export const todolistsApi = {
 
 
 ///////////////////&&&&&&&&&/////////////////////////
-type ChangeTaskTitleResponse = {
-    resultCode: 1,
-    messages: Array<string>,
-    data: {items: Array<TaskType>},
-};
+
 ///////////////////&&&&&&&&///////////////////////
 
+enum ResultCodeStatus {
+    success = 0,
+    fail = 1,
+}
 
 
 
@@ -80,7 +80,7 @@ type ChangeTaskTitleResponse = {
     title: string,
     description: string|null,
     status: StatusTask,
-    priority: number,
+    priority: TaskPriority,
     startDate: string|null,
     deadline: string|null,
 };
@@ -115,9 +115,21 @@ export type TodolistType = {
     title: string,
 };
 
-enum StatusTask {
+export enum StatusTask {
     New,
     IsProcessing,
     Completed,
+    Draft,
 }
-
+export enum TaskPriority {
+    Low,
+    Middle,
+    High,
+    Urgently,
+    Later,
+}
+type ChangeTaskTitleResponse = {
+    resultCode: ResultCodeStatus,
+    messages: Array<string>,
+    data: {items: Array<TaskType>},
+};

@@ -1,5 +1,4 @@
 import React, {FC, memo} from 'react';
-import {TodoListType} from '../../../../../app/App';
 
 
 import styled from "styled-components";
@@ -11,11 +10,12 @@ import {TodolistContext} from "../../../../../common/contexts/TodolistContext";
 import {FilterButtons} from "./filterButtons/FilterButtons";
 import {TodolistTitle} from "./todolistTitle/TodolistTitle";
 import {useTodolist} from "../../../../../common/hooks/useTodolist";
+import {TodoListDomainType} from "../../../model/todolist-reducer/todolists-reducer";
 
 
 type PropsType = {
 
-    todoList:TodoListType
+    todoList:TodoListDomainType
 
 }
 

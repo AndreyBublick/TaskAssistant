@@ -1,5 +1,6 @@
 import {RootStateType} from "../../../../app/store";
-import {TodoListType} from "../../../../app/App";
+
+import {TodoListDomainType} from "../todolist-reducer/todolists-reducer";
 
 
-export const selectorGetTodoLists = (state:RootStateType):TodoListType[] => state.todoLists;
+export const selectorGetTodoLists = (state:RootStateType):TodoListDomainType[] => state.todoLists;

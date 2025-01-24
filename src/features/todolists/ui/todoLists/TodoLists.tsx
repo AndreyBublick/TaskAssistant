@@ -9,7 +9,7 @@ export const TodoLists = memo (() => {
 
     const todoLists = useAppSelector(selectorGetTodoLists);
 
-    const todoListsMaped = todoLists.map(todoList => {
+    const todoListsMapped = todoLists.map(todoList => {
 
 
             return <Paper key={todoList.id}>
@@ -19,7 +19,7 @@ export const TodoLists = memo (() => {
     );
 
     return <>
-        {todoListsMaped}
+        {todoListsMapped}
     </>
 });
 

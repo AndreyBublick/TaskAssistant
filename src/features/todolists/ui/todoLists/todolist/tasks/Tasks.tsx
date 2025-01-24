@@ -1,13 +1,13 @@
 import React, {FC, memo, useContext, useMemo} from "react";
 
 import styled from "styled-components";
-import {FilterValuesType, TaskType} from "../../../../../../app/App";
 import {useAppSelector} from "../../../../../../common/hooks/Hooks";
 import {selectorGetTaskById} from "../../../../model/selectors/tasks-selectors";
 import {Task} from "./task/Task";
 import {TodolistContext} from "../../../../../../common/contexts/TodolistContext";
-
-
+import {FilterValuesType} from "../../../../model/todolist-reducer/todolists-reducer";
+import {TaskDomainType} from "../../../../model/task-reducer/task-reducer";
+import {StatusTask} from "../../../../model/api/todolists-api";
 
 
 type PropsType = {
@@ -23,17 +23,17 @@ export const Tasks: FC<PropsType> = memo(({filter}) => {
     const tasks = useAppSelector((state)=>selectorGetTaskById(state,id));
 
 
-    const tasksForTodoList: TaskType[] = useMemo(()=>{
+    const tasksForTodoList: TaskDomainType[] = useMemo(()=>{
 
         switch (filter) {
             case "active": {
-                return   tasks.filter(t => !t.isDone);
+                return   tasks.filter(t => t.status === StatusTask.New);
             }
             case "completed": {
-                return  tasks.filter(t => t.isDone);
+                return  tasks.filter(t => t.status === StatusTask.Completed);
             }
             case "three": {
-                return  tasks.filter((t, index) => index < 3);
+                return  tasks.filter((_, index) => index < 3);
             }
             default: {
 

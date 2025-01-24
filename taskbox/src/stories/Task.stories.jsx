@@ -15,7 +15,7 @@ export const TaskDefault = {
         task:{
             id:'1',
             title:'Test Task',
-            isDone:false,
+            status:false,
         }
     },
 };

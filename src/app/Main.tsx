@@ -36,8 +36,5 @@ const AddItemFormWrapper = styled.div`
     }
 `;
 
-const ContainerStyled = styled(Container)`
-   /* margin: 0 auto;*/
-`;
 
 

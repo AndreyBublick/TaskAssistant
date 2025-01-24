@@ -1,12 +1,11 @@
 import {v1} from "uuid";
-import {TaskType} from "../../../../app/App";
 import {
     ADD_TODOLIST,
-    REMOVE_TODOLIST,
-
     AddTodoListACType,
+    REMOVE_TODOLIST,
     RemoveTodoListACType
 } from "../todolist-reducer/todolists-reducer";
+import {StatusTask, TaskPriority, TaskType} from "../api/todolists-api";
 
 
 const REMOVE_TASK = 'REMOVE_TASK';
@@ -15,11 +14,7 @@ const ADD_TASKS_DELETE = 'ADD_TASKS_DELETE';
 const CHANGE_STATUS_TASK = 'CHANGE_STATUS_TASK';
 const CHANGE_TITLE_TASK = 'CHANGE_TITLE_TASK';
 
-const initialState = {
-
-
-
-};
+const initialState:TaskItemType = {};
 
 
 type ActionType =
@@ -31,10 +26,11 @@ type ActionType =
     | RemoveTodoListACType
     | RemoveAllTasksACType;
 
-export type TaskItemType = {
-    [key: string]: TaskType[];
-};
+export type TaskDomainType = TaskType;
 
+export type TaskItemType = {
+    [key: string]: TaskDomainType[];
+};
 
 
 export const tasksReducer = (state: TaskItemType = initialState, action: ActionType): TaskItemType => {
@@ -54,8 +50,18 @@ export const tasksReducer = (state: TaskItemType = initialState, action: ActionT
                 [action.payload.idTodoList]: [{
                     id: v1(),
                     title: action.payload.title,
-                    isDone: false
-                }, ...state[action.payload.idTodoList]]
+                    status: StatusTask.New,/*StatusTask*/
+                    todoListId: action.payload.idTodoList,
+                    order: 0,
+                    addedDate: '',
+                    description: null,
+                    priority: TaskPriority.Low,
+                    startDate: '',
+                   deadline:'',
+
+
+                } as TaskDomainType,
+                    ...state[action.payload.idTodoList]]
             }
 
 
@@ -65,7 +71,7 @@ export const tasksReducer = (state: TaskItemType = initialState, action: ActionT
                 ...state,
                 [action.payload.idTodoList]: state[action.payload.idTodoList].map(tL => tL.id === action.payload.id ? {
                     ...tL,
-                    isDone: action.payload.isDone
+                    status: action.payload.status,
                 } : tL)
             };
         }
@@ -90,9 +96,8 @@ export const tasksReducer = (state: TaskItemType = initialState, action: ActionT
         }
         case ADD_TASKS_DELETE:{
 
-
-
             return {...state,[action.payload.idTodoList]:[]};
+
         }
 
         default: {
@@ -112,7 +117,7 @@ export const addTaskAC = (payload:{idTodoList: string, title: string}) => ({
     payload: payload,
 } as const);
 
-export const changeStatusTaskAC = (payload:{idTodoList: string, id: string, isDone: boolean}) => ({
+export const changeStatusTaskAC = (payload:{idTodoList: string, id: string, status: StatusTask}) => ({
     type: CHANGE_STATUS_TASK,
     payload: payload,
 } as const);

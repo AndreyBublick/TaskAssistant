@@ -1,7 +1,6 @@
 import {RootStateType} from "../../../../app/store";
 
-import {TaskItemType} from "../task-reducer/task-reducer";
-import {TaskType} from "../../../../app/App";
+import {TaskItemType, TaskDomainType} from "../task-reducer/task-reducer";
 
 export const selectorGetTasks = (state:RootStateType):TaskItemType => state.tasks;
-export const selectorGetTaskById = (state:RootStateType,id:string):TaskType[] => state.tasks[id];
+export const selectorGetTaskById = (state:RootStateType,id:string):TaskDomainType[] => state.tasks[id];
