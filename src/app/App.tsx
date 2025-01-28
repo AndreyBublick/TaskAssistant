@@ -11,6 +11,7 @@ import {useAppSelector} from "../common/hooks/Hooks";
 export const App: FC = () => {
 
     const themeMode = useAppSelector(getModeTheme);
+
     const theme = getTheme(themeMode);
 
 

@@ -4,15 +4,14 @@ import {todolistsApi} from "../../features/todolists/model/api/todolists-api";
 export const PutResponseTask = () => {
 
     const [state, setState] = useState<any>('');
-   /* const [idTL, setIdTL] = useState<string>('');
-    const [idTask, setIdTask] = useState<string>('');*/
+
     useEffect(()=>{
 
-        const todolistId ='89f81e42-ce0a-4cdd-a3d6-e2a9ed25acea';
+        const todoListId ='89f81e42-ce0a-4cdd-a3d6-e2a9ed25acea';
 
         const id = '';
 
-        todolistsApi.deleteTask({todolistId,id}).then(()=> {
+        todolistsApi.deleteTask({todoListId,id}).then(()=> {
             setState('success');
         });
     },[]);

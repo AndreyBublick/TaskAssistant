@@ -17,7 +17,7 @@ export const DeleteResponseTask = () => {
         setIdTL('');
         setIdTask('');
 
-        todolistsApi.deleteTask({todolistId:idTL,id:idTask}).then(()=> setState(true));
+        todolistsApi.deleteTask({todoListId:idTL,id:idTask}).then(()=> setState(true));
 
     },[idTL,idTask]);
 

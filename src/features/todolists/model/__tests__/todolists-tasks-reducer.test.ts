@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {addTodoListAC, TodoListDomainType, todolistsReducer} from "../todolist-reducer/todolists-reducer";
-import {TaskDomainType, tasksReducer} from "../task-reducer/task-reducer";
+import {TaskDomainType, tasksReducer} from "../tasks-reducer/tasks-reducer";
 import {StatusTask, TaskPriority} from "../api/todolists-api";
 
 
@@ -45,19 +45,22 @@ beforeEach(()=>{
 
 
 
-})
+});
 
 test('ids should be equals', () => {
 
-    const action = addTodoListAC('new todo');
+
+
+
+    const action = addTodoListAC({id,title:'new title',addedDate:'',order:0});
 
     const endStateTodoLists = todolistsReducer(startStateTodoLists,action);
 
     const endStateTasks = tasksReducer(startStateTasks,action);
 
-expect(endStateTodoLists[0].id).toBe(action.payload.id);
+expect(endStateTodoLists[0].id).toBe(action.payload.todoList.id);
 
-expect(Object.keys(endStateTasks)[0]).toBe(action.payload.id);
+expect(Object.keys(endStateTasks)[0]).toBe(action.payload.todoList.id);
 
 expect(endStateTodoLists[0].id===Object.keys(endStateTasks)[0]).toBeTruthy();
 
@@ -68,7 +71,7 @@ expect(endStateTodoLists[0].id===Object.keys(endStateTasks)[0]).toBeTruthy();
 test('new array should be added when new todolist is added', () => {
 
 
-    const endState = tasksReducer(startStateTasks, addTodoListAC('new todolist'));
+    const endState = tasksReducer(startStateTasks, addTodoListAC({id,title:'new title',addedDate:'',order:0}));
 
     const keys = Object.keys(endState);
     const newKey = keys.find(k => k !== 'todolistId1' && k !== 'todolistId2')

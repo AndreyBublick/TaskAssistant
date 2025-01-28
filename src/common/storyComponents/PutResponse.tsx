@@ -13,18 +13,18 @@ export const PutResponse = () => {
 
     const changeTodoListTitle = (id: string, title: string,) => {
 
-        todolistsApi.putTodolist({
+        todolistsApi.changeTodolistTitle({
             id,
             title,
-        }).then(response => setState(prev => prev ? prev.map(td => td.id === id ? {...td, title} : td) : []));
+        }).then(() => setState(prev => prev ? prev.map(td => td.id === id ? {...td, title} : td) : []));
 
 
     };
 
 
-    const changeTaskTitle = (todolistId: string, title: string, taskId: string) => {
+    const changeTaskTitle = (todoListId: string, title: string, taskId: string) => {
 
-        const task = tasks[todolistId].find(tsk => tsk.id === taskId) as TaskType;
+        const task = tasks[todoListId].find(tsk => tsk.id === taskId) as TaskType;
 
 
 
@@ -39,10 +39,10 @@ export const PutResponse = () => {
 
 
         todolistsApi.changeTaskTitle({
-            todolistId,
+            todoListId,
             taskId,
             model
-        }).then(response => setTasks(prev=>({...prev,[todolistId]:prev[todolistId].map(tsk=>tsk.id===taskId ? {...tsk,title:title} : tsk)})));
+        }).then(() => setTasks(prev=>({...prev,[todoListId]:prev[todoListId].map(tsk=>tsk.id===taskId ? {...tsk,title:title} : tsk)})));
 
 
     };

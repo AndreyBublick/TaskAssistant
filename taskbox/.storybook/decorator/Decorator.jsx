@@ -2,7 +2,7 @@ import React from 'react';
 import {Provider} from 'react-redux';
 import {combineReducers, legacy_createStore} from "redux";
 import {todolistsReducer} from "../../../src/features/todolists/model/todolist-reducer/todolists-reducer.ts";
-import {tasksReducer} from "../../../src/features/todolists/model/task-reducer/task-reducer.ts";
+import {tasksReducer} from "../../../src/features/todolists/model/tasks-reducer/tasks-reducer.ts";
 
 
 

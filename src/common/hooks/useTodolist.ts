@@ -1,29 +1,29 @@
 import {useAppDispatch} from "./Hooks";
 import {useCallback} from "react";
 import {
-    changeTodolistTitleAC,
-    removeTodoListAC
+    changeTodolistTitleTC,
+    removeTodolistTC
 } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
-import {addTaskAC, removeAllTasksAC} from "../../features/todolists/model/task-reducer/task-reducer";
+import {createTaskTC, removeAllTasksAC} from "../../features/todolists/model/tasks-reducer/tasks-reducer";
 
 export const useTodolist = (id:string) => {
 
     const dispatch = useAppDispatch();
 
 
-    const deleteTodoList = useCallback(() => dispatch(removeTodoListAC(id)),[dispatch,id]);
+    const deleteTodoList = useCallback(() => dispatch(removeTodolistTC(id)),[dispatch,id]);
 
-    const changeTitleTodoList = useCallback( ( title: string) => {
-        dispatch(changeTodolistTitleAC({id, title}));
+    const changeTitleTodoList = useCallback((title: string) => {
+        dispatch(changeTodolistTitleTC({id, title}));
     },[dispatch,id]);
 
     const addNewTask = useCallback((title: string) => {
 
-        dispatch(addTaskAC({idTodoList:id, title}));
+        dispatch(createTaskTC({todoListId:id, title}));
     }, [dispatch,id]);
 
     const removeAllTasks = useCallback (() => {
-        dispatch(removeAllTasksAC({idTodoList:id}));
+        dispatch(removeAllTasksAC({todoListId:id}));
     },[dispatch,id]);
 
 

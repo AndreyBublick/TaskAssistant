@@ -19,7 +19,7 @@ const addNewTodolist = useCallback(()=>{
 
     setIdTL('');
     setTitle('');
-    todolistsApi.postTask({todolistId:idTL,title:'3232'}).then(()=>setState(true));
+    todolistsApi.createTask({todoListId:idTL,title:'3232'}).then(()=>setState(true));
 },[idTL]);
 
 

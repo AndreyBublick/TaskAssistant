@@ -25,7 +25,7 @@ export const todolistsApi = {
 
     },
 
-    putTodolist({id, title}: { id: string, title: string }) {
+    changeTodolistTitle({id, title}: { id: string, title: string }) {
 
         return request.put<ResponseType>(`${id}`, {title});
 
@@ -40,25 +40,30 @@ export const todolistsApi = {
         return request.get<GetTasksType>(`${todolistId}/tasks`);
     },
 
-    deleteTask(payload: { todolistId: string, id: string }) {
-        const {todolistId, id} = payload;
-        return request.delete<ResponseType>(`${todolistId}/tasks/${id}`);
+    deleteTask(payload: { todoListId: string, id: string }) {
+        const {todoListId, id} = payload;
+        return request.delete<ResponseType>(`${todoListId}/tasks/${id}`);
     },
 
-    postTask(payload: { todolistId: string, title: string }) {
+    createTask(payload: { todoListId: string, title: string }) {
 
-        const {todolistId, title} = payload;
+        const {todoListId, title} = payload;
 
-        return request.post<ResponseType<{ item: TaskType }>>(`${todolistId}/tasks`, {title});
+        return request.post<ResponseType<{ item: TaskType }>>(`${todoListId}/tasks`, {title});
     },
 
-    changeTaskTitle(payload:{todolistId:string,taskId:string,model:Model}){
+    changeTaskTitle(payload:{todoListId:string,taskId:string,model:Model}){
 
 
-        const {todolistId,taskId,model} = payload;
-       return request.put<ChangeTaskTitleResponse>(`${todolistId}/tasks/${taskId}`,model);
+        const {todoListId,taskId,model} = payload;
+       return request.put<ChangeTaskTitleResponse>(`${todoListId}/tasks/${taskId}`,model);
     },
 
+    changeTaskStatus({todoListId,taskId,model}:{todoListId:string,taskId:string,model:Model}){
+
+        return request.put<ChangeTaskTitleResponse>(`${todoListId}/tasks/${taskId}`,model);
+
+    },
 
 }
 
