@@ -4,7 +4,7 @@ import {Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {useTask} from "../../../../../../../common/hooks/useTask";
 import {TaskDomainType} from "../../../../../model/tasks-reducer/tasks-reducer";
-import {StatusTask} from "../../../../../model/api/todolists-api";
+import {StatusTask} from "../../../../../../../common/enums/enums";
 
 type Props = {
     task: TaskDomainType

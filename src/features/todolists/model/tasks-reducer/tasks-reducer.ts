@@ -6,8 +6,9 @@ import {
     REMOVE_TODOLIST,
     SET_TODOLISTS,
 } from "../todolist-reducer/todolists-reducer";
-import {Model, StatusTask, TaskPriority, TaskType, todolistsApi} from "../api/todolists-api";
+import {Model, TaskType, todolistsApi} from "../api/todolists-api";
 import {AppDispatch, RootStateType} from "../../../../app/store";
+import {StatusTask, TaskPriority} from "../../../../common/enums/enums";
 
 
 const REMOVE_TASK = 'REMOVE_TASK';

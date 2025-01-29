@@ -1,67 +1,59 @@
-import axios from "axios";
+import {instance} from "../../../../common/instance/instance";
+import {ResultCodeStatus, StatusTask, TaskPriority} from "../../../../common/enums/enums";
 
 
-export const params = {
-    withCredentials: true,
-    headers: {
-        'API-KEY': '0e5967bc-e11b-4c40-96f7-71fb2dbec90c',
-    },
-};
 
-const request = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/todo-lists/',
-    ...params,
-});
+
 
 
 export const todolistsApi = {
 
     getTodolists() {
-        return request.get<TodolistType[]>('')
+        return instance.get<TodolistType[]>('todo-lists')
     },
 
     postTodolist(title: string) {
-        return request.post<ResponseType<{ item: TodolistType }>>('', {title});
+        return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', {title});
 
     },
 
     changeTodolistTitle({id, title}: { id: string, title: string }) {
 
-        return request.put<ResponseType>(`${id}`, {title});
+        return instance.put<ResponseType>(`todo-lists/${id}`, {title});
 
     },
 
     deleteTodolist(id: string) {
-        return request.delete<ResponseType>(`${id}`);
+        return instance.delete<ResponseType>(`todo-lists/${id}`);
     },
 
     ///tasks
     getTasks(todolistId: string) {
-        return request.get<GetTasksType>(`${todolistId}/tasks`);
+        return instance.get<GetTasksType>(`todo-lists/${todolistId}/tasks`);
     },
 
     deleteTask(payload: { todoListId: string, id: string }) {
         const {todoListId, id} = payload;
-        return request.delete<ResponseType>(`${todoListId}/tasks/${id}`);
+        return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${id}`);
     },
 
     createTask(payload: { todoListId: string, title: string }) {
 
         const {todoListId, title} = payload;
 
-        return request.post<ResponseType<{ item: TaskType }>>(`${todoListId}/tasks`, {title});
+        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks`, {title});
     },
 
     changeTaskTitle(payload:{todoListId:string,taskId:string,model:Model}){
 
 
         const {todoListId,taskId,model} = payload;
-       return request.put<ChangeTaskTitleResponse>(`${todoListId}/tasks/${taskId}`,model);
+       return instance.put<ChangeTaskTitleResponse>(`todo-lists/${todoListId}/tasks/${taskId}`,model);
     },
 
     changeTaskStatus({todoListId,taskId,model}:{todoListId:string,taskId:string,model:Model}){
 
-        return request.put<ChangeTaskTitleResponse>(`${todoListId}/tasks/${taskId}`,model);
+        return instance.put<ChangeTaskTitleResponse>(`todo-lists/${todoListId}/tasks/${taskId}`,model);
 
     },
 
@@ -70,10 +62,7 @@ export const todolistsApi = {
 
 ////TYPES
 
-enum ResultCodeStatus {
-    success = 0,
-    fail = 1,
-}
+
 
 export type Model = {
     title: string,
@@ -113,20 +102,9 @@ export type TodolistType = {
     title: string,
 };
 
-export enum StatusTask {
-    New,
-    IsProcessing,
-    Completed,
-    Draft,
-}
 
-export enum TaskPriority {
-    Low,
-    Middle,
-    High,
-    Urgently,
-    Later,
-}
+
+
 
 type ChangeTaskTitleResponse = {
     resultCode: ResultCodeStatus,

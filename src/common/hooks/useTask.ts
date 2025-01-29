@@ -4,7 +4,7 @@ import {TodolistContext} from "../contexts/TodolistContext";
 import {
     removeTaskTC, updateTaskTC
 } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
-import {StatusTask} from "../../features/todolists/model/api/todolists-api";
+import {StatusTask} from "../enums/enums";
 
 
 export const useTask = (id:string) => {

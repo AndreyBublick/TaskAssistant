@@ -7,7 +7,8 @@ import {Task} from "./task/Task";
 import {TodolistContext} from "../../../../../../common/contexts/TodolistContext";
 import {FilterValuesType} from "../../../../model/todolist-reducer/todolists-reducer";
 import {getTasksTC, TaskDomainType} from "../../../../model/tasks-reducer/tasks-reducer";
-import {StatusTask} from "../../../../model/api/todolists-api";
+import {} from "../../../../model/api/todolists-api";
+import {StatusTask} from "../../../../../../common/enums/enums";
 
 
 type PropsType = {
