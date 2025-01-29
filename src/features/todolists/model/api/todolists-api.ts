@@ -68,20 +68,14 @@ export const todolistsApi = {
 }
 
 
-
-///////////////////&&&&&&&&&/////////////////////////
-
-///////////////////&&&&&&&&///////////////////////
+////TYPES
 
 enum ResultCodeStatus {
     success = 0,
     fail = 1,
 }
 
-
-
-
- export type Model = {
+export type Model = {
     title: string,
     description: string|null,
     status: StatusTask,
@@ -90,16 +84,14 @@ enum ResultCodeStatus {
     deadline: string|null,
 };
 
-
-
 type FieldError = {  error: string , field: string};
+
 type ResponseType<D = {}> = {
     data: D,
     fieldsErrors: Array<FieldError>,
     messages: Array<string>,
     resultCode: number,
 };
-
 
 type GetTasksType = {
     items: Array<TaskType>,
@@ -113,6 +105,7 @@ export type TaskType = {
     order: number,
     addedDate: string,
 } & Model;
+
 export type TodolistType = {
     addedDate: string,
     id: string,
@@ -126,6 +119,7 @@ export enum StatusTask {
     Completed,
     Draft,
 }
+
 export enum TaskPriority {
     Low,
     Middle,
@@ -133,6 +127,7 @@ export enum TaskPriority {
     Urgently,
     Later,
 }
+
 type ChangeTaskTitleResponse = {
     resultCode: ResultCodeStatus,
     messages: Array<string>,
