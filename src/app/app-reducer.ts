@@ -1,46 +1,33 @@
-import {ThemeModeType} from "../common/theme/Theme";
+import { ThemeModeType } from "../common/theme/Theme";
 
-
-const CHANGE_THEME_MODE = 'CHANGE_THEME_MODE';
+const CHANGE_THEME_MODE = "CHANGE_THEME_MODE";
 
 const initialState = {
-
-themeMode:'light' as ThemeModeType,
-
+  themeMode: "light" as ThemeModeType,
 };
-
-
-
-
 
 export const appReducer = (state: AppStateType = initialState, action: ActionType): AppStateType => {
-    switch (action.type) {
+  switch (action.type) {
+    case CHANGE_THEME_MODE: {
+      const { themeMode } = action.payload;
 
-
-        case CHANGE_THEME_MODE:{
-        const {themeMode} = action.payload;
-
-            return {...state,themeMode};
-
-        }
-
-        default: {
-            return state;
-        }
+      return { ...state, themeMode };
     }
+
+    default: {
+      return state;
+    }
+  }
 };
 
-
-export const changeThemeModeAC = (payload:{themeMode:ThemeModeType}) => ({
+export const changeThemeModeAC = (payload: { themeMode: ThemeModeType }) =>
+  ({
     type: CHANGE_THEME_MODE,
-    payload
-} as const);
+    payload,
+  }) as const;
 
-
- export type AppStateType = typeof initialState;
+export type AppStateType = typeof initialState;
 
 type ChangeThemeModeACType = ReturnType<typeof changeThemeModeAC>;
 
 type ActionType = ChangeThemeModeACType;
-
-

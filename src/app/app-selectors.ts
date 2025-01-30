@@ -1,4 +1,3 @@
-import {RootStateType} from "./store";
+import { RootStateType } from "./store";
 
-
-export const getModeTheme = (state:RootStateType)=> state.app.themeMode;
+export const getModeTheme = (state: RootStateType) => state.app.themeMode;

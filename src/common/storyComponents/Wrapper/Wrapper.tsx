@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    font-size: 20px;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  gap: 10px;
 
-   & > div {
+  & > div {
     display: flex;
-        align-items: flex-end;
-        gap: 15px;
-    }
+    align-items: flex-end;
+    gap: 15px;
+  }
 `;

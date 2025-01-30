@@ -1,4 +1,3 @@
-import {createContext} from "react";
+import { createContext } from "react";
 
-
-export const TodolistContext = createContext('1');
+export const TodolistContext = createContext("1");
