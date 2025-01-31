@@ -1,4 +1,4 @@
-import React, { FC, memo, useCallback, useEffect, useState } from "react";
+import React, { FC, memo } from "react";
 import { Input } from "../input/Input";
 import { Button } from "@mui/material";
 import styled from "styled-components";

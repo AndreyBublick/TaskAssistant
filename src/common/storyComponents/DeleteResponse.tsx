@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
+
 import { Wrapper } from "./Wrapper/Wrapper";
 import { Button, TextField } from "@mui/material";
+import { todolistsApi } from "../../features/todolists/api/todolistsApi";
 
 export const DeleteResponse = () => {
   const [state, setState] = useState<boolean>(false);

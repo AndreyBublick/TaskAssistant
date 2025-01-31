@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
+
 import { Wrapper } from "./Wrapper/Wrapper";
 import { Button, TextField } from "@mui/material";
+import { tasksApi } from "../../features/todolists/api/tasksApi";
 
 export const DeleteResponseTask = () => {
   const [state, setState] = useState<boolean>(false);
@@ -13,7 +14,7 @@ export const DeleteResponseTask = () => {
     setIdTL("");
     setIdTask("");
 
-    todolistsApi.deleteTask({ todoListId: idTL, id: idTask }).then(() => setState(true));
+    tasksApi.deleteTask({ todoListId: idTL, id: idTask }).then(() => setState(true));
   }, [idTL, idTask]);
 
   return (

@@ -1,11 +1,12 @@
-import { todolistsApi, TodolistType } from "../api/todolists-api";
 import { AppDispatch } from "../../../../app/store";
+import type { TodolistType } from "../../api/todolistsApi.types";
+import { todolistsApi } from "../../api/todolistsApi";
 
 export const REMOVE_TODOLIST = "REMOVE-TODOLIST";
 export const ADD_TODOLIST = "ADD-TODOLIST";
+export const SET_TODOLISTS = "SET_TODOLISTS";
 const CHANGE_TODOLIST_TITLE = "CHANGE-TODOLIST-TITLE";
 const CHANGE_TODOLIST_FILTER = "CHANGE-TODOLIST-FILTER";
-export const SET_TODOLISTS = "SET_TODOLISTS";
 
 const initialState: TodoListDomainType[] = [];
 

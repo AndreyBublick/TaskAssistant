@@ -6,9 +6,13 @@ import {
   REMOVE_TODOLIST,
   SET_TODOLISTS,
 } from "../todolist-reducer/todolists-reducer";
-import { Model, TaskType, todolistsApi } from "../api/todolists-api";
+
 import { AppDispatch, RootStateType } from "../../../../app/store";
-import { StatusTask, TaskPriority } from "../../../../common/enums/enums";
+
+import type { Model, TaskType } from "../../api/tasksApi.types";
+import type { StatusTask } from "common/enums/enums";
+import { TaskPriority } from "common/enums/enums";
+import { tasksApi } from "../../api/tasksApi";
 
 const REMOVE_TASK = "REMOVE_TASK";
 const ADD_TASK = "ADD_TASK";
@@ -100,7 +104,7 @@ export const setTasksAC = (payload: { todolistId: string; tasks: TaskType[] }) =
 
 export const getTasksTC = (todolistId: string) => async (dispatch: AppDispatch) => {
   try {
-    await todolistsApi.getTasks(todolistId).then((response) =>
+    await tasksApi.getTasks(todolistId).then((response) =>
       dispatch(
         setTasksAC({
           todolistId,
@@ -115,9 +119,7 @@ export const getTasksTC = (todolistId: string) => async (dispatch: AppDispatch) 
 
 export const removeTaskTC = (payload: { todoListId: string; id: string }) => async (dispatch: AppDispatch) => {
   try {
-    await todolistsApi.deleteTask(payload).then(() => {
-      dispatch(removeTaskAC(payload));
-    });
+    await tasksApi.deleteTask(payload).then(() => dispatch(removeTaskAC(payload)));
   } catch (error) {
     alert(error);
   }
@@ -125,7 +127,7 @@ export const removeTaskTC = (payload: { todoListId: string; id: string }) => asy
 
 export const createTaskTC = (payload: { todoListId: string; title: string }) => async (dispatch: AppDispatch) => {
   const { todoListId } = payload;
-  todolistsApi.createTask(payload).then((response) => {
+  tasksApi.createTask(payload).then((response) => {
     dispatch(addTaskAC({ todoListId, task: response.data.data.item }));
   });
 };
@@ -153,7 +155,7 @@ export const updateTaskTC =
     };
 
     try {
-      await todolistsApi.changeTaskStatus({ todoListId, taskId, model }).then(() => {
+      await tasksApi.updateTask({ todoListId, taskId, model }).then(() => {
         dispatch(updateTaskAC({ todoListId, taskId, model }));
       });
     } catch (error) {

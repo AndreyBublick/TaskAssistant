@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Model, TaskType, todolistsApi, TodolistType } from "../../features/todolists/model/api/todolists-api";
 import { Wrapper } from "./Wrapper/Wrapper";
 import { EditableLi } from "./Wrapper/editableLi/EditableLi";
 import styled from "styled-components";
+import type { TodolistType } from "../../features/todolists/api/todolistsApi.types";
+import type { Model, TaskType } from "../../features/todolists/api/tasksApi.types";
+import { todolistsApi } from "../../features/todolists/api/todolistsApi";
+import { tasksApi } from "../../features/todolists/api/tasksApi";
 
 export const PutResponse = () => {
   const [state, setState] = useState<TodolistType[]>([]);
@@ -29,8 +32,8 @@ export const PutResponse = () => {
       deadline: task.deadline,
     };
 
-    todolistsApi
-      .changeTaskTitle({
+    tasksApi
+      .updateTask({
         todoListId,
         taskId,
         model,
@@ -53,9 +56,7 @@ export const PutResponse = () => {
       })
       .then((todolists) =>
         todolists.forEach((td) =>
-          todolistsApi
-            .getTasks(td.id)
-            .then((response) => setTasks((prev) => ({ ...prev, [td.id]: response.data.items }))),
+          tasksApi.getTasks(td.id).then((response) => setTasks((prev) => ({ ...prev, [td.id]: response.data.items }))),
         ),
       );
   }, []);
@@ -100,7 +101,4 @@ const List = styled.ul`
     margin: 0;
     padding: 0;
   }
-
-  /* align-items: flex-start !important;
-    justify-content: center;*/
 `;

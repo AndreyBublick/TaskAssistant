@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
+import { todolistsApi } from "../../features/todolists/api/todolistsApi";
 
 export const GetResponse = () => {
   const [state, setState] = useState<any>([]);

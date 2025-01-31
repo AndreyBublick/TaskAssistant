@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import "../App.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Header } from "../common/components/header/Header";
 import { Main } from "./Main";
-import { getTheme } from "../common/theme/Theme";
 import { getModeTheme } from "./app-selectors";
-import { useAppSelector } from "../common/hooks/Hooks";
+import { Header } from "common/components/header/Header";
+import { useAppSelector } from "common/hooks/Hooks";
+import { getTheme } from "common/theme/Theme";
 
 export const App: FC = () => {
   const themeMode = useAppSelector(getModeTheme);

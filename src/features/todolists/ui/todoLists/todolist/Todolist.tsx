@@ -1,15 +1,16 @@
 import React, { FC, memo } from "react";
 
 import styled from "styled-components";
-import { AddItemForm } from "../../../../../common/components/addItemForm/AddItemForm";
+
 import { Button, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Tasks } from "./tasks/Tasks";
-import { TodolistContext } from "../../../../../common/contexts/TodolistContext";
+import { TodolistContext } from "common/contexts/TodolistContext";
 import { FilterButtons } from "./filterButtons/FilterButtons";
 import { TodolistTitle } from "./todolistTitle/TodolistTitle";
-import { useTodolist } from "../../../../../common/hooks/useTodolist";
+import { useTodolist } from "common/hooks/useTodolist";
 import { TodoListDomainType } from "../../../model/todolist-reducer/todolists-reducer";
+import { AddItemForm } from "common/components/addItemForm/AddItemForm";
 
 type PropsType = {
   todoList: TodoListDomainType;

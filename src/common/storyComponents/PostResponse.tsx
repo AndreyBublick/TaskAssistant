@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
 import { Button, TextField } from "@mui/material";
 import { Wrapper } from "./Wrapper/Wrapper";
+import { todolistsApi } from "../../features/todolists/api/todolistsApi";
 
 export const PostResponse = () => {
   const [state, setState] = useState<boolean>(false);

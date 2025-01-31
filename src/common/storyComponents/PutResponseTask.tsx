@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
+import { tasksApi } from "../../features/todolists/api/tasksApi";
 
 export const PutResponseTask = () => {
   const [state, setState] = useState<any>("");
@@ -9,7 +9,7 @@ export const PutResponseTask = () => {
 
     const id = "";
 
-    todolistsApi.deleteTask({ todoListId, id }).then(() => {
+    tasksApi.deleteTask({ todoListId, id }).then(() => {
       setState("success");
     });
   }, []);

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
-import { todolistsApi } from "../../features/todolists/model/api/todolists-api";
 import { Button, TextField } from "@mui/material";
 import { Wrapper } from "./Wrapper/Wrapper";
+import { tasksApi } from "../../features/todolists/api/tasksApi";
 
 export const PostResponseTask = () => {
   const [state, setState] = useState<boolean>(false);
@@ -13,7 +13,7 @@ export const PostResponseTask = () => {
 
     setIdTL("");
     setTitle("");
-    todolistsApi.createTask({ todoListId: idTL, title: "3232" }).then(() => setState(true));
+    tasksApi.createTask({ todoListId: idTL, title: "3232" }).then(() => setState(true));
   }, [idTL]);
 
   return (
