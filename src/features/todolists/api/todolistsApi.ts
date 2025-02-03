@@ -7,7 +7,7 @@ export const todolistsApi = {
     return instance.get<TodolistType[]>("todo-lists");
   },
 
-  postTodolist(title: string) {
+  addTodolist(title: string) {
     return instance.post<ResponseType<{ item: TodolistType }>>("todo-lists", { title });
   },
 

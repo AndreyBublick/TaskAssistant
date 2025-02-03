@@ -16,3 +16,9 @@ export enum ResultCodeStatus {
   success = 0,
   fail = 1,
 }
+export enum AppStatus {
+  idle = "idle",
+  loading = "loading",
+  succeeded = "succeeded",
+  failed = "failed",
+}

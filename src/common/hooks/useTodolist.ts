@@ -2,14 +2,14 @@ import { useAppDispatch } from "./Hooks";
 import { useCallback } from "react";
 import {
   changeTodolistTitleTC,
-  removeTodolistTC,
+  deleteTodoListTC,
 } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
-import { createTaskTC, removeAllTasksAC } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
+import { createTaskTC, removeAllTasks } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
 
 export const useTodolist = (id: string) => {
   const dispatch = useAppDispatch();
 
-  const deleteTodoList = useCallback(() => dispatch(removeTodolistTC(id)), [dispatch, id]);
+  const deleteTodoList = useCallback(() => dispatch(deleteTodoListTC(id)), [dispatch, id]);
 
   const changeTitleTodoList = useCallback(
     (title: string) => {
@@ -25,9 +25,9 @@ export const useTodolist = (id: string) => {
     [dispatch, id],
   );
 
-  const removeAllTasks = useCallback(() => {
-    dispatch(removeAllTasksAC({ todoListId: id }));
+  const removeAllTasksHandler = useCallback(() => {
+    dispatch(removeAllTasks({ todoListId: id }));
   }, [dispatch, id]);
 
-  return { deleteTodoList, changeTitleTodoList, addNewTask, removeAllTasks };
+  return { deleteTodoList, changeTitleTodoList, addNewTask, removeAllTasksHandler };
 };

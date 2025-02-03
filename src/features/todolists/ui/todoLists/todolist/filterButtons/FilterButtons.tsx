@@ -1,9 +1,9 @@
 import React, { FC, memo, useCallback, useContext } from "react";
 import { Button } from "@mui/material";
 import styled from "styled-components";
-import { changeTodolistFilterAC, FilterValuesType } from "../../../../model/todolist-reducer/todolists-reducer";
-import { useAppDispatch } from "../../../../../../common/hooks/Hooks";
-import { TodolistContext } from "../../../../../../common/contexts/TodolistContext";
+import { FilterValuesType, updateTodoListFilter } from "../../../../model/todolist-reducer/todolists-reducer";
+import { useAppDispatch } from "common/hooks/Hooks";
+import { TodolistContext } from "common/contexts/TodolistContext";
 
 type Props = {
   filter: FilterValuesType;
@@ -15,7 +15,7 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
 
   const changeFilter = useCallback(
     (filter: FilterValuesType) => {
-      dispatch(changeTodolistFilterAC({ id, filter }));
+      dispatch(updateTodoListFilter({ id, filter }));
     },
     [dispatch, id],
   );

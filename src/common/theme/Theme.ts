@@ -1,6 +1,5 @@
 import { createTheme } from "@mui/material";
-
-export type ThemeModeType = "light" | "dark";
+import type { ThemeModeType } from "../../app/app-reducer";
 
 export const getTheme = (themeMode: ThemeModeType) => {
   return createTheme({

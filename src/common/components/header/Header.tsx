@@ -1,20 +1,20 @@
-import React, { memo, useCallback, useState } from "react";
-import { AppBar, Box, IconButton, Switch, Toolbar } from "@mui/material";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { AppBar, Box, IconButton, LinearProgress, Switch, Toolbar } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/Hooks";
-import { getModeTheme } from "../../../app/app-selectors";
-import { changeThemeModeAC } from "../../../app/app-reducer";
 import { styled } from "@mui/material/styles";
 import { MenuButton } from "../menuButton/MenuButton";
+import { changeThemeMode, getModeTheme } from "../../../app/app-reducer";
+import { ProgressLinear } from "common/components/ProgressLinear/ProgressLinear";
 
 export const Header = memo(() => {
   const [value, setValue] = useState("1");
   const themeMode = useAppSelector(getModeTheme);
   const dispatch = useDispatch();
 
-  const changeThemeMode = useCallback(() => {
-    dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }));
+  const onChangeHandler = useCallback(() => {
+    dispatch(changeThemeMode({ themeMode: themeMode === "light" ? "dark" : "light" }));
   }, [dispatch, themeMode]);
 
   return (
@@ -34,9 +34,10 @@ export const Header = memo(() => {
           <MenuButton defaultValue={value} onClick={() => setValue("3")} variant={"contained"}>
             Three
           </MenuButton>
-          <Switch onChange={changeThemeMode} />
+          <Switch onChange={onChangeHandler} />
         </Box>
       </ToolbarStyled>
+      <ProgressLinear />
     </AppBarStyled>
   );
 });

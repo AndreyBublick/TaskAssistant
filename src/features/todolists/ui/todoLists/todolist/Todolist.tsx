@@ -19,7 +19,7 @@ type PropsType = {
 export const Todolist: FC<PropsType> = memo(({ todoList }) => {
   const { id, title, filter } = todoList;
 
-  const { deleteTodoList, changeTitleTodoList, addNewTask, removeAllTasks } = useTodolist(id);
+  const { deleteTodoList, changeTitleTodoList, addNewTask, removeAllTasksHandler } = useTodolist(id);
 
   return (
     <TodolistContext.Provider value={id}>
@@ -33,7 +33,7 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
         </FlexWrapper>
         <AddItemForm callBack={addNewTask} />
         <Tasks filter={filter} />
-        <Button title={"delete all"} variant={"contained"} onClick={removeAllTasks}>
+        <Button title={"delete all"} variant={"contained"} onClick={removeAllTasksHandler}>
           delete all
         </Button>
         <FilterButtons filter={filter} />

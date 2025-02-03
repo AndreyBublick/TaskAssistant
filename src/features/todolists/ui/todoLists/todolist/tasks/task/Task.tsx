@@ -1,13 +1,13 @@
 import React, { FC, memo, useCallback } from "react";
-import { EditableString } from "../../../../../../../common/components/editableString/EditableString";
+import { EditableString } from "common/components/editableString/EditableString";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { useTask } from "../../../../../../../common/hooks/useTask";
-import { TaskDomainType } from "../../../../../model/tasks-reducer/tasks-reducer";
-import { StatusTask } from "../../../../../../../common/enums/enums";
+import { useTask } from "common/hooks/useTask";
+import { StatusTask } from "common/enums/enums";
+import type { TaskType } from "../../../../../api/tasksApi.types";
 
 type Props = {
-  task: TaskDomainType;
+  task: TaskType;
 };
 
 export const Task: FC<Props> = memo(({ task }) => {

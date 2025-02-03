@@ -12,7 +12,7 @@ export const PostResponse = () => {
     setState(false);
     setTitle("");
 
-    todolistsApi.postTodolist(title).then(() => setState(true));
+    todolistsApi.addTodolist(title).then(() => setState(true));
   }, [title]);
 
   return (
