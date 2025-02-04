@@ -3,6 +3,7 @@ import { todolistsApi } from "../../api/todolistsApi";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
 import { changeAppStatus, setAppError } from "../../../../app/app-reducer";
+import { errorHandler } from "common/utils/utils";
 
 const initialState: TodoListDomainType[] = [];
 
@@ -78,10 +79,7 @@ export const fetchTodoListsTC = createAsyncThunk("todolists/fetchTodoLists", asy
 
     return response.data;
   } catch (error) {
-    alert(error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    thunkAPI.rejectWithValue(error);
-    thunkAPI.dispatch(setAppError({ error: errorMessage }));
+    errorHandler({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
@@ -93,14 +91,11 @@ export const deleteTodoListTC = createAsyncThunk("todolists/deleteTodoList", asy
     const response = await todolistsApi.deleteTodolist(id);
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { todolistId: id };
+    } else if (response.data.resultCode === ResultCodeStatus.fail) {
+      thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
     }
   } catch (error) {
-    alert(error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-
-    thunkAPI.rejectWithValue(error);
-
-    thunkAPI.dispatch(setAppError({ error: errorMessage }));
+    errorHandler({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
@@ -112,15 +107,11 @@ export const addTodoListTC = createAsyncThunk("todolists/addTodoList", async (ti
     const response = await todolistsApi.addTodolist(title);
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { createdTodolist: response.data.data.item };
-    }
-    if (response.data.resultCode === ResultCodeStatus.fail) {
+    } else if (response.data.resultCode === ResultCodeStatus.fail) {
       thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
     }
   } catch (error) {
-    alert(error);
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    thunkAPI.rejectWithValue(error);
-    thunkAPI.dispatch(setAppError({ error: errorMessage }));
+    errorHandler({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
@@ -133,12 +124,11 @@ export const changeTodolistTitleTC = createAsyncThunk(
       const response = await todolistsApi.changeTodolistTitle(payload);
       if (response.data.resultCode === ResultCodeStatus.success) {
         return payload;
+      } else if (response.data.resultCode === ResultCodeStatus.fail) {
+        thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
       }
     } catch (error) {
-      alert(error);
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      thunkAPI.rejectWithValue(error);
-      thunkAPI.dispatch(setAppError({ error: errorMessage }));
+      errorHandler({ error, thunkAPI });
     } finally {
       thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
     }
