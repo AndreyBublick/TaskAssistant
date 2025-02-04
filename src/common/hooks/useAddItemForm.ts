@@ -1,14 +1,22 @@
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useAppSelector } from "common/hooks/Hooks";
+import { getAppError } from "../../app/app-reducer";
+import { getTodoLists } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
 
 export const useAddItemForm = (callBack: (value: string) => void) => {
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<null | string>(null);
 
+  const todolists = useAppSelector(getTodoLists);
+
+  useEffect(() => {
+    setValue("");
+  }, [todolists]); ////////Question
+
   const deactivateEditMode = useCallback(() => {
     if (value.trim()) {
       callBack(value.trim());
 
-      setValue("");
       setError(null);
     } else {
       setError("this field is required");

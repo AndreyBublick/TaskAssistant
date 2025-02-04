@@ -29,7 +29,7 @@ export const Task: FC<Props> = memo(({ task }) => {
         onChange={changeTaskStatus}
         inputProps={{ "aria-label": "controlled" }}
       />
-      <EditableString changeString={changeString} title={title} />
+      <EditableString disabled={false} changeString={changeString} title={title} />
       <IconButton aria-label="delete" size="medium" onClick={removeTask}>
         <Delete fontSize="inherit" />
       </IconButton>

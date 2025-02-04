@@ -19,12 +19,22 @@ export const todolistsSlice = createSlice({
         state[todoListIndex].filter = action.payload.filter;
       }
     },
+    updateTodoListStatus: (state, action: PayloadAction<{ id: string; status: AppStatus }>) => {
+      const todoListIndex = state.findIndex((tl) => tl.id === action.payload.id);
+      if (todoListIndex !== -1) {
+        state[todoListIndex].status = action.payload.status;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTodoListsTC.fulfilled, (state, action) => {
         if (action.payload) {
-          const todoLists: TodoListDomainType[] = action.payload.map((td) => ({ ...td, filter: "all" }));
+          const todoLists: TodoListDomainType[] = action.payload.map((td) => ({
+            ...td,
+            filter: "all",
+            status: AppStatus.idle,
+          }));
           state.push(...todoLists);
         }
       })
@@ -42,7 +52,7 @@ export const todolistsSlice = createSlice({
         const createdTodolist = action.payload?.createdTodolist;
 
         if (createdTodolist) {
-          state.push({ ...createdTodolist, filter: "all" });
+          state.push({ ...createdTodolist, filter: "all", status: AppStatus.idle });
         }
       })
       .addCase(changeTodolistTitleTC.fulfilled, (state, action) => {
@@ -58,7 +68,7 @@ export const todolistsSlice = createSlice({
   },
 });
 
-export const { updateTodoListFilter } = todolistsSlice.actions;
+export const { updateTodoListFilter, updateTodoListStatus } = todolistsSlice.actions;
 export const { getTodoLists } = todolistsSlice.selectors;
 
 export const fetchTodoListsTC = createAsyncThunk("todolists/fetchTodoLists", async (_, thunkAPI) => {
@@ -78,6 +88,7 @@ export const fetchTodoListsTC = createAsyncThunk("todolists/fetchTodoLists", asy
 });
 export const deleteTodoListTC = createAsyncThunk("todolists/deleteTodoList", async (id: string, thunkAPI) => {
   try {
+    thunkAPI.dispatch(updateTodoListStatus({ id, status: AppStatus.loading }));
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await todolistsApi.deleteTodolist(id);
     if (response.data.resultCode === ResultCodeStatus.success) {
@@ -96,10 +107,14 @@ export const deleteTodoListTC = createAsyncThunk("todolists/deleteTodoList", asy
 });
 export const addTodoListTC = createAsyncThunk("todolists/addTodoList", async (title: string, thunkAPI) => {
   try {
+    thunkAPI.dispatch(setAppError({ error: null }));
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await todolistsApi.addTodolist(title);
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { createdTodolist: response.data.data.item };
+    }
+    if (response.data.resultCode === ResultCodeStatus.fail) {
+      thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
     }
   } catch (error) {
     alert(error);
@@ -130,127 +145,9 @@ export const changeTodolistTitleTC = createAsyncThunk(
   },
 );
 
-/*export const todolistsReducer = (
-  state: TodoListDomainType[] = initialState,
-  action: TodoListsActionType,
-): TodoListDomainType[] => {
-  switch (action.type) {
-    case SET_TODOLISTS: {
-      return action.payload.todoLists.map((td) => ({ ...td, filter: "all" }));
-    }
-    case REMOVE_TODOLIST: {
-      return state.filter((td) => td.id !== action.payload.id);
-    }
-    case ADD_TODOLIST: {
-      return [...state, { ...action.payload.todoList, filter: "all" }];
-    }
-    case CHANGE_TODOLIST_TITLE: {
-      return state.map((td) => (td.id === action.payload.id ? { ...td, title: action.payload.title } : td));
-    }
-    case CHANGE_TODOLIST_FILTER: {
-      return state.map((td) => (td.id === action.payload.id ? { ...td, filter: action.payload.filter } : td));
-    }
-
-    default: {
-      return state;
-    }
-  }
-};*/
-
-///AC
-/*export const removeTodoListAC = (id: string) =>
-  ({
-    type: REMOVE_TODOLIST,
-    payload: { id },
-  }) as const;
-
-export const addTodoListAC = (todoList: TodolistType) =>
-  ({
-    type: ADD_TODOLIST,
-    payload: {
-      todoList,
-    },
-  }) as const;
-
-export const changeTodolistTitleAC = (payload: { id: string; title: string }) =>
-  ({
-    type: CHANGE_TODOLIST_TITLE,
-    payload,
-  }) as const;
-
-export const changeTodolistFilterAC = (payload: { id: string; filter: FilterValuesType }) =>
-  ({
-    type: CHANGE_TODOLIST_FILTER,
-    payload,
-  }) as const;
-
-export const setTodoListsAC = (todoLists: Array<TodolistType>) =>
-  ({
-    type: SET_TODOLISTS,
-    payload: {
-      todoLists,
-    },
-  }) as const;*/
-
-/////TC
-/*export const getTodoListsTC = () => async (dispatch: AppDispatch) => {
-  try {
-    await todolistsApi.getTodolists().then((response) => dispatch(setTodoListsAC(response.data)));
-  } catch (error) {
-    alert(error);
-  }
-};
-
-export const removeTodolistTC = (id: string) => async (dispatch: AppDispatch) => {
-  try {
-    await todolistsApi.deleteTodolist(id).then(() => {
-      dispatch(removeTodoListAC(id));
-    });
-  } catch (error) {
-    alert(error);
-  }
-};
-
-export const createTodolistTC = (title: string) => async (dispatch: AppDispatch) => {
-  try {
-    await todolistsApi.postTodolist(title).then((response) => {
-      dispatch(addTodoListAC(response.data.data.item));
-    });
-  } catch (error) {
-    alert(error);
-  }
-};*/
-
-/*export const changeTodolistTitleTC = (payload: { id: string; title: string }) => async (dispatch: AppDispatch) => {
-  try {
-    await todolistsApi.changeTodolistTitle(payload).then(() => {
-      dispatch(changeTodolistTitleAC(payload));
-    });
-  } catch (error) {
-    alert(error);
-  }
-};*/
-
-/////TYPES
-
 export type FilterValuesType = "all" | "active" | "completed" | "three";
 
 export type TodoListDomainType = TodolistType & {
   filter: FilterValuesType;
+  status: AppStatus;
 };
-
-/*type TodoListChangesDomain = {
-  filter?: FilterValuesType;
-  title?: string;
-};*/
-
-/*export type TodoListsActionType =
-  | ReturnType<typeof changeTodolistTitleAC>
-  | ReturnType<typeof changeTodolistFilterAC>
-  | AddTodoListACType
-  | RemoveTodoListACType
-  | SetTodoListsType;*/
-
-/*export type SetTodoListsType = ReturnType<typeof setTodoListsAC>;
-export type RemoveTodoListACType = ReturnType<typeof removeTodoListAC>;
-export type AddTodoListACType = ReturnType<typeof addTodoListAC>;*/

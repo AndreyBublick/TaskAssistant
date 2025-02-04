@@ -11,9 +11,10 @@ type PropsType = /*InputHTMLAttributes<HTMLInputElement> &*/ {
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   autoFocus?: boolean;
   onBlur?: () => void;
+  status?: boolean;
 };
 
-export const Input: FC<PropsType> = ({ onBlur, autoFocus, onChange, onKeyDown, value, req, error }) => {
+export const Input: FC<PropsType> = ({ onBlur, autoFocus, onChange, onKeyDown, value, req, error, status }) => {
   const { onChangeHandler, onKeyDownHandler } = useInput(onKeyDown, onChange);
 
   return (
@@ -28,6 +29,7 @@ export const Input: FC<PropsType> = ({ onBlur, autoFocus, onChange, onKeyDown, v
       onKeyDown={onKeyDownHandler}
       required={req}
       value={value}
+      disabled={status}
       onChange={onChangeHandler}
     />
   );

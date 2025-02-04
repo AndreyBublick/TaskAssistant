@@ -4,13 +4,14 @@ import { TextField } from "@mui/material";
 type PropsType = {
   title: string;
   changeString: (inputValue: string) => void;
+  disabled?: boolean;
 };
 
-export const EditableString: FC<PropsType> = memo(({ title, changeString }) => {
+export const EditableString: FC<PropsType> = memo(({ title, changeString, disabled }) => {
   const [value, setValue] = useState<string>("");
 
   const [editMode, setEditMode] = useState(false);
-
+  const isOpen = editMode && !disabled;
   const diactivateEditMode = useCallback(() => {
     setEditMode(false);
     changeString(value.trim());
@@ -34,13 +35,14 @@ export const EditableString: FC<PropsType> = memo(({ title, changeString }) => {
     setEditMode(true);
   }, [title]);
 
-  return editMode ? (
+  return isOpen ? (
     <TextField
       autoFocus
       value={value}
       onChange={onChangeHandler}
       onBlur={diactivateEditMode}
       onKeyDown={onKeyDownHandler}
+      disabled={disabled}
     />
   ) : (
     <>

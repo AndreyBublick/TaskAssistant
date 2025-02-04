@@ -11,13 +11,14 @@ import { TodolistTitle } from "./todolistTitle/TodolistTitle";
 import { useTodolist } from "common/hooks/useTodolist";
 import { TodoListDomainType } from "../../../model/todolist-reducer/todolists-reducer";
 import { AddItemForm } from "common/components/addItemForm/AddItemForm";
+import { AppStatus } from "common/enums/enums";
 
 type PropsType = {
   todoList: TodoListDomainType;
 };
 
 export const Todolist: FC<PropsType> = memo(({ todoList }) => {
-  const { id, title, filter } = todoList;
+  const { id, title, filter, status } = todoList;
 
   const { deleteTodoList, changeTitleTodoList, addNewTask, removeAllTasksHandler } = useTodolist(id);
 
@@ -25,13 +26,13 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
     <TodolistContext.Provider value={id}>
       <TodolistStyled>
         <FlexWrapper>
-          <TodolistTitle onChange={changeTitleTodoList} title={title} />
+          <TodolistTitle disabled={status === AppStatus.loading} onChange={changeTitleTodoList} title={title} />
 
-          <IconButton aria-label="delete" size="large" onClick={deleteTodoList}>
+          <IconButton disabled={status === AppStatus.loading} aria-label="delete" size="large" onClick={deleteTodoList}>
             <Delete fontSize="inherit" />
           </IconButton>
         </FlexWrapper>
-        <AddItemForm callBack={addNewTask} />
+        <AddItemForm status={status === AppStatus.loading} callBack={addNewTask} />
         <Tasks filter={filter} />
         <Button title={"delete all"} variant={"contained"} onClick={removeAllTasksHandler}>
           delete all

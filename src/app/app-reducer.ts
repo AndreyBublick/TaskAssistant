@@ -22,14 +22,14 @@ export const appSlice = createSlice({
     changeAppStatus: (state, action: PayloadAction<{ status: AppStatus }>) => {
       state.status = action.payload.status;
     },
-    setAppError: (state, action: PayloadAction<{ error: string }>) => {
+    setAppError: (state, action: PayloadAction<{ error: string | null }>) => {
       state.error = action.payload.error;
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const { getModeTheme, getAppStatus } = appSlice.selectors;
+export const { getModeTheme, getAppStatus, getAppError } = appSlice.selectors;
 export const { changeThemeMode, changeAppStatus, setAppError } = appSlice.actions;
 
 /*export const changeThemeModeAC = (payload: { themeMode: ThemeModeType }) =>
