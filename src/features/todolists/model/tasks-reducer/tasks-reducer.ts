@@ -1,4 +1,4 @@
-import { RootState } from "../../../../app/store";
+import { RootState } from "app/store";
 
 import type { Model, TaskType } from "../../api/tasksApi.types";
 import type { StatusTask } from "common/enums/enums";
@@ -6,7 +6,7 @@ import { AppStatus, ResultCodeStatus, TaskPriority } from "common/enums/enums";
 import { tasksApi } from "../../api/tasksApi";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { addTodoListTC, deleteTodoListTC } from "../todolist-reducer/todolists-reducer";
-import { changeAppStatus, setAppError } from "../../../../app/app-reducer";
+import { changeAppStatus, setAppError } from "app/app-reducer";
 
 const initialState: TaskItemType = {};
 
@@ -14,9 +14,7 @@ export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   selectors: {
-    getTasks: (state, todoListId: string) => {
-      return state[todoListId];
-    },
+    getTasks: (state, todoListId: string) => state[todoListId],
   },
   reducers: {
     removeAllTasks: (state, action: PayloadAction<{ todoListId: string }>) => {
@@ -64,39 +62,13 @@ export const tasksSlice = createSlice({
         if (action.payload) {
           state[action.payload.createdTodolist.id] = [];
         }
+      })
+      .addCase(removeAllTasksTC.fulfilled, (state, action) => {
+        if (action.payload) {
+          state[action.payload.todoListId] = [];
+        }
       });
   },
-  ///
-  ////
-
-  /*const { todoListId, taskId, domainModel } = payload;
-    const task = getState().tasks[todoListId].find((tsk) => tsk.id === taskId);
-
-    if (!task) {
-      throw new Error("not found task");
-    }
-
-    const { title, startDate, priority, deadline, description, status } = task;
-
-    const model: Model = {
-      title,
-      startDate,
-      priority,
-      deadline,
-      description,
-      status,
-      ...domainModel,
-    };
-
-    try {
-      await tasksApi.updateTask({ todoListId, taskId, model }).then(() => {
-        dispatch(updateTaskAC({ todoListId, taskId, model }));
-      });
-    } catch (error) {
-      alert(error);
-    }*/
-  ///
-  ///
 });
 
 export const fetchTasksTC = createAsyncThunk("tasks/setTasks", async (todolistId: string, thunkAPI) => {
@@ -188,6 +160,28 @@ export const removeTaskTC = createAsyncThunk(
       /*const response =*/
       await tasksApi.deleteTask(payload);
       return payload;
+    } catch (error) {
+      alert(error);
+      thunkAPI.rejectWithValue(error);
+    } finally {
+      thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
+    }
+  },
+);
+
+export const removeAllTasksTC = createAsyncThunk(
+  "tasks/removeAllTasksTC",
+  async ({ todoListId }: { todoListId: string }, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
+
+      const state: RootState = thunkAPI.getState() as RootState;
+
+      for (const tsk of state.tasks[todoListId]) {
+        await tasksApi.deleteTask({ todoListId, id: tsk.id });
+      }
+      /* await tasksApi.deleteTask(payload);*/
+      return { todoListId };
     } catch (error) {
       alert(error);
       thunkAPI.rejectWithValue(error);

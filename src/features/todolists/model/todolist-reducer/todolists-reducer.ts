@@ -2,7 +2,7 @@ import type { TodolistType } from "../../api/todolistsApi.types";
 import { todolistsApi } from "../../api/todolistsApi";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
-import { changeAppStatus, setAppError } from "../../../../app/app-reducer";
+import { changeAppStatus, setAppError } from "app/app-reducer";
 import { errorHandler } from "common/utils/utils";
 
 const initialState: TodoListDomainType[] = [];

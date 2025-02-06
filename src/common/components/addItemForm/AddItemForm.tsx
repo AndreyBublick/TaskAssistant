@@ -1,8 +1,10 @@
-import React, { FC, memo } from "react";
+import React, { FC, memo, useContext } from "react";
 import { Input } from "../input/Input";
 import { Button } from "@mui/material";
 import styled from "styled-components";
-import { useAddItemForm } from "../../hooks/useAddItemForm";
+import { useAddItemForm } from "common/hooks/useAddItemForm";
+import { useTodolist } from "common/hooks/useTodolist";
+import { TodolistContext } from "common/contexts/TodolistContext";
 
 type PropsType = {
   callBack: (value: string) => void;

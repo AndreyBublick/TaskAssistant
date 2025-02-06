@@ -9,14 +9,12 @@ export const useAddItemForm = (callBack: (value: string) => void) => {
 
   const todolists = useAppSelector(getTodoLists);
 
-  useEffect(() => {
-    setValue("");
-  }, [todolists]); ////////Question
+  /*useEffect(() => {}, [todolists]);*/ ////////Question
 
   const deactivateEditMode = useCallback(() => {
     if (value.trim()) {
       callBack(value.trim());
-
+      setValue("");
       setError(null);
     } else {
       setError("this field is required");

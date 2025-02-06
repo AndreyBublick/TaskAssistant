@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, KeyboardEvent } from "react";
 
 import { TextField } from "@mui/material";
-import { useInput } from "../../hooks/useInput";
+import { useInput } from "common/hooks/useInput";
 
 type PropsType = /*InputHTMLAttributes<HTMLInputElement> &*/ {
   value: string;
