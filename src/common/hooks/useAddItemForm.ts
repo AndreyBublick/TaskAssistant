@@ -1,6 +1,5 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useAppSelector } from "common/hooks/Hooks";
-import { getAppError } from "../../app/app-reducer";
 import { getTodoLists } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
 
 export const useAddItemForm = (callBack: (value: string) => void) => {
