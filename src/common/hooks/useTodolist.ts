@@ -4,11 +4,7 @@ import {
   changeTodolistTitleTC,
   deleteTodoListTC,
 } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
-import {
-  createTaskTC,
-  removeAllTasks,
-  removeAllTasksTC,
-} from "../../features/todolists/model/tasks-reducer/tasks-reducer";
+import { createTaskTC, removeAllTasksTC } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
 
 export const useTodolist = (id: string) => {
   const dispatch = useAppDispatch();

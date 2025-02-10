@@ -2,8 +2,7 @@ import React, { FC, memo } from "react";
 
 import styled from "styled-components";
 
-import { Button, IconButton } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import { Button } from "@mui/material";
 import { Tasks } from "./tasks/Tasks";
 import { TodolistContext } from "common/contexts/TodolistContext";
 import { FilterButtons } from "./filterButtons/FilterButtons";
@@ -43,12 +42,6 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
     </TodolistContext.Provider>
   );
 });
-
-const FlexWrapper = styled.div`
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-`;
 
 const TodolistStyled = styled.div`
   padding: 15px;

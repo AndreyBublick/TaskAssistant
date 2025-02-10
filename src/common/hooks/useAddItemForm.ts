@@ -1,14 +1,8 @@
 import { ChangeEvent, useCallback, useState } from "react";
-import { useAppSelector } from "common/hooks/Hooks";
-import { getTodoLists } from "../../features/todolists/model/todolist-reducer/todolists-reducer";
 
 export const useAddItemForm = (callBack: (value: string) => void) => {
   const [value, setValue] = useState<string>("");
   const [error, setError] = useState<null | string>(null);
-
-  const todolists = useAppSelector(getTodoLists);
-
-  /*useEffect(() => {}, [todolists]);*/ ////////Question
 
   const deactivateEditMode = useCallback(() => {
     if (value.trim()) {
