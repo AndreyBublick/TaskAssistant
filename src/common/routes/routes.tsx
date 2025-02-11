@@ -1,12 +1,11 @@
 import type { ReactElement } from "react";
-import { type } from "@testing-library/user-event/dist/type";
-import { Login } from "common/components/Login/Login";
+import { Login } from "../../features/login/ui/Login/Login";
 import { Main } from "app/Main";
 import { ProtectedRoute } from "common/components/ProtectedRoute/ProtectedRoute";
 
 export const PATH = {
   LOGIN: "login",
-  DEFAULT: "",
+  DEFAULT: "/",
 } as const;
 
 export type Path = typeof PATH;

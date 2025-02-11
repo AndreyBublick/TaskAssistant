@@ -1,4 +1,4 @@
-import { setAppError } from "../../app/app-reducer";
+import { setAppError } from "app/app-reducer";
 import type { GetThunkAPI } from "@reduxjs/toolkit";
 
 export const errorHandler = (data: { error: unknown; thunkAPI: GetThunkAPI<any> }) => {
