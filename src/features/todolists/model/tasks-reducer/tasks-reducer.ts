@@ -4,7 +4,7 @@ import type { Model, TaskType } from "../../api/tasksApi.types";
 import type { StatusTask } from "common/enums/enums";
 import { AppStatus, ResultCodeStatus, TaskPriority } from "common/enums/enums";
 import { tasksApi } from "../../api/tasksApi";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTodoListTC, deleteTodoListTC } from "../todolist-reducer/todolists-reducer";
 import { changeAppStatus, setAppError } from "app/app-reducer";
 
@@ -17,8 +17,8 @@ export const tasksSlice = createSlice({
     getTasks: (state, todoListId: string) => state[todoListId],
   },
   reducers: {
-    removeAllTasks: (state, action: PayloadAction<{ todoListId: string }>) => {
-      state[action.payload.todoListId] = [];
+    clearTasks: (state) => {
+      Object.keys(state).forEach((key) => delete state[key]);
     },
   },
   extraReducers: (builder) => {
@@ -191,8 +191,8 @@ export const removeAllTasksTC = createAsyncThunk(
   },
 );
 
-export const { removeAllTasks } = tasksSlice.actions;
 export const { getTasks } = tasksSlice.selectors;
+export const { clearTasks } = tasksSlice.actions;
 
 export type TaskItemType = {
   [key: string]: TaskType[];

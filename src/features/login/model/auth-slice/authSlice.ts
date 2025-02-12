@@ -3,6 +3,8 @@ import type { LoginPayload } from "../../api/authApi";
 import { authApi } from "../../api/authApi";
 import { changeAppInitialized, changeAppStatus, setAppError } from "app/app-reducer";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
+import { clearTodolists } from "../../../todolists/model/todolist-reducer/todolists-reducer";
+import { clearTasks } from "../../../todolists/model/tasks-reducer/tasks-reducer";
 
 const initialState = {
   isAuth: false,
@@ -65,6 +67,8 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 
     if (response.data.resultCode === ResultCodeStatus.success) {
       thunkAPI.dispatch(changeIsAuth({ isAuth: false }));
+      thunkAPI.dispatch(clearTodolists());
+      thunkAPI.dispatch(clearTasks());
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
       thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
     }

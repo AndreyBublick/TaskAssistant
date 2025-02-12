@@ -5,6 +5,7 @@ import { AppStatus, ResultCodeStatus } from "common/enums/enums";
 import { changeAppStatus, setAppError } from "app/app-reducer";
 import { errorHandler } from "common/utils/utils";
 import { fetchTasksTC } from "../tasks-reducer/tasks-reducer";
+import { logout } from "../../../login/model/auth-slice/authSlice";
 
 const initialState: TodoListDomainType[] = [];
 
@@ -26,6 +27,9 @@ export const todolistsSlice = createSlice({
       if (todoListIndex !== -1) {
         state[todoListIndex].status = action.payload.status;
       }
+    },
+    clearTodolists: (state) => {
+      state.length = 0;
     },
   },
   extraReducers: (builder) => {
@@ -71,7 +75,7 @@ export const todolistsSlice = createSlice({
   },
 });
 
-export const { updateTodoListFilter, updateTodoListStatus } = todolistsSlice.actions;
+export const { updateTodoListFilter, updateTodoListStatus, clearTodolists } = todolistsSlice.actions;
 export const { getTodoLists } = todolistsSlice.selectors;
 
 export const fetchTodoListsTC = createAsyncThunk("todolists/fetchTodoLists", async (_, thunkAPI) => {
