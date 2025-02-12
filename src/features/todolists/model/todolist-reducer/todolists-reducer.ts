@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
 import { changeAppStatus, setAppError } from "app/app-reducer";
 import { errorHandler } from "common/utils/utils";
+import { fetchTasksTC } from "../tasks-reducer/tasks-reducer";
 
 const initialState: TodoListDomainType[] = [];
 
@@ -36,6 +37,7 @@ export const todolistsSlice = createSlice({
             filter: "all",
             status: AppStatus.idle,
           }));
+          state.length = 0;
           state.push(...todoLists);
         }
       })
@@ -76,6 +78,8 @@ export const fetchTodoListsTC = createAsyncThunk("todolists/fetchTodoLists", asy
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await todolistsApi.getTodolists();
+
+    response.data.forEach((td) => thunkAPI.dispatch(fetchTasksTC(td.id)));
 
     return response.data;
   } catch (error) {

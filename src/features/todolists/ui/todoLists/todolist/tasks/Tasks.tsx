@@ -1,12 +1,12 @@
-import React, { FC, memo, useContext, useEffect, useMemo } from "react";
+import React, { FC, memo, useContext, useMemo } from "react";
 
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "common/hooks/Hooks";
+import { useAppSelector } from "common/hooks/Hooks";
 
 import { Task } from "./task/Task";
 import { TodolistContext } from "common/contexts/TodolistContext";
 import { FilterValuesType } from "../../../../model/todolist-reducer/todolists-reducer";
-import { fetchTasksTC, getTasks } from "../../../../model/tasks-reducer/tasks-reducer";
+import { getTasks } from "../../../../model/tasks-reducer/tasks-reducer";
 import { StatusTask } from "common/enums/enums";
 import type { TaskType } from "../../../../api/tasksApi.types";
 
@@ -17,11 +17,6 @@ type PropsType = {
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
   const tasks = useAppSelector((state) => getTasks({ tasks: state.tasks }, id)) || [];
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTasksTC(id));
-  }, [dispatch, id]);
 
   const tasksForTodoList: TaskType[] = useMemo(() => {
     switch (filter) {
