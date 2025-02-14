@@ -37,12 +37,4 @@ export const appSlice = createSlice({
 export const { getModeTheme, getAppStatus, getAppError, getAppIsInitialized } = appSlice.selectors;
 export const { changeThemeMode, changeAppStatus, setAppError, changeAppInitialized } = appSlice.actions;
 
-/*export const changeThemeModeAC = (payload: { themeMode: ThemeModeType }) =>
-  ({
-    type: CHANGE_THEME_MODE,
-    payload,
-  }) as const;*/
-
-//TYPES
-
 export type ThemeModeType = "light" | "dark";

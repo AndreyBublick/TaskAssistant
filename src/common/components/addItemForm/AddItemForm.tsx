@@ -7,20 +7,22 @@ import { useAddItemForm } from "common/hooks/useAddItemForm";
 type PropsType = {
   callBack: (value: string) => void;
   status?: boolean;
+  label?: string;
 };
 
-export const AddItemForm: FC<PropsType> = memo(({ callBack, status }) => {
+export const AddItemForm: FC<PropsType> = memo(({ callBack, status, label }) => {
   const { value, error, deactivateEditMode, onChangeHandler } = useAddItemForm(callBack);
 
   return (
     <AddItemFormStyled>
       <Input
-        status={status}
+        label={label}
         onKeyDown={deactivateEditMode}
         onChange={onChangeHandler}
-        error={error}
-        req
+        error={!!error}
+        required
         value={value}
+        disabled={!!status}
       />
       <Button disabled={!!error || status} onClick={deactivateEditMode} variant={"contained"} size={"small"}>
         +

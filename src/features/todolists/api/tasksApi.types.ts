@@ -16,5 +16,3 @@ export type Model = {
   startDate: string | null;
   deadline: string | null;
 };
-
-export type FieldError = { error: string; field: string };

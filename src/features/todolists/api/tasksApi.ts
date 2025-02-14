@@ -1,6 +1,7 @@
 import { instance } from "common/instance/instance";
 import type { Model, TaskType } from "./tasksApi.types";
-import type { ResponseType } from "./todolistsApi";
+
+import type { ResponseType } from "common/types/types";
 
 export const tasksApi = {
   ///tasks

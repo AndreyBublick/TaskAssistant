@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import React, { FC, memo } from "react";
-import { EditableString } from "common/components/editableString/EditableString";
+import { EditableSpan } from "common/components/editableSpan/EditableSpan";
 import { AppStatus } from "common/enums/enums";
 import { Delete } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
@@ -9,13 +9,10 @@ import { useTodolist } from "common/hooks/useTodolist";
 import { TodoListDomainType } from "../../../../model/todolist-reducer/todolists-reducer";
 
 type Props = {
-  /*  onChange: (newTitle: string) => void;
-  title: string;
-  disabled?: boolean;*/
   todoList: TodoListDomainType;
 };
 
-export const TodolistTitle: FC<Props> = memo(({ /*title, disabled,*/ todoList }) => {
+export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
   const { deleteTodoList, changeTitleTodoList } = useTodolist(todoList.id);
 
   const isDisabled = todoList.status === AppStatus.loading;
@@ -23,7 +20,9 @@ export const TodolistTitle: FC<Props> = memo(({ /*title, disabled,*/ todoList })
   return (
     <FlexWrapper>
       <TodoTitle>
-        <EditableString changeString={changeTitleTodoList} title={todoList.title} disabled={isDisabled} />
+        <h3>
+          <EditableSpan changeString={changeTitleTodoList} title={todoList.title} disabled={isDisabled} />
+        </h3>
       </TodoTitle>
       <IconButton disabled={isDisabled} aria-label="delete" size="large" onClick={deleteTodoList}>
         <Delete fontSize="inherit" />
@@ -38,6 +37,9 @@ export const TodoTitle = styled.div`
   font-weight: 700;
   input {
     font-size: 22px;
+  }
+  h3 {
+    margin: 0;
   }
 `;
 const FlexWrapper = styled.div`

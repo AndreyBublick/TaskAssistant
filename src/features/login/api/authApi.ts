@@ -1,5 +1,6 @@
 import { instance } from "common/instance/instance";
-import type { ResponseType } from "../../todolists/api/todolistsApi";
+
+import type { ResponseType } from "common/types/types";
 
 export const authApi = {
   login: (payload: LoginPayload) => {

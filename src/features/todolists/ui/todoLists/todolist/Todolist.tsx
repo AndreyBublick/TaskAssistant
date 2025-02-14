@@ -25,14 +25,8 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
     <TodolistContext.Provider value={id}>
       <TodolistStyled>
         <TodolistTitle todoList={todoList} />
-        {/*<FlexWrapper>
-          <TodolistTitle disabled={status === AppStatus.loading} onChange={changeTitleTodoList} title={title} />
 
-          <IconButton disabled={status === AppStatus.loading} aria-label="delete" size="large" onClick={deleteTodoList}>
-            <Delete fontSize="inherit" />
-          </IconButton>
-        </FlexWrapper>*/}
-        <AddItemForm status={status === AppStatus.loading} callBack={addNewTask} />
+        <AddItemForm label={"New Task"} status={status === AppStatus.loading} callBack={addNewTask} />
         <Tasks filter={filter} />
         <Button title={"delete all"} variant={"contained"} onClick={removeAllTasksHandler}>
           delete all

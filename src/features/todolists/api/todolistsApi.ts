@@ -1,6 +1,7 @@
 import { instance } from "common/instance/instance";
 import type { TodolistType } from "./todolistsApi.types";
-import type { FieldError } from "./tasksApi.types";
+
+import type { ResponseType } from "common/types/types";
 
 export const todolistsApi = {
   getTodolists() {
@@ -21,10 +22,3 @@ export const todolistsApi = {
 };
 
 ////TYPES
-
-export type ResponseType<D = {}> = {
-  data: D;
-  fieldsErrors: Array<FieldError>;
-  messages: Array<string>;
-  resultCode: number;
-};

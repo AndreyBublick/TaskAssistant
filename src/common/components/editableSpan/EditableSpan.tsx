@@ -7,7 +7,7 @@ type PropsType = {
   disabled?: boolean;
 };
 
-export const EditableString: FC<PropsType> = memo(({ title, changeString, disabled }) => {
+export const EditableSpan: FC<PropsType> = memo(({ title, changeString, disabled }) => {
   const [value, setValue] = useState<string>("");
 
   const [editMode, setEditMode] = useState(false);
@@ -50,8 +50,3 @@ export const EditableString: FC<PropsType> = memo(({ title, changeString, disabl
     </>
   );
 });
-
-/*const TitleTodoList = styled.h2`
-    font-size: 22px;
-    margin: 0;
-`;*/

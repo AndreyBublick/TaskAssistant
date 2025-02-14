@@ -1,10 +1,13 @@
-import React, { FC, memo, useCallback } from "react";
-import { EditableString } from "common/components/editableString/EditableString";
+import React, { FC, memo, useCallback, useContext } from "react";
+import { EditableSpan } from "common/components/editableSpan/EditableSpan";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { useTask } from "common/hooks/useTask";
-import { StatusTask } from "common/enums/enums";
+import { AppStatus, StatusTask } from "common/enums/enums";
 import type { TaskType } from "../../../../../api/tasksApi.types";
+import { useAppSelector } from "common/hooks/Hooks";
+import { getTodoListStatus } from "../../../../../model/todolist-reducer/todolists-reducer";
+import { TodolistContext } from "common/contexts/TodolistContext";
 
 type Props = {
   task: TaskType;
@@ -14,6 +17,10 @@ export const Task: FC<Props> = memo(({ task }) => {
   const { status, title, id } = task;
 
   const { removeTask, changeTaskStatus, changeTaskTitle } = useTask(id);
+
+  const idTodo = useContext(TodolistContext);
+
+  const todoStatus = useAppSelector((state) => getTodoListStatus(state, idTodo));
 
   const changeString = useCallback(
     (title: string) => {
@@ -28,9 +35,10 @@ export const Task: FC<Props> = memo(({ task }) => {
         checked={status === StatusTask.Completed}
         onChange={changeTaskStatus}
         inputProps={{ "aria-label": "controlled" }}
+        disabled={todoStatus === AppStatus.loading}
       />
-      <EditableString disabled={false} changeString={changeString} title={title} />
-      <IconButton aria-label="delete" size="medium" onClick={removeTask}>
+      <EditableSpan disabled={todoStatus === AppStatus.loading} changeString={changeString} title={title} />
+      <IconButton disabled={todoStatus === AppStatus.loading} aria-label="delete" size="medium" onClick={removeTask}>
         <Delete fontSize="inherit" />
       </IconButton>
     </li>
