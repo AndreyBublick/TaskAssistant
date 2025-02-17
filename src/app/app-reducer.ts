@@ -8,7 +8,7 @@ const initialState = {
   isInitialized: false,
 };
 
-export const appSlice = createSlice({
+const appSlice = createSlice({
   name: "app",
   initialState,
   selectors: {
@@ -31,9 +31,10 @@ export const appSlice = createSlice({
       state.error = action.payload.error;
     },
   },
-  extraReducers: (builder) => {},
+  /*extraReducers: (builder) => {},*/
 });
 
+export const appReducer = appSlice.reducer;
 export const { getModeTheme, getAppStatus, getAppError, getAppIsInitialized } = appSlice.selectors;
 export const { changeThemeMode, changeAppStatus, setAppError, changeAppInitialized } = appSlice.actions;
 

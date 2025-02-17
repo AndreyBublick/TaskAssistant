@@ -9,7 +9,7 @@ import { getAppError, getAppIsInitialized, getModeTheme } from "./app-reducer";
 import { AlertStatus } from "common/components/alertStatus/AlertStatus";
 import { Route, Routes } from "react-router";
 import { routes } from "common/routes/routes";
-import { fetchAuthMe } from "../features/login/model/auth-slice/authSlice";
+import { fetchAuthMe } from "../features/login/model/auth-reducer/authReducer";
 
 export const App: FC = () => {
   const themeMode = useAppSelector(getModeTheme);

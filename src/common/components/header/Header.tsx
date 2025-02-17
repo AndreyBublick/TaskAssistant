@@ -7,7 +7,7 @@ import { styled } from "@mui/material/styles";
 import { MenuButton } from "../menuButton/MenuButton";
 import { changeThemeMode, getModeTheme } from "app/app-reducer";
 import { ProgressLinear } from "common/components/ProgressLinear/ProgressLinear";
-import { getIsAuth, logout } from "../../../features/login/model/auth-slice/authSlice";
+import { getIsAuth, logout } from "../../../features/login/model/auth-reducer/authReducer";
 
 export const Header = memo(() => {
   const [value, setValue] = useState("1");

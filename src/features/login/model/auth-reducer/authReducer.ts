@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { LoginPayload } from "../../api/authApi";
 import { authApi } from "../../api/authApi";
-import { changeAppInitialized, changeAppStatus, setAppError } from "app/app-reducer";
+import { changeAppInitialized, changeAppStatus } from "app/app-reducer";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
 import { clearTodolists } from "../../../todolists/model/todolist-reducer/todolists-reducer";
 import { clearTasks } from "../../../todolists/model/tasks-reducer/tasks-reducer";
+import { handleServerAppError, handleServerNetworkError } from "common/utils/utils";
 
 const initialState = {
   isAuth: false,
 };
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState,
   selectors: {
@@ -21,11 +22,16 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAuthMe.fulfilled, (state, action) => {
-      if (action.payload) {
-        state.isAuth = action.payload.isAuth;
-      }
-    }); /*.addCase(login.fulfilled, (state, action) => {
+    builder
+      .addCase(fetchAuthMe.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.isAuth = action.payload.isAuth;
+        }
+      })
+      .addCase(login.rejected, (state) => {
+        state.isAuth = false;
+      });
+    /*.addCase(login.fulfilled, (state, action) => {
       if (action.payload) {
         state.isAuth = action.payload.isAuth;
       }
@@ -38,8 +44,10 @@ export const authSlice = createSlice({
       });*/
   },
 });
+export const authReducer = authSlice.reducer;
 export const { getIsAuth } = authSlice.selectors;
 export const { changeIsAuth } = authSlice.actions;
+
 export const login = createAsyncThunk("auth/login", async (payload: LoginPayload, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
@@ -50,12 +58,12 @@ export const login = createAsyncThunk("auth/login", async (payload: LoginPayload
       /*  return { isAuth: true };*/
       thunkAPI.dispatch(changeIsAuth({ isAuth: true }));
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
-      thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
+      handleServerAppError({ thunkAPI, response });
       /*return { isAuth: false };*/
       thunkAPI.dispatch(changeIsAuth({ isAuth: false }));
     }
   } catch (error) {
-    thunkAPI.rejectWithValue(error);
+    handleServerNetworkError({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
@@ -70,10 +78,10 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
       thunkAPI.dispatch(clearTodolists());
       thunkAPI.dispatch(clearTasks());
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
-      thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
+      handleServerAppError({ thunkAPI, response });
     }
   } catch (error) {
-    thunkAPI.rejectWithValue(error);
+    handleServerNetworkError({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
@@ -86,11 +94,11 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async (_, thunkA
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { isAuth: true };
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
-      thunkAPI.dispatch(setAppError({ error: response.data.messages[0] }));
+      handleServerAppError({ thunkAPI, response });
       return { isAuth: false };
     }
   } catch (error) {
-    thunkAPI.rejectWithValue(error);
+    handleServerNetworkError({ error, thunkAPI });
   } finally {
     thunkAPI.dispatch(changeAppInitialized({ isInitialized: true }));
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));

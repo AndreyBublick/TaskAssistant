@@ -6,12 +6,12 @@ import { AppStatus, ResultCodeStatus, TaskPriority } from "common/enums/enums";
 import { tasksApi } from "../../api/tasksApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTodoListTC, deleteTodoListTC } from "../todolist-reducer/todolists-reducer";
-import { changeAppStatus, setAppError } from "app/app-reducer";
+import { changeAppStatus } from "app/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "common/utils/utils";
 
 const initialState: TaskItemType = {};
 
-export const tasksSlice = createSlice({
+const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   selectors: {
@@ -190,6 +190,8 @@ export const removeAllTasksTC = createAsyncThunk(
     }
   },
 );
+
+export const tasksReducer = tasksSlice.reducer;
 
 export const { getTasks } = tasksSlice.selectors;
 export const { clearTasks } = tasksSlice.actions;

@@ -21,11 +21,7 @@ export const handleServerAppError = <T>(data: {
 
   const errorMessage = response.data.messages[0];
 
-  if (errorMessage) {
-    thunkAPI.dispatch(setAppError({ error: errorMessage }));
-  } else {
-    thunkAPI.dispatch(setAppError({ error: "some Error" }));
-  }
+  thunkAPI.dispatch(setAppError(errorMessage ? { error: errorMessage } : { error: "some Error" }));
 };
 
 export const updateArray = <T>(arr: T[], item: T) => (arr.includes(item) ? arr : [...arr, item]);
