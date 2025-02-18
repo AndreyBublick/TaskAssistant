@@ -1,14 +1,12 @@
-import React, { FC, memo, useContext, useMemo } from "react";
-
-import styled from "styled-components";
-
-import { Task } from "./task/Task";
 import { FilterValuesType } from "../../../../model/todolist-reducer/todolists-reducer";
 import { getTasks } from "../../../../model/tasks-reducer/tasks-reducer";
 import type { TaskType } from "../../../../api/tasksApi.types";
+import React, { FC, memo, useContext, useMemo } from "react";
 import { TodolistContext } from "common/contexts";
 import { useAppSelector } from "common/hooks";
 import { StatusTask } from "common/enums";
+import styled from "styled-components";
+import { Task } from "./task/Task";
 
 type PropsType = {
   filter: FilterValuesType;

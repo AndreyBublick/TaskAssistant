@@ -20,6 +20,8 @@ export const Login: FC<Props> = () => {
         errors.email = "Invalid email address";
       } else if (!values.password) {
         errors.password = "Required";
+      } else if (values.password.length < 3) {
+        errors.password = "Password must be at least 3 characters long";
       }
       return errors;
     },
@@ -35,6 +37,8 @@ export const Login: FC<Props> = () => {
     },
   });
 
+  const isActivate = Object.keys(errors).length > 0;
+
   return (
     <>
       {isAuth ? (
@@ -48,7 +52,7 @@ export const Login: FC<Props> = () => {
               </TypographyStyled>
 
               <TypographyStyled variant={"body1"}>Welcome, please sign in to continue</TypographyStyled>
-              {errors.email && <div>Email is required</div>}
+              {/*  {errors.email && <div>Email is required</div>}*/}
               <TextFieldStyled
                 {...getFieldProps("email")}
                 size={"small"}
@@ -56,15 +60,21 @@ export const Login: FC<Props> = () => {
                 label="Email"
                 type={"email"}
                 variant="outlined"
+                error={!!errors.email}
+                helperText={errors.email}
               />
-              {errors.password && <div>Password is required</div>}
+
               <TextFieldStyled
                 {...getFieldProps("password")}
                 size={"small"}
                 type={"password"}
                 label="Password"
                 variant="outlined"
+                required={true}
+                error={!!errors.password}
+                helperText={errors.password}
               />
+              {/*  {errors.password && }*/}
               <FormControlLabel
                 sx={{ marginBottom: "10px" }}
                 control={<Checkbox {...getFieldProps("rememberMe")} checked={values.rememberMe} />}
@@ -74,6 +84,7 @@ export const Login: FC<Props> = () => {
                 size={"large"}
                 variant="contained"
                 type="submit"
+                disabled={isActivate}
                 sx={{ fontWeight: 700, textTransform: "capitalize", fontSize: "16px" }}
               >
                 sign in
@@ -86,7 +97,7 @@ export const Login: FC<Props> = () => {
   );
 };
 
-const TypographyStyled = styled(Typography)(({ theme }) => ({
+const TypographyStyled = styled(Typography)(() => ({
   marginBottom: "10px",
   textAlign: "center",
 }));
@@ -101,6 +112,6 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   /* alignItems: "center",*/
   justifyContent: "center",
 }));
-const TextFieldStyled = styled(TextField)(({ theme }) => ({
+const TextFieldStyled = styled(TextField)(() => ({
   margin: "10px 0",
 }));
