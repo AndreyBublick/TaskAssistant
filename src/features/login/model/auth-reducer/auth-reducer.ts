@@ -44,6 +44,7 @@ const authSlice = createSlice({
       });*/
   },
 });
+
 export const authReducer = authSlice.reducer;
 export const { getIsAuth } = authSlice.selectors;
 export const { changeIsAuth } = authSlice.actions;
@@ -52,14 +53,12 @@ export const login = createAsyncThunk("auth/login", async (payload: LoginPayload
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await authApi.login(payload);
-    /*const userId = response.data.data.userId;*/
 
     if (response.data.resultCode === ResultCodeStatus.success) {
-      /*  return { isAuth: true };*/
+      localStorage.setItem("sn-token", response.data.data.token);
       thunkAPI.dispatch(changeIsAuth({ isAuth: true }));
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
       handleServerAppError({ thunkAPI, response });
-      /*return { isAuth: false };*/
       thunkAPI.dispatch(changeIsAuth({ isAuth: false }));
     }
   } catch (error) {
@@ -68,12 +67,14 @@ export const login = createAsyncThunk("auth/login", async (payload: LoginPayload
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
 });
+
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await authApi.logout();
 
     if (response.data.resultCode === ResultCodeStatus.success) {
+      localStorage.removeItem("sn-token");
       thunkAPI.dispatch(changeIsAuth({ isAuth: false }));
       thunkAPI.dispatch(clearTodolists());
       thunkAPI.dispatch(clearTasks());

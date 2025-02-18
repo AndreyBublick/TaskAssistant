@@ -1,12 +1,12 @@
-import { todolistsSlice } from "../features/todolists/model/todolist-reducer/todolists-reducer";
+import { todolistsReducer } from "../features/todolists/model/todolist-reducer/todolists-reducer";
 import { configureStore } from "@reduxjs/toolkit";
 import { appReducer } from "./app-reducer";
 import { tasksReducer } from "../features/todolists/model/tasks-reducer/tasks-reducer";
-import { authReducer } from "../features/login/model/auth-reducer/authReducer";
+import { authReducer } from "../features/login/model/auth-reducer/auth-reducer";
 
 const rootReducer = {
   app: appReducer,
-  todolists: todolistsSlice.reducer,
+  todolists: todolistsReducer,
   tasks: tasksReducer,
   auth: authReducer,
 };

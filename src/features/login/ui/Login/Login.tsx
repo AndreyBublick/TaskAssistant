@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { Box, Button, Checkbox, Container, FormControlLabel, TextField, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useFormik } from "formik";
-import { getIsAuth, login } from "../../model/auth-reducer/authReducer";
+import { getIsAuth, login } from "../../model/auth-reducer/auth-reducer";
 import { useAppDispatch, useAppSelector } from "common/hooks/Hooks";
 import { Navigate } from "react-router";
 

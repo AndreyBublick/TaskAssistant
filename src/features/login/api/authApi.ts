@@ -4,7 +4,7 @@ import type { ResponseType } from "common/types/types";
 
 export const authApi = {
   login: (payload: LoginPayload) => {
-    return instance.post<ResponseType<{ userId: number }>>("/auth/login", payload);
+    return instance.post<ResponseType<{ userId: number; token: string }>>("/auth/login", payload);
   },
   me: () => instance.get<ResponseType<userData>>("/auth/me"),
   logout: () => instance.delete<ResponseType>("/auth/login"),

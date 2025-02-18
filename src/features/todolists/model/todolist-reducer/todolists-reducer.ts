@@ -2,13 +2,13 @@ import type { TodolistType } from "../../api/todolistsApi.types";
 import { todolistsApi } from "../../api/todolistsApi";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppStatus, ResultCodeStatus } from "common/enums/enums";
-import { changeAppStatus, setAppError } from "app/app-reducer";
+import { changeAppStatus } from "app/app-reducer";
 import { handleServerAppError, handleServerNetworkError } from "common/utils/utils";
 import { fetchTasksTC } from "../tasks-reducer/tasks-reducer";
 
 const initialState: TodoListDomainType[] = [];
 
-export const todolistsSlice = createSlice({
+const todolistsSlice = createSlice({
   name: "todolists",
   initialState,
   selectors: {
@@ -80,7 +80,7 @@ export const todolistsSlice = createSlice({
       });
   },
 });
-
+export const todolistsReducer = todolistsSlice.reducer;
 export const { updateTodoListFilter, updateTodoListStatus, clearTodolists } = todolistsSlice.actions;
 export const { getTodoLists, getTodoListStatus } = todolistsSlice.selectors;
 

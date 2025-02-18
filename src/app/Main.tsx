@@ -19,7 +19,7 @@ export const Main = memo(() => {
   return (
     <Container fixed>
       <AddItemFormWrapper>
-        <AddItemForm callBack={addNewTodoList} />
+        <AddItemForm label={"new TodoList"} callBack={addNewTodoList} />
       </AddItemFormWrapper>
       <Grid2 container spacing={2}>
         <TodoLists />
