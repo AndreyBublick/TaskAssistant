@@ -1,14 +1,14 @@
 import React, { FC, memo, useContext, useMemo } from "react";
 
 import styled from "styled-components";
-import { useAppSelector } from "common/hooks/Hooks";
 
 import { Task } from "./task/Task";
-import { TodolistContext } from "common/contexts/TodolistContext";
 import { FilterValuesType } from "../../../../model/todolist-reducer/todolists-reducer";
 import { getTasks } from "../../../../model/tasks-reducer/tasks-reducer";
-import { StatusTask } from "common/enums/enums";
 import type { TaskType } from "../../../../api/tasksApi.types";
+import { TodolistContext } from "common/contexts";
+import { useAppSelector } from "common/hooks";
+import { StatusTask } from "common/enums";
 
 type PropsType = {
   filter: FilterValuesType;
@@ -16,9 +16,10 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
-  const tasks = useAppSelector((state) => getTasks({ tasks: state.tasks }, id)) || [];
-
+  /*const tasks = useAppSelector((state) => getTasks({ tasks: state.tasks }, id)) || [];*/ /*important*/
+  const tasks = useAppSelector((state) => getTasks(state, id));
   const tasksForTodoList: TaskType[] = useMemo(() => {
+    if (!tasks) return [];
     switch (filter) {
       case "active": {
         return tasks.filter((t) => t.status === StatusTask.New);
@@ -35,9 +36,7 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
     }
   }, [filter, tasks]);
 
-  const tasksForTodoListMapped = tasksForTodoList.map((t) => {
-    return <Task task={t} key={t.id} />;
-  });
+  const tasksForTodoListMapped = tasksForTodoList.map((t) => <Task task={t} key={t.id} />);
 
   return <>{tasksForTodoList.length > 0 ? <List>{tasksForTodoListMapped}</List> : <h2>Задачи отсутствуют</h2>}</>;
 });

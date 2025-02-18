@@ -1,13 +1,12 @@
 import React, { FC, memo, useCallback, useContext } from "react";
-import { EditableSpan } from "common/components/editableSpan/EditableSpan";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { useTask } from "common/hooks/useTask";
-import { AppStatus, StatusTask } from "common/enums/enums";
 import type { TaskType } from "../../../../../api/tasksApi.types";
-import { useAppSelector } from "common/hooks/Hooks";
 import { getTodoListStatus } from "../../../../../model/todolist-reducer/todolists-reducer";
-import { TodolistContext } from "common/contexts/TodolistContext";
+import { TodolistContext } from "common/contexts";
+import { useAppSelector, useTask } from "common/hooks";
+import { AppStatus, StatusTask } from "common/enums";
+import { EditableSpan } from "common/components";
 
 type Props = {
   task: TaskType;

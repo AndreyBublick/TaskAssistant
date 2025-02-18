@@ -7,10 +7,10 @@ import { Tasks } from "./tasks/Tasks";
 import { TodolistContext } from "common/contexts/TodolistContext";
 import { FilterButtons } from "./filterButtons/FilterButtons";
 import { TodolistTitle } from "./todolistTitle/TodolistTitle";
-import { useTodolist } from "common/hooks/useTodolist";
 import { TodoListDomainType } from "../../../model/todolist-reducer/todolists-reducer";
-import { AddItemForm } from "common/components/addItemForm/AddItemForm";
-import { AppStatus } from "common/enums/enums";
+import { useTodolist } from "common/hooks";
+import { AddItemForm } from "common/components";
+import { AppStatus } from "common/enums";
 
 type PropsType = {
   todoList: TodoListDomainType;

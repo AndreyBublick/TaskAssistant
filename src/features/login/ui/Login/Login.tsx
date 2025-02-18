@@ -11,7 +11,7 @@ export const Login: FC<Props> = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
 
-  const formik = useFormik({
+  const { errors, getFieldProps, handleSubmit, values } = useFormik({
     validate: (values) => {
       const errors: any = {};
       if (!values.email) {
@@ -41,25 +41,25 @@ export const Login: FC<Props> = () => {
         <Navigate to={"/"} />
       ) : (
         <Container maxWidth="sm" sx={{ display: "flex", justifyContent: "center" }}>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <BoxStyled>
               <TypographyStyled fontWeight={700} variant={"h5"}>
                 Sign in
               </TypographyStyled>
 
               <TypographyStyled variant={"body1"}>Welcome, please sign in to continue</TypographyStyled>
-              {formik.errors.email && <div>Email is required</div>}
+              {errors.email && <div>Email is required</div>}
               <TextFieldStyled
-                {...formik.getFieldProps("email")}
+                {...getFieldProps("email")}
                 size={"small"}
                 name={"email"}
                 label="Email"
                 type={"email"}
                 variant="outlined"
               />
-              {formik.errors.password && <div>Password is required</div>}
+              {errors.password && <div>Password is required</div>}
               <TextFieldStyled
-                {...formik.getFieldProps("password")}
+                {...getFieldProps("password")}
                 size={"small"}
                 type={"password"}
                 label="Password"
@@ -67,7 +67,7 @@ export const Login: FC<Props> = () => {
               />
               <FormControlLabel
                 sx={{ marginBottom: "10px" }}
-                control={<Checkbox {...formik.getFieldProps("rememberMe")} checked={formik.values.rememberMe} />}
+                control={<Checkbox {...getFieldProps("rememberMe")} checked={values.rememberMe} />}
                 label="Remember me"
               />
               <Button

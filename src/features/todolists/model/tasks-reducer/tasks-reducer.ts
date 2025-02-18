@@ -1,13 +1,11 @@
-import { RootState } from "app/store";
-
-import type { Model, TaskType } from "../../api/tasksApi.types";
-import type { StatusTask } from "common/enums/enums";
-import { AppStatus, ResultCodeStatus, TaskPriority } from "common/enums/enums";
-import { tasksApi } from "../../api/tasksApi";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { addTodoListTC, deleteTodoListTC } from "../todolist-reducer/todolists-reducer";
 import { changeAppStatus } from "app/app-reducer";
-import { handleServerAppError, handleServerNetworkError } from "common/utils/utils";
+import { AppStatus, ResultCodeStatus, StatusTask, TaskPriority } from "common/enums";
+import { tasksApi } from "../../api/tasksApi";
+import { handleServerAppError, handleServerNetworkError } from "common/utils";
+import type { RootState } from "app/store";
+import type { Model, TaskType } from "../../api/tasksApi.types";
 
 const initialState: TaskItemType = {};
 

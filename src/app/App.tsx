@@ -1,15 +1,13 @@
-import React, { FC, useEffect } from "react";
-import "../App.css";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Header } from "common/components/header/Header";
-import { useAppDispatch, useAppSelector } from "common/hooks/Hooks";
-import { getTheme } from "common/theme/Theme";
-
-import { getAppError, getAppIsInitialized, getModeTheme } from "./app-reducer";
-import { AlertStatus } from "common/components/alertStatus/AlertStatus";
-import { Route, Routes } from "react-router";
-import { routes } from "common/routes/routes";
+import { useAppDispatch, useAppSelector } from "common/hooks";
+import type { FC } from "react";
+import { getAppError, getAppIsInitialized, getModeTheme } from "app/app-reducer";
+import { getTheme } from "common/theme";
+import { useEffect } from "react";
 import { fetchAuthMe } from "../features/login/model/auth-reducer/auth-reducer";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AlertStatus, Header } from "common/components";
+import { Route, Routes } from "react-router";
+import { routes } from "common/routes";
 
 export const App: FC = () => {
   const themeMode = useAppSelector(getModeTheme);

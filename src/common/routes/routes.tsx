@@ -1,8 +1,8 @@
 import type { ReactElement } from "react";
 import { Login } from "../../features/login/ui/Login/Login";
 import { Main } from "app/Main";
-import { ProtectedRoute } from "common/components/ProtectedRoute/ProtectedRoute";
-import { ErrorPage } from "common/components/ErrorPage";
+import { ProtectedRoute } from "common/components/ProtectedRoute";
+import { ErrorPage } from "common/components";
 
 export const PATH = {
   LOGIN: "login",

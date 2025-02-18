@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { LoginPayload } from "../../api/authApi";
-import { authApi } from "../../api/authApi";
 import { changeAppInitialized, changeAppStatus } from "app/app-reducer";
-import { AppStatus, ResultCodeStatus } from "common/enums/enums";
+import { AppStatus, ResultCodeStatus } from "common/enums";
+import { authApi } from "../../api/authApi";
+import { handleServerAppError, handleServerNetworkError } from "common/utils";
 import { clearTodolists } from "../../../todolists/model/todolist-reducer/todolists-reducer";
 import { clearTasks } from "../../../todolists/model/tasks-reducer/tasks-reducer";
-import { handleServerAppError, handleServerNetworkError } from "common/utils/utils";
 
 const initialState = {
   isAuth: false,

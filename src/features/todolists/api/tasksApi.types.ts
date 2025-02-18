@@ -1,5 +1,4 @@
-import type { StatusTask } from "common/enums/enums";
-import { TaskPriority } from "common/enums/enums";
+import type { StatusTask, TaskPriority } from "common/enums";
 
 export type TaskType = {
   id: string;

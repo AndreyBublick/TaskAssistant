@@ -1,7 +1,7 @@
-import { instance } from "common/instance/instance";
+import { instance } from "common/instance";
 import type { TodolistType } from "./todolistsApi.types";
 
-import type { ResponseType } from "common/types/types";
+import type { ResponseType } from "common/types";
 
 export const todolistsApi = {
   getTodolists() {

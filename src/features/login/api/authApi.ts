@@ -1,6 +1,6 @@
-import { instance } from "common/instance/instance";
+import { instance } from "common/instance";
 
-import type { ResponseType } from "common/types/types";
+import type { ResponseType } from "common/types";
 
 export const authApi = {
   login: (payload: LoginPayload) => {

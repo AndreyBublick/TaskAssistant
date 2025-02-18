@@ -3,10 +3,10 @@ import { Button, ButtonProps } from "@mui/material";
 
 import React, { FC } from "react";
 
-export const MenuButton: FC<ButtonProps> = (props) => {
+export const MenuButton: FC<ButtonProps> = ({ children, ...props }) => {
   return (
-    <ButtonStyled {...props} variant={"contained"}>
-      Login
+    <ButtonStyled variant={"contained"} {...props}>
+      {children}
     </ButtonStyled>
   );
 };

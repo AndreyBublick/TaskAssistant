@@ -2,8 +2,8 @@ import React, { FC, memo, useCallback, useContext } from "react";
 import { Button } from "@mui/material";
 import styled from "styled-components";
 import { FilterValuesType, updateTodoListFilter } from "../../../../model/todolist-reducer/todolists-reducer";
-import { useAppDispatch } from "common/hooks/Hooks";
-import { TodolistContext } from "common/contexts/TodolistContext";
+import { useAppDispatch } from "common/hooks";
+import { TodolistContext } from "common/contexts";
 
 type Props = {
   filter: FilterValuesType;
