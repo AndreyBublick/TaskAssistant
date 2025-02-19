@@ -1,13 +1,13 @@
-import { useAppDispatch, useAppSelector } from "common/hooks";
-import type { FC } from "react";
-import { getAppError, getAppIsInitialized, getModeTheme } from "app/app-reducer";
-import { getTheme } from "common/theme";
-import { useEffect } from "react";
-import { fetchAuthMe } from "../features/login/model/auth-reducer/auth-reducer";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { AlertStatus, Header } from "common/components";
-import { Route, Routes } from "react-router";
-import { routes } from "common/routes";
+import { getAppError, getAppIsInitialized, getModeTheme } from 'app/app-reducer';
+import { fetchAuthMe } from '../features/login/model/auth-reducer/auth-reducer';
+import { useAppDispatch, useAppSelector } from 'common/hooks';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { AlertStatus, Header } from 'common/components';
+import { Route, Routes } from 'react-router';
+import { getTheme } from 'common/theme';
+import { routes } from 'common/routes';
+import { useEffect } from 'react';
+import type { FC } from 'react';
 
 export const App: FC = () => {
   const themeMode = useAppSelector(getModeTheme);
@@ -31,7 +31,7 @@ export const App: FC = () => {
         {isOpen && <AlertStatus />}
         {initialized && (
           <Routes>
-            {routes.map((route) => (
+            {routes.map(route => (
               <Route key={route.path} path={route.path} element={route.element} />
             ))}
           </Routes>
