@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { addTodoListTC, deleteTodoListTC } from '../todolist-reducer/todolists-reducer';
 import { changeAppStatus } from 'app/app-reducer';
-import { AppStatus, ResultCodeStatus, StatusTask, TaskPriority } from 'common/enums';
+import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { tasksApi } from '../../api/tasksApi';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
 import type { RootState } from 'app/store';
@@ -194,15 +194,6 @@ export const tasksReducer = tasksSlice.reducer;
 export const { getTasks } = tasksSlice.selectors;
 export const { clearTasks } = tasksSlice.actions;
 
-export type TaskItemType = {
-  [key: string]: TaskType[];
-};
+export type TaskItemType = Record<string, TaskType[]>;
 
-type DomainModel = {
-  title?: string;
-  description?: string | null;
-  status?: StatusTask;
-  priority?: TaskPriority;
-  startDate?: string | null;
-  deadline?: string | null;
-};
+type DomainModel = Partial<Model>;

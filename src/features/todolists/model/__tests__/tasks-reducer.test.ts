@@ -1,4 +1,4 @@
-import { v1 } from "uuid";
+import { v1 } from 'uuid';
 
 import {
   addTaskAC,
@@ -9,14 +9,14 @@ import {
   tasksReducer,
   TaskDomainType,
   setTasksAC,
-} from "../tasks-reducer/tasks-reducer";
-import { removeTodoListAC, setTodoListsAC } from "../todolist-reducer/todolists-reducer";
-import { StatusTask, TaskPriority } from "../api/todolists-api";
+} from '../tasks-reducer/tasks-reducer';
+import { removeTodoListAC, setTodoListsAC } from '../todolist-reducer/todolists-reducer';
+import { StatusTask, TaskPriority } from '../api/todolists-api';
 
 let IdForFirstTodoList: string;
 let IdForSecondTodoList: string;
 let IdForThirdTodoList: string;
-let todoTasks: { [key: string]: TaskDomainType[] } = {};
+let todoTasks: Record<string, TaskDomainType[]> = {};
 let id: string;
 
 beforeEach(() => {
@@ -29,238 +29,238 @@ beforeEach(() => {
     [IdForFirstTodoList]: [
       {
         id: v1(),
-        title: "HTML&CSS",
+        title: 'HTML&CSS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "JS",
+        title: 'JS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "ReactJS",
+        title: 'ReactJS',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "Rest API",
+        title: 'Rest API',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "GraphQL",
+        title: 'GraphQL',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "GraphQL",
+        title: 'GraphQL',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
     ],
     [IdForSecondTodoList]: [
       {
         id: v1(),
-        title: "HTML&CSS",
+        title: 'HTML&CSS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "JS",
+        title: 'JS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "ReactJS",
+        title: 'ReactJS',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "Rest API",
+        title: 'Rest API',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "GraphQL",
+        title: 'GraphQL',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "GraphQL",
+        title: 'GraphQL',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
     ],
     [IdForThirdTodoList]: [
       {
         id: v1(),
-        title: "HTML&CSS",
+        title: 'HTML&CSS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "JS",
+        title: 'JS',
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "ReactJS",
+        title: 'ReactJS',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "Rest API",
+        title: 'Rest API',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: id,
-        title: "GraphQL1",
+        title: 'GraphQL1',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
       {
         id: v1(),
-        title: "GraphQL2",
+        title: 'GraphQL2',
         status: StatusTask.New,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
     ],
   };
 });
 
-test("should remove task", () => {
+test('should remove task', () => {
   expect(todoTasks[IdForThirdTodoList].length).toBe(6);
   const endState = tasksReducer(todoTasks, removeTaskAC({ todoListId: IdForThirdTodoList, id }));
   expect(endState[IdForThirdTodoList].length).toBe(5);
-  expect(endState[IdForThirdTodoList][3].title).toBe("Rest API");
-  expect(endState[IdForThirdTodoList][4].title).toBe("GraphQL2");
+  expect(endState[IdForThirdTodoList][3].title).toBe('Rest API');
+  expect(endState[IdForThirdTodoList][4].title).toBe('GraphQL2');
   expect(endState[IdForThirdTodoList][5]).toBe(undefined);
 });
-test("should add task", () => {
-  const titleNewTask = "new title";
+test('should add task', () => {
+  const titleNewTask = 'new title';
 
   expect(todoTasks[IdForSecondTodoList].length).toBe(6);
 
@@ -273,12 +273,12 @@ test("should add task", () => {
         title: titleNewTask,
         status: StatusTask.Completed,
         order: 0,
-        deadline: "",
-        addedDate: "",
-        startDate: "",
-        todoListId: "",
+        deadline: '',
+        addedDate: '',
+        startDate: '',
+        todoListId: '',
         priority: TaskPriority.Low,
-        description: "",
+        description: '',
       },
     }),
   );
@@ -288,7 +288,7 @@ test("should add task", () => {
   expect(endState[IdForSecondTodoList][endState[IdForSecondTodoList].length - 1].title).toBe(titleNewTask);
   expect(endState[IdForThirdTodoList].length).toBe(6);
 });
-test("should change task status status", () => {
+test('should change task status status', () => {
   expect(todoTasks[IdForSecondTodoList][3].status).toBe(
     StatusTask.New,
   ); /*idTodoList: string, id: string, status: boolean*/
@@ -302,12 +302,12 @@ test("should change task status status", () => {
   );
   expect(endState[IdForSecondTodoList][0].status).toBe(StatusTask.Completed);
 });
-test("should change task title", () => {
-  const newTitle = "new our title";
+test('should change task title', () => {
+  const newTitle = 'new our title';
 
   const task = todoTasks[IdForThirdTodoList][todoTasks[IdForSecondTodoList].length - 2];
 
-  expect(task.title).toBe("GraphQL1");
+  expect(task.title).toBe('GraphQL1');
   expect(task.id).toBe(id);
   /*idTodoList: string, id: string, title: string*/
   const endState = tasksReducer(
@@ -318,13 +318,13 @@ test("should change task title", () => {
   expect(endState[IdForThirdTodoList][4].title).toBe(newTitle);
   expect(endState[IdForThirdTodoList][4].id).toBe(id);
 });
-test("should delete tasks by ID TodoLists", () => {
+test('should delete tasks by ID TodoLists', () => {
   expect(Object.keys(todoTasks).length).toBe(3);
   const endState = tasksReducer(todoTasks, removeTodoListAC(IdForFirstTodoList));
   expect(Object.keys(endState).length).toBe(2);
   expect(endState[IdForFirstTodoList]).toBe(undefined);
 });
-test("should delete all the tasks in a todolist", () => {
+test('should delete all the tasks in a todolist', () => {
   const endState = tasksReducer(todoTasks, removeAllTasksAC({ todoListId: IdForSecondTodoList }));
 
   expect(endState[IdForFirstTodoList].length > 0).toBeTruthy();
@@ -333,25 +333,25 @@ test("should delete all the tasks in a todolist", () => {
   expect(endState[IdForThirdTodoList].length > 0).toBeTruthy();
 });
 
-test("should set tasks", () => {
+test('should set tasks', () => {
   const endState = tasksReducer(
     {},
     setTodoListsAC([
-      { id: "31", order: 0, title: "title1", addedDate: "" },
-      { id: "32", order: 0, title: "title2", addedDate: "" },
+      { id: '31', order: 0, title: 'title1', addedDate: '' },
+      { id: '32', order: 0, title: 'title2', addedDate: '' },
     ]),
   );
 
-  expect(endState["31"].length).toBe(0);
-  expect(endState["31"]).toEqual([]);
+  expect(endState['31'].length).toBe(0);
+  expect(endState['31']).toEqual([]);
 
-  expect(endState["32"].length).toBe(0);
+  expect(endState['32'].length).toBe(0);
 
-  expect(endState["32"]).toEqual([]);
+  expect(endState['32']).toEqual([]);
 });
 
-test("should be added tasks for todolist", () => {
-  const id = "121";
+test('should be added tasks for todolist', () => {
+  const id = '121';
 
   const endState = tasksReducer(
     {},
@@ -359,21 +359,21 @@ test("should be added tasks for todolist", () => {
       todolistId: id,
       tasks: [
         {
-          id: "31",
+          id: '31',
           status: StatusTask.New,
           order: 0,
-          deadline: "",
+          deadline: '',
           todoListId: id,
-          title: "Oreo",
+          title: 'Oreo',
           priority: 0,
-          addedDate: "",
-          startDate: "",
-          description: "",
+          addedDate: '',
+          startDate: '',
+          description: '',
         },
       ],
     }),
   );
 
-  expect(endState["121"].length).toBe(1);
-  expect(endState["121"][0].todoListId).toBe(id);
+  expect(endState['121'].length).toBe(1);
+  expect(endState['121'][0].todoListId).toBe(id);
 });
