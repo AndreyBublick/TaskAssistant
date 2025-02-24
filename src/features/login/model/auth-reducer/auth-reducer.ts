@@ -1,34 +1,33 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { LoginPayload } from "../../api/authApi";
-import { changeAppInitialized, changeAppStatus } from "app/app-reducer";
-import { AppStatus, ResultCodeStatus } from "common/enums";
-import { authApi } from "../../api/authApi";
-import { handleServerAppError, handleServerNetworkError } from "common/utils";
-import { clearTodolists } from "../../../todolists/model/todolist-reducer/todolists-reducer";
-import { clearTasks } from "../../../todolists/model/tasks-reducer/tasks-reducer";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { LoginPayload } from '../../api/authApi';
+import { changeAppInitialized, changeAppStatus } from 'app/app-reducer';
+import { AppStatus, ResultCodeStatus } from 'common/enums';
+import { authApi } from '../../api/authApi';
+import { handleServerAppError, handleServerNetworkError } from 'common/utils';
+import { clearTodolists } from '../../../todolists/model/todolist-reducer/todolists-reducer';
 
 const initialState = {
   isAuth: false,
 };
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   selectors: {
-    getIsAuth: (state) => state.isAuth,
+    getIsAuth: state => state.isAuth,
   },
   reducers: {
     changeIsAuth: (state, action: PayloadAction<{ isAuth: boolean }>) => {
       state.isAuth = action.payload.isAuth;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addCase(fetchAuthMe.fulfilled, (state, action) => {
         if (action.payload) {
           state.isAuth = action.payload.isAuth;
         }
       })
-      .addCase(login.rejected, (state) => {
+      .addCase(login.rejected, state => {
         state.isAuth = false;
       });
     /*.addCase(login.fulfilled, (state, action) => {
@@ -49,13 +48,13 @@ export const authReducer = authSlice.reducer;
 export const { getIsAuth } = authSlice.selectors;
 export const { changeIsAuth } = authSlice.actions;
 
-export const login = createAsyncThunk("auth/login", async (payload: LoginPayload, thunkAPI) => {
+export const login = createAsyncThunk('auth/login', async (payload: LoginPayload, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await authApi.login(payload);
 
     if (response.data.resultCode === ResultCodeStatus.success) {
-      localStorage.setItem("sn-token", response.data.data.token);
+      localStorage.setItem('sn-token', response.data.data.token);
       thunkAPI.dispatch(changeIsAuth({ isAuth: true }));
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
       handleServerAppError({ thunkAPI, response });
@@ -68,16 +67,16 @@ export const login = createAsyncThunk("auth/login", async (payload: LoginPayload
   }
 });
 
-export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await authApi.logout();
 
     if (response.data.resultCode === ResultCodeStatus.success) {
-      localStorage.removeItem("sn-token");
+      localStorage.removeItem('sn-token');
       thunkAPI.dispatch(changeIsAuth({ isAuth: false }));
       thunkAPI.dispatch(clearTodolists());
-      thunkAPI.dispatch(clearTasks());
+      /*thunkAPI.dispatch(clearTasks());*/
     } else if (response.data.resultCode === ResultCodeStatus.fail) {
       handleServerAppError({ thunkAPI, response });
     }
@@ -87,7 +86,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.succeeded }));
   }
 });
-export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe", async (_, thunkAPI) => {
+export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async (_, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await authApi.me();

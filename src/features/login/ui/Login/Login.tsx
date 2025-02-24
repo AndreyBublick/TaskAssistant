@@ -30,8 +30,14 @@ export const Login: FC<Props> = () => {
       password: '',
       rememberMe: false,
     },
-    onSubmit: values => {
-      dispatch(login(values));
+    onSubmit: async (values /*formikHelpers*/) => {
+      await dispatch(login(values));
+      /*   console.log(response);
+
+      formikHelpers.setErrors({
+        email: 'Required',
+        password: 'Required',
+      });*/
 
       /* alert(JSON.stringify(values, null, 2));*/
     },

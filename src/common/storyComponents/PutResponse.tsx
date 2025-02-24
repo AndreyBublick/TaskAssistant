@@ -75,7 +75,6 @@ export const PutResponse = () => {
               onBlur={changeTaskTitle as (todolistId: string, title: string, taskId?: string | undefined) => void}
             />
           ))}
-          {/*<li key={tsk.id} >{tsk.title}</li>*/}
         </ul>
       ) : (
         false
@@ -85,8 +84,6 @@ export const PutResponse = () => {
 
   return (
     <Wrapper>
-      {/* {state ? JSON.stringify(state) : 'Waiting...'}*/}
-
       <List>{mappedTodos}</List>
     </Wrapper>
   );

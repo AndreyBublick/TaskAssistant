@@ -2,7 +2,7 @@ import type { TodolistType } from '../../api/todolistsApi.types';
 import { todolistsApi } from '../../api/todolistsApi';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { changeAppStatus } from 'app/app-reducer';
-import { fetchTasksTC } from '../tasks-reducer/tasks-reducer';
+import { fetchTasks } from '../tasks-reducer/tasks-reducer';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
 
@@ -34,9 +34,7 @@ const todolistsSlice = createSlice({
         state[todoListIndex].status = action.payload.status;
       }
     },
-    clearTodolists: state => {
-      state.length = 0;
-    },
+    clearTodolists: () => [],
   },
   extraReducers: builder => {
     builder
@@ -89,7 +87,7 @@ export const fetchTodoListsTC = createAsyncThunk('todolists/fetchTodoLists', asy
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
     const response = await todolistsApi.getTodolists();
 
-    response.data.forEach(td => thunkAPI.dispatch(fetchTasksTC(td.id)));
+    response.data.forEach(td => thunkAPI.dispatch(fetchTasks(td.id)));
 
     return response.data;
   } catch (error) {
