@@ -3,15 +3,20 @@ import { getIsAuth, login } from '../../model/authSlice/authSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { styled } from '@mui/material/styles';
 import { Navigate } from 'react-router';
-import { useFormik } from 'formik';
 import type { FC } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 type Props = {};
+type HookForm = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 export const Login: FC<Props> = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
 
-  const { errors, getFieldProps, handleSubmit, values } = useFormik({
+  /*const { errors, getFieldProps, handleSubmit, values } = useFormik({
     validate: values => {
       const errors: any = {};
       if (!values.email) {
@@ -30,28 +35,35 @@ export const Login: FC<Props> = () => {
       password: '',
       rememberMe: false,
     },
-    onSubmit: async (values /*formikHelpers*/) => {
+    onSubmit: async (values /!*formikHelpers*!/) => {
       await dispatch(login(values));
-      /*   console.log(response);
-
-      formikHelpers.setErrors({
-        email: 'Required',
-        password: 'Required',
-      });*/
-
-      /* alert(JSON.stringify(values, null, 2));*/
     },
+  });*/
+
+  const {
+    register,
+    handleSubmit,
+    formState,
+    formState: { errors },
+    control,
+  } = useForm<HookForm>({
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: true,
+    },
+    mode: 'onChange',
   });
+  const onSubmit = (values: HookForm) => dispatch(login(values));
 
-  const isActivate = Object.keys(errors).length > 0;
-
+  const isActivate = Object.keys(formState.errors).length > 0;
   return (
     <>
       {isAuth ? (
         <Navigate to={'/'} />
       ) : (
         <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center' }}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <BoxStyled>
               <TypographyStyled fontWeight={700} variant={'h5'}>
                 Sign in
@@ -59,31 +71,54 @@ export const Login: FC<Props> = () => {
 
               <TypographyStyled variant={'body1'}>Welcome, please sign in to continue</TypographyStyled>
               {/*  {errors.email && <div>Email is required</div>}*/}
+              {/*{...getFieldProps('email')}*/}
               <TextFieldStyled
-                {...getFieldProps('email')}
+                {...register('email', {
+                  required: 'Email is required',
+                  validate: value => {
+                    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    return emailValid.test(value) ? true : 'Invalid email address';
+                  },
+                })}
                 size={'small'}
-                name={'email'}
+                /* name={'email'}*/
                 label={'Email'}
                 type={'email'}
                 variant={'outlined'}
                 error={!!errors.email}
-                helperText={errors.email}
+                helperText={errors.email?.message}
               />
 
+              {/* {...getFieldProps('password')}*/}
               <TextFieldStyled
-                {...getFieldProps('password')}
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 3,
+                    message: 'Password must be at least 3 characters long',
+                  },
+                })}
                 size={'small'}
                 type={'password'}
+                /* name={'password'}*/
                 label={'Password'}
                 variant={'outlined'}
                 required={true}
                 error={!!errors.password}
-                helperText={errors.password}
+                helperText={errors.password?.message}
               />
               {/*  {errors.password && }*/}
               <FormControlLabel
                 sx={{ marginBottom: '10px' }}
-                control={<Checkbox {...getFieldProps('rememberMe')} checked={values.rememberMe} />}
+                control={
+                  <Controller
+                    name={'rememberMe'}
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox {...field} checked={field.value} onChange={e => field.onChange(e.target.checked)} />
+                    )}
+                  />
+                }
                 label="Remember me"
               />
               <Button
