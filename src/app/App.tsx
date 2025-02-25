@@ -1,5 +1,5 @@
-import { getAppError, getAppIsInitialized, getModeTheme } from 'app/app-reducer';
-import { fetchAuthMe } from '../features/login/model/auth-reducer/auth-reducer';
+import { getAppError, getAppIsInitialized, getModeTheme } from 'app/appSlice';
+import { fetchAuthMe } from '../features/login/model/authSlice/authSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AlertStatus, Header } from 'common/components';

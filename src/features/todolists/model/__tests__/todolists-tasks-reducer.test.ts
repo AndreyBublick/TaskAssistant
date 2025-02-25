@@ -1,4 +1,4 @@
-import type { TodoListDomainType } from '../todolist-reducer/todolists-reducer';
+import type { TodoListDomainType } from '../todolistSlice/todolistsSlice';
 
 let IdForFirstTodoList: string;
 let IdForSecondTodoList: string;

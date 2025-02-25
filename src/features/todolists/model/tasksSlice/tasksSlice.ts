@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { addTodoListTC, clearTodolists, deleteTodoListTC } from '../todolist-reducer/todolists-reducer';
-import { changeAppStatus } from 'app/app-reducer';
+import { addTodoListTC, clearTodolists, deleteTodoListTC } from '../todolistSlice/todolistsSlice';
+import { changeAppStatus } from 'app/appSlice';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { tasksApi } from '../../api/tasksApi';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
@@ -15,7 +15,7 @@ const tasksSlice = createSlice({
   selectors: {
     getTasks: (state, todoListId: string) => state[todoListId],
   },
-  reducers: {},
+  reducers: create => ({}),
   extraReducers: builder => {
     builder
       .addCase(fetchTasks.fulfilled, (state, action) => {

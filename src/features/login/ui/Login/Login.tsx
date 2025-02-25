@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
-import { getIsAuth, login } from '../../model/auth-reducer/auth-reducer';
+import { getIsAuth, login } from '../../model/authSlice/authSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { styled } from '@mui/material/styles';
 import { Navigate } from 'react-router';

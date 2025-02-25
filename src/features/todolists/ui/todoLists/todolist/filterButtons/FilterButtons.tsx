@@ -1,9 +1,9 @@
-import React, { FC, memo, useCallback, useContext } from "react";
-import { Button } from "@mui/material";
-import styled from "styled-components";
-import { FilterValuesType, updateTodoListFilter } from "../../../../model/todolist-reducer/todolists-reducer";
-import { useAppDispatch } from "common/hooks";
-import { TodolistContext } from "common/contexts";
+import React, { FC, memo, useCallback, useContext } from 'react';
+import { Button } from '@mui/material';
+import styled from 'styled-components';
+import { FilterValuesType, updateTodoListFilter } from '../../../../model/todolistSlice/todolistsSlice';
+import { useAppDispatch } from 'common/hooks';
+import { TodolistContext } from 'common/contexts';
 
 type Props = {
   filter: FilterValuesType;
@@ -23,43 +23,39 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
   return (
     <ButtonsWrapper>
       <Button
-        size={"small"}
-        variant={filter === "all" ? "contained" : "text"}
-        title={"all"}
+        size={'small'}
+        variant={filter === 'all' ? 'contained' : 'text'}
+        title={'all'}
         onClick={() => {
-          changeFilter("all");
-        }}
-      >
+          changeFilter('all');
+        }}>
         all
       </Button>
       <Button
-        size={"small"}
-        variant={filter === "active" ? "contained" : "text"}
-        title={"Active"}
+        size={'small'}
+        variant={filter === 'active' ? 'contained' : 'text'}
+        title={'Active'}
         onClick={() => {
-          changeFilter("active");
-        }}
-      >
+          changeFilter('active');
+        }}>
         Active
       </Button>
       <Button
-        size={"small"}
-        variant={filter === "completed" ? "contained" : "text"}
-        title={"Completed"}
+        size={'small'}
+        variant={filter === 'completed' ? 'contained' : 'text'}
+        title={'Completed'}
         onClick={() => {
-          changeFilter("completed");
-        }}
-      >
+          changeFilter('completed');
+        }}>
         Completed
       </Button>
       <Button
-        size={"small"}
-        variant={filter === "three" ? "contained" : "text"}
-        title={"first 3"}
+        size={'small'}
+        variant={filter === 'three' ? 'contained' : 'text'}
+        title={'first 3'}
         onClick={() => {
-          changeFilter("three");
-        }}
-      >
+          changeFilter('three');
+        }}>
         first 3
       </Button>
     </ButtonsWrapper>

@@ -1,8 +1,8 @@
 import type { TodolistType } from '../../api/todolistsApi.types';
 import { todolistsApi } from '../../api/todolistsApi';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { changeAppStatus } from 'app/app-reducer';
-import { fetchTasks } from '../tasks-reducer/tasks-reducer';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { changeAppStatus } from 'app/appSlice';
+import { fetchTasks } from '../tasksSlice/tasksSlice';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
 
@@ -21,21 +21,21 @@ const todolistsSlice = createSlice({
       return null;
     },
   },
-  reducers: {
-    updateTodoListFilter: (state, action: PayloadAction<{ id: string; filter: FilterValuesType }>) => {
+  reducers: create => ({
+    updateTodoListFilter: create.reducer<{ id: string; filter: FilterValuesType }>((state, action) => {
       const todoListIndex = state.findIndex(tl => tl.id === action.payload.id);
       if (todoListIndex !== -1) {
         state[todoListIndex].filter = action.payload.filter;
       }
-    },
-    updateTodoListStatus: (state, action: PayloadAction<{ id: string; status: AppStatus }>) => {
+    }),
+    updateTodoListStatus: create.reducer<{ id: string; status: AppStatus }>((state, action) => {
       const todoListIndex = state.findIndex(tl => tl.id === action.payload.id);
       if (todoListIndex !== -1) {
         state[todoListIndex].status = action.payload.status;
       }
-    },
-    clearTodolists: () => [],
-  },
+    }),
+    clearTodolists: create.reducer(() => []),
+  }),
   extraReducers: builder => {
     builder
       .addCase(fetchTodoListsTC.fulfilled, (state, action) => {

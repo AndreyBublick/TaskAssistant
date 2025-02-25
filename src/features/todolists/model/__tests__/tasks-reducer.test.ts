@@ -6,11 +6,11 @@ import {
   /*changeTitleTaskAC,*/
   removeAllTasksAC,
   removeTaskAC,
-  tasksReducer,
+  tasksSlice,
   TaskDomainType,
   setTasksAC,
-} from '../tasks-reducer/tasks-reducer';
-import { removeTodoListAC, setTodoListsAC } from '../todolist-reducer/todolists-reducer';
+} from '../tasksSlice/tasksSlice';
+import { removeTodoListAC, setTodoListsAC } from '../todolistSlice/todolistsSlice';
 import { StatusTask, TaskPriority } from '../api/todolists-api';
 
 let IdForFirstTodoList: string;
@@ -253,7 +253,7 @@ beforeEach(() => {
 
 test('should remove task', () => {
   expect(todoTasks[IdForThirdTodoList].length).toBe(6);
-  const endState = tasksReducer(todoTasks, removeTaskAC({ todoListId: IdForThirdTodoList, id }));
+  const endState = tasksSlice(todoTasks, removeTaskAC({ todoListId: IdForThirdTodoList, id }));
   expect(endState[IdForThirdTodoList].length).toBe(5);
   expect(endState[IdForThirdTodoList][3].title).toBe('Rest API');
   expect(endState[IdForThirdTodoList][4].title).toBe('GraphQL2');
@@ -264,7 +264,7 @@ test('should add task', () => {
 
   expect(todoTasks[IdForSecondTodoList].length).toBe(6);
 
-  const endState = tasksReducer(
+  const endState = tasksSlice(
     todoTasks,
     addTaskAC({
       todoListId: IdForSecondTodoList,
@@ -292,7 +292,7 @@ test('should change task status status', () => {
   expect(todoTasks[IdForSecondTodoList][3].status).toBe(
     StatusTask.New,
   ); /*idTodoList: string, id: string, status: boolean*/
-  const endState = tasksReducer(
+  const endState = tasksSlice(
     todoTasks,
     updateTaskAC({
       todoListId: IdForFirstTodoList,
@@ -310,7 +310,7 @@ test('should change task title', () => {
   expect(task.title).toBe('GraphQL1');
   expect(task.id).toBe(id);
   /*idTodoList: string, id: string, title: string*/
-  const endState = tasksReducer(
+  const endState = tasksSlice(
     todoTasks,
     updateTaskAC({ todoListId: IdForThirdTodoList, taskId: id, model: { title: newTitle } }),
   );
@@ -320,12 +320,12 @@ test('should change task title', () => {
 });
 test('should delete tasks by ID TodoLists', () => {
   expect(Object.keys(todoTasks).length).toBe(3);
-  const endState = tasksReducer(todoTasks, removeTodoListAC(IdForFirstTodoList));
+  const endState = tasksSlice(todoTasks, removeTodoListAC(IdForFirstTodoList));
   expect(Object.keys(endState).length).toBe(2);
   expect(endState[IdForFirstTodoList]).toBe(undefined);
 });
 test('should delete all the tasks in a todolist', () => {
-  const endState = tasksReducer(todoTasks, removeAllTasksAC({ todoListId: IdForSecondTodoList }));
+  const endState = tasksSlice(todoTasks, removeAllTasksAC({ todoListId: IdForSecondTodoList }));
 
   expect(endState[IdForFirstTodoList].length > 0).toBeTruthy();
   expect(endState[IdForSecondTodoList]).toEqual([]);
@@ -334,7 +334,7 @@ test('should delete all the tasks in a todolist', () => {
 });
 
 test('should set tasks', () => {
-  const endState = tasksReducer(
+  const endState = tasksSlice(
     {},
     setTodoListsAC([
       { id: '31', order: 0, title: 'title1', addedDate: '' },
@@ -353,7 +353,7 @@ test('should set tasks', () => {
 test('should be added tasks for todolist', () => {
   const id = '121';
 
-  const endState = tasksReducer(
+  const endState = tasksSlice(
     {},
     setTasksAC({
       todolistId: id,

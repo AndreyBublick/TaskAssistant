@@ -1,4 +1,4 @@
-import { changeAppStatus, setAppError } from 'app/app-reducer';
+import { changeAppStatus, setAppError } from 'app/appSlice';
 import type { GetThunkAPI } from '@reduxjs/toolkit';
 import { AppStatus } from 'common/enums/enums';
 
@@ -29,4 +29,3 @@ export const handleServerAppError = <T>(data: {
 export const getLastItem = <T>(arr: T[]): T => {
   return arr[arr.length - 1];
 };
-const a = getLastItem(['', '2', '']);

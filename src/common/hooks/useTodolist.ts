@@ -1,10 +1,7 @@
-import { useAppDispatch } from "./Hooks";
-import { useCallback } from "react";
-import {
-  changeTodolistTitleTC,
-  deleteTodoListTC,
-} from "../../features/todolists/model/todolist-reducer/todolists-reducer";
-import { createTaskTC, removeAllTasksTC } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
+import { useAppDispatch } from './Hooks';
+import { useCallback } from 'react';
+import { changeTodolistTitleTC, deleteTodoListTC } from '../../features/todolists/model/todolistSlice/todolistsSlice';
+import { createTaskTC, removeAllTasksTC } from '../../features/todolists/model/tasksSlice/tasksSlice';
 
 export const useTodolist = (id: string) => {
   const dispatch = useAppDispatch();

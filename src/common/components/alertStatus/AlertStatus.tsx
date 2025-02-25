@@ -1,9 +1,9 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback } from 'react';
 
-import { Alert } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { useAppDispatch, useAppSelector } from "common/hooks/Hooks";
-import { getAppError, setAppError } from "app/app-reducer";
+import { Alert } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useAppDispatch, useAppSelector } from 'common/hooks/Hooks';
+import { getAppError, setAppError } from 'app/appSlice';
 
 export const AlertStatus = memo(() => {
   const error = useAppSelector(getAppError);

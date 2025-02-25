@@ -1,10 +1,10 @@
-import { Container, Grid2 } from "@mui/material";
-import { memo, useCallback } from "react";
-import { useAppDispatch } from "common/hooks";
-import { addTodoListTC } from "../features/todolists/model/todolist-reducer/todolists-reducer";
-import { AddItemForm } from "common/components";
-import { TodoLists } from "../features/todolists/ui/todoLists/TodoLists";
-import styled from "styled-components";
+import { Container, Grid2 } from '@mui/material';
+import { memo, useCallback } from 'react';
+import { useAppDispatch } from 'common/hooks';
+import { addTodoListTC } from '../features/todolists/model/todolistSlice/todolistsSlice';
+import { AddItemForm } from 'common/components';
+import { TodoLists } from '../features/todolists/ui/todoLists/TodoLists';
+import styled from 'styled-components';
 
 export const Main = memo(() => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ export const Main = memo(() => {
   return (
     <Container fixed>
       <AddItemFormWrapper>
-        <AddItemForm label={"new TodoList"} callBack={addNewTodoList} />
+        <AddItemForm label={'new TodoList'} callBack={addNewTodoList} />
       </AddItemFormWrapper>
       <Grid2 container spacing={2}>
         <TodoLists />

@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import React, { FC, memo } from "react";
-import { Delete } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
-import { TodoListDomainType } from "../../../../model/todolist-reducer/todolists-reducer";
-import { useTodolist } from "common/hooks";
-import { AppStatus } from "common/enums";
-import { EditableSpan } from "common/components";
+import React, { FC, memo } from 'react';
+import { Delete } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { TodoListDomainType } from '../../../../model/todolistSlice/todolistsSlice';
+import { useTodolist } from 'common/hooks';
+import { AppStatus } from 'common/enums';
+import { EditableSpan } from 'common/components';
 
 type Props = {
   todoList: TodoListDomainType;

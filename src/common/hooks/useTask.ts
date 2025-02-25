@@ -1,8 +1,8 @@
-import { ChangeEvent, useCallback, useContext } from "react";
-import { useAppDispatch } from "./Hooks";
-import { TodolistContext } from "../contexts/TodolistContext";
-import { removeTaskTC, updateTaskTC } from "../../features/todolists/model/tasks-reducer/tasks-reducer";
-import { StatusTask } from "../enums/enums";
+import { ChangeEvent, useCallback, useContext } from 'react';
+import { useAppDispatch } from './Hooks';
+import { TodolistContext } from 'common/contexts';
+import { removeTaskTC, updateTaskTC } from '../../features/todolists/model/tasksSlice/tasksSlice';
+import { StatusTask } from 'common/enums';
 
 export const useTask = (id: string) => {
   const dispatch = useAppDispatch();

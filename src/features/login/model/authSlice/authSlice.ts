@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { LoginPayload } from '../../api/authApi';
-import { changeAppInitialized, changeAppStatus } from 'app/app-reducer';
+import { changeAppInitialized, changeAppStatus } from 'app/appSlice';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { authApi } from '../../api/authApi';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
-import { clearTodolists } from '../../../todolists/model/todolist-reducer/todolists-reducer';
+import { clearTodolists } from '../../../todolists/model/todolistSlice/todolistsSlice';
 
 const initialState = {
   isAuth: false,
@@ -15,11 +15,11 @@ const authSlice = createSlice({
   selectors: {
     getIsAuth: state => state.isAuth,
   },
-  reducers: {
-    changeIsAuth: (state, action: PayloadAction<{ isAuth: boolean }>) => {
+  reducers: create => ({
+    changeIsAuth: create.reducer<{ isAuth: boolean }>((state, action) => {
       state.isAuth = action.payload.isAuth;
-    },
-  },
+    }),
+  }),
   extraReducers: builder => {
     builder
       .addCase(fetchAuthMe.fulfilled, (state, action) => {
