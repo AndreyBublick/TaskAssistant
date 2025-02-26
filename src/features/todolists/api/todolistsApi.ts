@@ -2,9 +2,9 @@ import { instance } from 'common/instance';
 import type { TodolistType } from './todolistsApi.types';
 
 import type { ResponseType } from 'common/types';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { TodoListDomain } from '../model/todolistSlice/todolistsSlice';
 import { AppStatus } from 'common/enums';
+import { baseApi } from 'app/baseApi';
 
 export const _todolistsApi = {
   getTodolists() {
@@ -24,16 +24,7 @@ export const _todolistsApi = {
   },
 };
 
-export const todolistsApi = createApi({
-  reducerPath: 'todolistsApi',
-  tagTypes: ['Todolist'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_BASE_URL,
-    prepareHeaders: headers => {
-      headers.set('API-KEY', `${process.env.REACT_APP_API_KEY}`);
-      headers.set('Authorization', `Bearer ${localStorage.getItem('sn-token')}`);
-    },
-  }),
+export const todolistsApi = baseApi.injectEndpoints({
   endpoints: build => ({
     addTodolist: build.mutation<ResponseType<{ item: TodolistType }>, string>({
       query: (title: string) => ({

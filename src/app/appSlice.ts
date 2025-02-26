@@ -5,7 +5,8 @@ const initialState = {
   themeMode: 'light' as ThemeModeType,
   error: null as null | string,
   status: 'idle' as AppStatus,
-  isInitialized: false,
+
+  isAuth: false,
 };
 
 const appSlice = createSlice({
@@ -14,8 +15,8 @@ const appSlice = createSlice({
   selectors: {
     getModeTheme: state => state.themeMode,
     getAppStatus: state => state.status,
-    getAppIsInitialized: state => state.isInitialized,
     getAppError: state => state.error,
+    getIsAuth: state => state.isAuth,
   },
   reducers: create => ({
     changeThemeMode: create.reducer<{ themeMode: ThemeModeType }>((state, action) => {
@@ -24,18 +25,19 @@ const appSlice = createSlice({
     changeAppStatus: create.reducer<{ status: AppStatus }>((state, action) => {
       state.status = action.payload.status;
     }),
-    changeAppInitialized: create.reducer<{ isInitialized: boolean }>((state, action) => {
-      state.isInitialized = action.payload.isInitialized;
-    }),
+
     setAppError: create.reducer<{ error: string | null }>((state, action) => {
       state.error = action.payload.error;
+    }),
+    changeIsAuth: create.reducer<{ isAuth: boolean }>((state, action) => {
+      state.isAuth = action.payload.isAuth;
     }),
   }),
   /*extraReducers: (builder) => {},*/
 });
 
 export const appReducer = appSlice.reducer;
-export const { getModeTheme, getAppStatus, getAppError, getAppIsInitialized } = appSlice.selectors;
-export const { changeThemeMode, changeAppStatus, setAppError, changeAppInitialized } = appSlice.actions;
+export const { getModeTheme, getAppError, getIsAuth } = appSlice.selectors;
+export const { changeThemeMode, changeAppStatus, setAppError, changeIsAuth } = appSlice.actions;
 
 export type ThemeModeType = 'light' | 'dark';

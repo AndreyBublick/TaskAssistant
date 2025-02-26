@@ -1,12 +1,10 @@
 import { FilterValuesType } from '../../../../model/todolistSlice/todolistsSlice';
-import { getTasks } from '../../../../model/tasksSlice/tasksSlice';
-import type { TaskType } from '../../../../api/tasksApi.types';
 import React, { FC, memo, useContext, useMemo } from 'react';
 import { TodolistContext } from 'common/contexts';
-import { useAppSelector } from 'common/hooks';
 import { StatusTask } from 'common/enums';
 import styled from 'styled-components';
 import { Task } from './task/Task';
+import { useGetTasksQuery } from '../../../../api/tasksApi';
 
 type PropsType = {
   filter: FilterValuesType;
@@ -15,8 +13,12 @@ type PropsType = {
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
   /*const tasks = useAppSelector((state) => getTasks({ tasks: state.tasks }, id)) || [];*/ /*important*/
-  const tasks = useAppSelector(state => getTasks(state, id));
-  const tasksForTodoList: TaskType[] = useMemo(() => {
+  /* const tasks = useAppSelector(state => getTasks(state, id));*/
+  const { data } = useGetTasksQuery(id);
+
+  const tasks = data?.items;
+
+  const tasksForTodoList = useMemo(() => {
     if (!tasks) return [];
     switch (filter) {
       case 'active': {

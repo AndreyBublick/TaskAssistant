@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { addTodoListTC, clearTodolists, deleteTodoListTC } from '../todolistSlice/todolistsSlice';
 import { changeAppStatus } from 'app/appSlice';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
-import { tasksApi } from '../../api/tasksApi';
+import { _tasksApi } from '../../api/tasksApi';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
 import type { RootState } from 'app/store';
 import type { Model, TaskType } from '../../api/tasksApi.types';
@@ -15,7 +15,7 @@ const tasksSlice = createSlice({
   selectors: {
     getTasks: (state, todoListId: string) => state[todoListId],
   },
-  reducers: create => ({}),
+  reducers: () => ({}),
   extraReducers: builder => {
     builder
       .addCase(fetchTasks.fulfilled, (state, action) => {
@@ -70,7 +70,7 @@ const tasksSlice = createSlice({
 export const fetchTasks = createAsyncThunk('tasks/setTasks', async (todolistId: string, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
-    const response = await tasksApi.getTasks(todolistId);
+    const response = await _tasksApi.getTasks(todolistId);
     const tasks = response.data.items;
 
     return { todolistId, tasks };
@@ -89,7 +89,7 @@ export const createTaskTC = createAsyncThunk(
     try {
       thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
       const { todoListId } = payload;
-      const response = await tasksApi.createTask(payload);
+      const response = await _tasksApi.createTask(payload);
 
       if (response.data.resultCode === ResultCodeStatus.success) {
         return { todoListId, task: response.data.data.item };
@@ -128,7 +128,7 @@ export const updateTaskTC = createAsyncThunk(
 
     try {
       thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
-      const response = await tasksApi.updateTask({ todoListId, taskId, model });
+      const response = await _tasksApi.updateTask({ todoListId, taskId, model });
 
       if (response.data.resultCode === ResultCodeStatus.success) {
         return payload;
@@ -149,7 +149,7 @@ export const removeTaskTC = createAsyncThunk(
     try {
       thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
       /*const response =*/
-      const response = await tasksApi.deleteTask(payload);
+      const response = await _tasksApi.deleteTask(payload);
 
       if (response.data.resultCode === ResultCodeStatus.success) {
         return payload;
@@ -173,7 +173,7 @@ export const removeAllTasksTC = createAsyncThunk(
       const state: RootState = thunkAPI.getState() as RootState;
 
       for (const tsk of state.tasks[todoListId]) {
-        await tasksApi.deleteTask({ todoListId, id: tsk.id });
+        await _tasksApi.deleteTask({ todoListId, id: tsk.id });
       }
       /* await tasksApi.deleteTask(payload);*/
       return { todoListId };
@@ -192,4 +192,4 @@ export const { getTasks } = tasksSlice.selectors;
 
 export type TaskItemType = Record<string, TaskType[]>;
 
-type DomainModel = Partial<Model>;
+export type DomainModel = Partial<Model>;

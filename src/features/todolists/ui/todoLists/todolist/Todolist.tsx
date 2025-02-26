@@ -11,6 +11,7 @@ import { TodoListDomain } from '../../../model/todolistSlice/todolistsSlice';
 import { useTodolist } from 'common/hooks';
 import { AddItemForm } from 'common/components';
 import { AppStatus } from 'common/enums';
+import { useCreateTaskMutation } from '../../../api/tasksApi';
 
 type PropsType = {
   todoList: TodoListDomain;
@@ -18,15 +19,19 @@ type PropsType = {
 
 export const Todolist: FC<PropsType> = memo(({ todoList }) => {
   const { id, filter, status } = todoList;
+  const [addNewTask] = useCreateTaskMutation();
 
-  const { addNewTask, removeAllTasksHandler } = useTodolist(id);
+  const { removeAllTasksHandler } = useTodolist(id);
 
+  const addNewTaskHandler = (title: string) => {
+    addNewTask({ todoListId: todoList.id, title });
+  };
   return (
     <TodolistContext.Provider value={id}>
       <TodolistStyled>
         <TodolistTitle todoList={todoList} />
 
-        <AddItemForm label={'New Task'} status={status === AppStatus.loading} callBack={addNewTask} />
+        <AddItemForm label={'New Task'} status={status === AppStatus.loading} callBack={addNewTaskHandler} />
         <Tasks filter={filter} />
         <Button title={'delete all'} variant={'contained'} onClick={removeAllTasksHandler}>
           delete all

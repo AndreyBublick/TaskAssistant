@@ -1,13 +1,14 @@
-import { getAppError, getAppIsInitialized, getModeTheme } from 'app/appSlice';
-import { fetchAuthMe } from '../features/login/model/authSlice/authSlice';
+import { changeIsAuth, getAppError, getModeTheme } from 'app/appSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AlertStatus, Header } from 'common/components';
 import { Route, Routes } from 'react-router';
 import { getTheme } from 'common/theme';
 import { routes } from 'common/routes';
-import { useEffect } from 'react';
 import type { FC } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useMeQuery } from '../features/login/api/authApi';
+import { ResultCodeStatus } from 'common/enums';
 
 export const App: FC = () => {
   const themeMode = useAppSelector(getModeTheme);
@@ -15,21 +16,29 @@ export const App: FC = () => {
   const theme = getTheme(themeMode);
   const isOpen = error !== null;
 
-  const initialized = useAppSelector(getAppIsInitialized);
+  const { data, isLoading } = useMeQuery();
+
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(fetchAuthMe());
-  }, [dispatch]);
+    if (!isLoading) {
+      if (data?.resultCode === ResultCodeStatus.success) {
+        dispatch(changeIsAuth({ isAuth: true }));
+      }
+      setIsInitialized(true);
+    }
+  }, [dispatch, data, isLoading]);
 
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         <CssBaseline />
-        <Header />
+        <Header isLoading={isLoading} />
 
         {isOpen && <AlertStatus />}
-        {initialized && (
+        {isInitialized && (
           <Routes>
             {routes.map(route => (
               <Route key={route.path} path={route.path} element={route.element} />

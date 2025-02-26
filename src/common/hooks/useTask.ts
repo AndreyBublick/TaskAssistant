@@ -3,8 +3,10 @@ import { useAppDispatch } from './Hooks';
 import { TodolistContext } from 'common/contexts';
 import { removeTaskTC, updateTaskTC } from '../../features/todolists/model/tasksSlice/tasksSlice';
 import { StatusTask } from 'common/enums';
+import type { TaskType } from '../../features/todolists/api/tasksApi.types';
 
-export const useTask = (id: string) => {
+export const useTask = (task: TaskType) => {
+  const { id } = task;
   const dispatch = useAppDispatch();
 
   const todoListId = useContext(TodolistContext); /////////////////////

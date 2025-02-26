@@ -1,10 +1,12 @@
 import { Box, Button, Checkbox, Container, FormControlLabel, TextField, Typography } from '@mui/material';
-import { getIsAuth, login } from '../../model/authSlice/authSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { styled } from '@mui/material/styles';
 import { Navigate } from 'react-router';
 import type { FC } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { changeIsAuth, getIsAuth, setAppError } from 'app/appSlice';
+import { useLoginMutation } from '../../api/authApi';
+import { ResultCodeStatus } from 'common/enums';
 
 type Props = {};
 type HookForm = {
@@ -15,30 +17,31 @@ type HookForm = {
 export const Login: FC<Props> = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
+  const [login] = useLoginMutation();
 
   /*const { errors, getFieldProps, handleSubmit, values } = useFormik({
-    validate: values => {
-      const errors: any = {};
-      if (!values.email) {
-        errors.email = 'Required';
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-        errors.email = 'Invalid email address';
-      } else if (!values.password) {
-        errors.password = 'Required';
-      } else if (values.password.length < 3) {
-        errors.password = 'Password must be at least 3 characters long';
-      }
-      return errors;
-    },
-    initialValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-    },
-    onSubmit: async (values /!*formikHelpers*!/) => {
-      await dispatch(login(values));
-    },
-  });*/
+      validate: values => {
+        const errors: any = {};
+        if (!values.email) {
+          errors.email = 'Required';
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+          errors.email = 'Invalid email address';
+        } else if (!values.password) {
+          errors.password = 'Required';
+        } else if (values.password.length < 3) {
+          errors.password = 'Password must be at least 3 characters long';
+        }
+        return errors;
+      },
+      initialValues: {
+        email: '',
+        password: '',
+        rememberMe: false,
+      },
+      onSubmit: async (values /!*formikHelpers*!/) => {
+        await dispatch(login(values));
+      },
+    });*/
 
   const {
     register,
@@ -46,6 +49,7 @@ export const Login: FC<Props> = () => {
     formState,
     formState: { errors },
     control,
+    reset,
   } = useForm<HookForm>({
     defaultValues: {
       email: '',
@@ -54,7 +58,29 @@ export const Login: FC<Props> = () => {
     },
     mode: 'onChange',
   });
-  const onSubmit = (values: HookForm) => dispatch(login(values));
+  const onSubmit: SubmitHandler<HookForm> = async values => {
+    try {
+      const response = await login(values);
+
+      const data = response?.data;
+
+      if (data?.resultCode === ResultCodeStatus.success) {
+        const token = data?.data.token;
+
+        if (token) {
+          localStorage.setItem('sn-token', token);
+          dispatch(changeIsAuth({ isAuth: true }));
+        }
+      } else {
+        const error = data?.messages[0];
+        error && dispatch(setAppError({ error }));
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      reset();
+    }
+  };
 
   const isActivate = Object.keys(formState.errors).length > 0;
   return (

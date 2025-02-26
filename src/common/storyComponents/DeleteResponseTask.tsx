@@ -1,29 +1,29 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import { Wrapper } from "./Wrapper/Wrapper";
-import { Button, TextField } from "@mui/material";
-import { tasksApi } from "../../features/todolists/api/tasksApi";
+import { Wrapper } from './Wrapper/Wrapper';
+import { Button, TextField } from '@mui/material';
+import { _tasksApi } from '../../features/todolists/api/tasksApi';
 
 export const DeleteResponseTask = () => {
   const [state, setState] = useState<boolean>(false);
-  const [idTL, setIdTL] = useState<string>("");
-  const [idTask, setIdTask] = useState<string>("");
+  const [idTL, setIdTL] = useState<string>('');
+  const [idTask, setIdTask] = useState<string>('');
 
   const addNewTodolist = useCallback(() => {
     setState(false);
-    setIdTL("");
-    setIdTask("");
+    setIdTL('');
+    setIdTask('');
 
-    tasksApi.deleteTask({ todoListId: idTL, id: idTask }).then(() => setState(true));
+    _tasksApi.deleteTask({ todoListId: idTL, id: idTask }).then(() => setState(true));
   }, [idTL, idTask]);
 
   return (
     <Wrapper>
-      {state ? "Success" : "Waiting..."}
+      {state ? 'Success' : 'Waiting...'}
       <div>
         <TextField
           id="standard-basic"
-          onChange={(e) => {
+          onChange={e => {
             setIdTL(e.currentTarget.value);
           }}
           value={idTL}
@@ -33,7 +33,7 @@ export const DeleteResponseTask = () => {
 
         <TextField
           id="standard-basic"
-          onChange={(e) => {
+          onChange={e => {
             setIdTask(e.currentTarget.value);
           }}
           value={idTask}

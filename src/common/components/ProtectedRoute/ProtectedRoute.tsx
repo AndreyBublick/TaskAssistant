@@ -2,7 +2,7 @@ import type { FC, ReactNode } from 'react';
 import { Navigate } from 'react-router';
 import { PATH } from 'common/routes';
 import { useAppSelector } from 'common/hooks';
-import { getIsAuth } from '../../../features/login/model/authSlice/authSlice';
+import { getIsAuth } from 'app/appSlice';
 
 type Props = {
   children: ReactNode;

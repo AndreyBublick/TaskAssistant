@@ -1,26 +1,39 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { AppBar, Box, Button, IconButton, Switch, Toolbar } from '@mui/material';
 import { Menu } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'common/hooks';
-import { styled } from '@mui/material/styles';
-import { changeThemeMode, getModeTheme } from 'app/appSlice';
-import { getIsAuth, logout } from '../../../features/login/model/authSlice/authSlice';
-import { MenuButton, ProgressLinear } from 'common/components';
 
-export const Header = memo(() => {
+import { useAppDispatch, useAppSelector } from 'common/hooks';
+import { styled } from '@mui/material/styles';
+import { changeIsAuth, changeThemeMode, getIsAuth, getModeTheme, setAppError } from 'app/appSlice';
+/*import { logout } from '../../../features/login/model/authSlice/authSlice';*/
+import { MenuButton, ProgressLinear } from 'common/components';
+import { useLogoutMutation } from '../../../features/login/api/authApi';
+import { ResultCodeStatus } from 'common/enums';
+
+type Props = {
+  isLoading: boolean;
+};
+export const Header: FC<Props> = memo(({ isLoading }) => {
   const [value, setValue] = useState('1');
   const themeMode = useAppSelector(getModeTheme);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
-
+  const [logout] = useLogoutMutation();
   const onChangeHandler = useCallback(() => {
     dispatch(changeThemeMode({ themeMode: themeMode === 'light' ? 'dark' : 'light' }));
   }, [dispatch, themeMode]);
 
-  const onClickHandler = useCallback(() => {
-    dispatch(logout());
-  }, [dispatch]);
+  const onClickHandler = async () => {
+    const response = await logout();
+    const data = response.data;
+    if (data?.resultCode === ResultCodeStatus.success) {
+      localStorage.removeItem('sn-token');
+      dispatch(changeIsAuth({ isAuth: false }));
+    } else {
+      const error = data?.messages[0];
+      error && dispatch(setAppError({ error }));
+    }
+  };
 
   return (
     <AppBarStyled position="static">
@@ -48,7 +61,7 @@ export const Header = memo(() => {
           )}
         </Box>
       </ToolbarStyled>
-      <ProgressLinear />
+      <ProgressLinear isLoading={isLoading} />
     </AppBarStyled>
   );
 });

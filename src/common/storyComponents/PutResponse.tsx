@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import type { TodolistType } from '../../features/todolists/api/todolistsApi.types';
 import type { Model, TaskType } from '../../features/todolists/api/tasksApi.types';
 import { _todolistsApi } from '../../features/todolists/api/todolistsApi';
-import { tasksApi } from '../../features/todolists/api/tasksApi';
+import { _tasksApi } from '../../features/todolists/api/tasksApi';
 
 export const PutResponse = () => {
   const [state, setState] = useState<TodolistType[]>([]);
@@ -32,7 +32,7 @@ export const PutResponse = () => {
       deadline: task.deadline,
     };
 
-    tasksApi
+    _tasksApi
       .updateTask({
         todoListId,
         taskId,
@@ -56,7 +56,7 @@ export const PutResponse = () => {
       })
       .then(todolists =>
         todolists.forEach(td =>
-          tasksApi.getTasks(td.id).then(response => setTasks(prev => ({ ...prev, [td.id]: response.data.items }))),
+          _tasksApi.getTasks(td.id).then(response => setTasks(prev => ({ ...prev, [td.id]: response.data.items }))),
         ),
       );
   }, []);
