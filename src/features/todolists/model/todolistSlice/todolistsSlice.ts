@@ -1,12 +1,12 @@
 import type { TodolistType } from '../../api/todolistsApi.types';
-import { todolistsApi } from '../../api/todolistsApi';
+import { _todolistsApi } from '../../api/todolistsApi';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { changeAppStatus } from 'app/appSlice';
 import { fetchTasks } from '../tasksSlice/tasksSlice';
 import { AppStatus, ResultCodeStatus } from 'common/enums';
 import { handleServerAppError, handleServerNetworkError } from 'common/utils';
 
-const initialState: TodoListDomainType[] = [];
+const initialState: TodoListDomain[] = [];
 
 const todolistsSlice = createSlice({
   name: 'todolists',
@@ -40,7 +40,7 @@ const todolistsSlice = createSlice({
     builder
       .addCase(fetchTodoListsTC.fulfilled, (state, action) => {
         if (action.payload) {
-          const todoLists: TodoListDomainType[] = action.payload.map(td => ({
+          const todoLists: TodoListDomain[] = action.payload.map(td => ({
             ...td,
             filter: 'all',
             status: AppStatus.idle,
@@ -85,7 +85,7 @@ export const { getTodoLists, getTodoListStatus } = todolistsSlice.selectors;
 export const fetchTodoListsTC = createAsyncThunk('todolists/fetchTodoLists', async (_, thunkAPI) => {
   try {
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
-    const response = await todolistsApi.getTodolists();
+    const response = await _todolistsApi.getTodolists();
 
     response.data.forEach(td => thunkAPI.dispatch(fetchTasks(td.id)));
 
@@ -102,7 +102,7 @@ export const deleteTodoListTC = createAsyncThunk('todolists/deleteTodoList', asy
     thunkAPI.dispatch(updateTodoListStatus({ id, status: AppStatus.loading }));
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
 
-    const response = await todolistsApi.deleteTodolist(id);
+    const response = await _todolistsApi.deleteTodolist(id);
 
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { todolistId: id };
@@ -121,7 +121,7 @@ export const addTodoListTC = createAsyncThunk('todolists/addTodoList', async (ti
     /*thunkAPI.dispatch(setAppError({ error: null }));*/
 
     thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
-    const response = await todolistsApi.addTodolist(title);
+    const response = await _todolistsApi.addTodolist(title);
 
     if (response.data.resultCode === ResultCodeStatus.success) {
       return { createdTodolist: response.data.data.item };
@@ -141,7 +141,7 @@ export const changeTodolistTitleTC = createAsyncThunk(
     try {
       thunkAPI.dispatch(updateTodoListStatus({ id: payload.id, status: AppStatus.loading }));
       thunkAPI.dispatch(changeAppStatus({ status: AppStatus.loading }));
-      const response = await todolistsApi.changeTodolistTitle(payload);
+      const response = await _todolistsApi.changeTodolistTitle(payload);
       if (response.data.resultCode === ResultCodeStatus.success) {
         return payload;
       } else if (response.data.resultCode === ResultCodeStatus.fail) {
@@ -158,7 +158,7 @@ export const changeTodolistTitleTC = createAsyncThunk(
 
 export type FilterValuesType = 'all' | 'active' | 'completed' | 'three';
 
-export type TodoListDomainType = TodolistType & {
+export type TodoListDomain = TodolistType & {
   filter: FilterValuesType;
   status: AppStatus;
 };

@@ -4,7 +4,7 @@ import { EditableLi } from './Wrapper/editableLi/EditableLi';
 import styled from 'styled-components';
 import type { TodolistType } from '../../features/todolists/api/todolistsApi.types';
 import type { Model, TaskType } from '../../features/todolists/api/tasksApi.types';
-import { todolistsApi } from '../../features/todolists/api/todolistsApi';
+import { _todolistsApi } from '../../features/todolists/api/todolistsApi';
 import { tasksApi } from '../../features/todolists/api/tasksApi';
 
 export const PutResponse = () => {
@@ -12,7 +12,7 @@ export const PutResponse = () => {
   const [tasks, setTasks] = useState<Record<string, TaskType[]>>({});
 
   const changeTodoListTitle = (id: string, title: string) => {
-    todolistsApi
+    _todolistsApi
       .changeTodolistTitle({
         id,
         title,
@@ -48,7 +48,7 @@ export const PutResponse = () => {
 
   /*changeTaskTitle*/
   useEffect(() => {
-    todolistsApi
+    _todolistsApi
       .getTodolists()
       .then(response => {
         setState(response.data);

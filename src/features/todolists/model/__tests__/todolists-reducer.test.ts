@@ -6,7 +6,7 @@ import {
   FilterValuesType,
   removeTodoListAC,
   setTodoListsAC,
-  TodoListDomainType,
+  TodoListDomain,
   todolistsSlice,
 } from '../todolistSlice/todolistsSlice';
 import { AppStatus } from 'common/enums/enums';
@@ -15,7 +15,7 @@ let IdForFirstTask: string;
 let IdForSecondTask: string;
 let IdForThirdTask: string;
 
-let todoLists: TodoListDomainType[];
+let todoLists: TodoListDomain[];
 let id: string;
 beforeEach(() => {
   IdForFirstTask = v1();

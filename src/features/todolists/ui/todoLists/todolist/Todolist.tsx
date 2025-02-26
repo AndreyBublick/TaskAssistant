@@ -7,13 +7,13 @@ import { Tasks } from './tasks/Tasks';
 import { TodolistContext } from 'common/contexts/TodolistContext';
 import { FilterButtons } from './filterButtons/FilterButtons';
 import { TodolistTitle } from './todolistTitle/TodolistTitle';
-import { TodoListDomainType } from '../../../model/todolistSlice/todolistsSlice';
+import { TodoListDomain } from '../../../model/todolistSlice/todolistsSlice';
 import { useTodolist } from 'common/hooks';
 import { AddItemForm } from 'common/components';
 import { AppStatus } from 'common/enums';
 
 type PropsType = {
-  todoList: TodoListDomainType;
+  todoList: TodoListDomain;
 };
 
 export const Todolist: FC<PropsType> = memo(({ todoList }) => {

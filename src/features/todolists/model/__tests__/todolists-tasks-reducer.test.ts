@@ -1,9 +1,9 @@
-import type { TodoListDomainType } from '../todolistSlice/todolistsSlice';
+import type { TodoListDomain } from '../todolistSlice/todolistsSlice';
 
 let IdForFirstTodoList: string;
 let IdForSecondTodoList: string;
 let IdForThirdTodoList: string;
-let startStateTodoLists: TodoListDomainType[];
+let startStateTodoLists: TodoListDomain[];
 let startStateTasks: Record<string, TaskDomainType[]>;
 let id: string;
 

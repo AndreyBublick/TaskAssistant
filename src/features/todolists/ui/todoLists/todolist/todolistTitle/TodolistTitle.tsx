@@ -1,30 +1,41 @@
 import styled from 'styled-components';
 
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { Delete } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { TodoListDomainType } from '../../../../model/todolistSlice/todolistsSlice';
-import { useTodolist } from 'common/hooks';
+import { TodoListDomain } from '../../../../model/todolistSlice/todolistsSlice';
 import { AppStatus } from 'common/enums';
 import { EditableSpan } from 'common/components';
+import { useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from '../../../../api/todolistsApi';
 
 type Props = {
-  todoList: TodoListDomainType;
+  todoList: TodoListDomain;
 };
 
 export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
-  const { deleteTodoList, changeTitleTodoList } = useTodolist(todoList.id);
-
+  const [deleteTodoList] = useRemoveTodolistMutation();
+  const [updateTodoListTitle] = useUpdateTodolistTitleMutation();
   const isDisabled = todoList.status === AppStatus.loading;
+
+  const deleteTodoListHandler = useCallback(() => {
+    deleteTodoList(todoList.id);
+  }, [deleteTodoList, todoList.id]);
+
+  const updateTodoListTitleHandler = useCallback(
+    (title: string) => {
+      updateTodoListTitle({ id: todoList.id, title });
+    },
+    [updateTodoListTitle, todoList.id],
+  );
 
   return (
     <FlexWrapper>
       <TodoTitle>
         <h3>
-          <EditableSpan changeString={changeTitleTodoList} title={todoList.title} disabled={isDisabled} />
+          <EditableSpan changeString={updateTodoListTitleHandler} title={todoList.title} disabled={isDisabled} />
         </h3>
       </TodoTitle>
-      <IconButton disabled={isDisabled} aria-label="delete" size="large" onClick={deleteTodoList}>
+      <IconButton disabled={isDisabled} aria-label="delete" size="large" onClick={deleteTodoListHandler}>
         <Delete fontSize="inherit" />
       </IconButton>
     </FlexWrapper>
@@ -35,9 +46,11 @@ export const TodoTitle = styled.div`
   margin: 10px 0;
   font-size: 22px;
   font-weight: 700;
+
   input {
     font-size: 22px;
   }
+
   h3 {
     margin: 0;
   }
