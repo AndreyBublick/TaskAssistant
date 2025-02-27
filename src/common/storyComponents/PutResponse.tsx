@@ -45,7 +45,6 @@ export const PutResponse = () => {
         })),
       );
   };
-
   /*changeTaskTitle*/
   useEffect(() => {
     _todolistsApi
