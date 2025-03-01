@@ -12,8 +12,6 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
-  /*const tasks = useAppSelector((state) => getTasks({ tasks: state.tasks }, id)) || [];*/ /*important*/
-  /* const tasks = useAppSelector(state => getTasks(state, id));*/
   const { data } = useGetTasksQuery(id);
 
   const tasks = data?.items;

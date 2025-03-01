@@ -16,8 +16,8 @@ type Props = {
 export const Header: FC<Props> = memo(({ isLoading }) => {
   const [value, setValue] = useState('1');
   const themeMode = useAppSelector(getModeTheme);
-  const dispatch = useAppDispatch();
   const isAuth = useAppSelector(getIsAuth);
+  const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
   const onChangeHandler = useCallback(() => {
     dispatch(changeThemeMode({ themeMode: themeMode === 'light' ? 'dark' : 'light' }));
