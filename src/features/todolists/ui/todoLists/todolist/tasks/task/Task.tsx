@@ -9,6 +9,7 @@ import { AppStatus, StatusTask } from 'common/enums';
 import { EditableSpan } from 'common/components';
 import { DomainModel } from '../../../../../model/tasksSlice/tasksSlice';
 import { useDeleteTaskMutation, useUpdateTaskMutation } from '../../../../../api/tasksApi';
+import styled from 'styled-components';
 
 type Props = {
   task: TaskType;
@@ -48,14 +49,16 @@ export const Task: FC<Props> = memo(({ task }) => {
   };
 
   return (
-    <li style={{ opacity: `${status === StatusTask.Completed ? 0.5 : 1}` }}>
-      <Checkbox
-        checked={status === StatusTask.Completed}
-        onChange={onChangeHandler}
-        inputProps={{ 'aria-label': 'controlled' }}
-        disabled={todoStatus === AppStatus.loading}
-      />
-      <EditableSpan disabled={todoStatus === AppStatus.loading} changeString={changeString} title={title} />
+    <TaskStyled style={{ opacity: `${status === StatusTask.Completed ? 0.5 : 1}` }}>
+      <div>
+        <Checkbox
+          checked={status === StatusTask.Completed}
+          onChange={onChangeHandler}
+          inputProps={{ 'aria-label': 'controlled' }}
+          disabled={todoStatus === AppStatus.loading}
+        />
+        <EditableSpan disabled={todoStatus === AppStatus.loading} changeString={changeString} title={title} />
+      </div>
       <IconButton
         disabled={todoStatus === AppStatus.loading}
         aria-label="delete"
@@ -63,6 +66,12 @@ export const Task: FC<Props> = memo(({ task }) => {
         onClick={removeTaskHandler}>
         <Delete fontSize="inherit" />
       </IconButton>
-    </li>
+    </TaskStyled>
   );
 });
+
+const TaskStyled = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

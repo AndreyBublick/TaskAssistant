@@ -20,9 +20,27 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
     [dispatch, id],
   );
 
+  const renderButton = ({ currentFilter }: { currentFilter: FilterValuesType }) => {
+    return (
+      <Button
+        size={'small'}
+        variant={filter === currentFilter ? 'contained' : 'text'}
+        title={currentFilter}
+        onClick={() => {
+          changeFilter(currentFilter);
+        }}>
+        {currentFilter}
+      </Button>
+    );
+  };
+
   return (
     <ButtonsWrapper>
-      <Button
+      {renderButton({ currentFilter: 'all' })}
+      {renderButton({ currentFilter: 'active' })}
+      {renderButton({ currentFilter: 'completed' })}
+      {renderButton({ currentFilter: 'first 3' })}
+      {/* <Button
         size={'small'}
         variant={filter === 'all' ? 'contained' : 'text'}
         title={'all'}
@@ -30,17 +48,17 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
           changeFilter('all');
         }}>
         all
-      </Button>
-      <Button
+      </Button>*/}
+      {/*<Button
         size={'small'}
         variant={filter === 'active' ? 'contained' : 'text'}
         title={'Active'}
         onClick={() => {
           changeFilter('active');
         }}>
-        Active
-      </Button>
-      <Button
+        active
+      </Button>*/}
+      {/*  <Button
         size={'small'}
         variant={filter === 'completed' ? 'contained' : 'text'}
         title={'Completed'}
@@ -48,8 +66,8 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
           changeFilter('completed');
         }}>
         Completed
-      </Button>
-      <Button
+      </Button>*/}
+      {/*<Button
         size={'small'}
         variant={filter === 'three' ? 'contained' : 'text'}
         title={'first 3'}
@@ -57,7 +75,7 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
           changeFilter('three');
         }}>
         first 3
-      </Button>
+      </Button>*/}
     </ButtonsWrapper>
   );
 });

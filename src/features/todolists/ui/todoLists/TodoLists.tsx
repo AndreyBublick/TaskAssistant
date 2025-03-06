@@ -1,18 +1,25 @@
 import React, { memo } from 'react';
-import { Paper } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import { Todolist } from './todolist/Todolist';
 import { useGetTodolistsQuery } from '../../api/todolistsApi';
+import styled from 'styled-components';
 
 export const TodoLists = memo(() => {
   const { data: todolists } = useGetTodolistsQuery();
 
   const todoListsMapped = todolists?.map(todoList => {
-    return (
-      <Paper key={todoList.id}>
-        <Todolist todoList={todoList} />
-      </Paper>
-    );
+    return <Todolist key={todoList.id} todoList={todoList} />;
   });
 
-  return <>{todoListsMapped}</>;
+  return (
+    <Wrapper>
+      <Grid2 flexWrap={'nowrap'} alignItems={'start'} container spacing={2}>
+        {todoListsMapped}
+      </Grid2>
+    </Wrapper>
+  );
 });
+
+const Wrapper = styled.div`
+  padding-right: 8px;
+`;

@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import styled from 'styled-components';
 
-import { Button } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import { Tasks } from './tasks/Tasks';
 import { TodolistContext } from 'common/contexts/TodolistContext';
 import { FilterButtons } from './filterButtons/FilterButtons';
@@ -33,15 +33,20 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
 
         <AddItemForm label={'New Task'} status={status === AppStatus.loading} callBack={addNewTaskHandler} />
         <Tasks filter={filter} />
-        <Button title={'delete all'} variant={'contained'} onClick={removeAllTasksHandler}>
-          delete all
-        </Button>
+        <Box sx={{ textAlign: 'right' }}>
+          <Button title={'delete all tasks'} variant={'contained'} onClick={removeAllTasksHandler}>
+            delete all tasks
+          </Button>
+        </Box>
+
         <FilterButtons filter={filter} />
       </TodolistStyled>
     </TodolistContext.Provider>
   );
 });
 
-const TodolistStyled = styled.div`
+const TodolistStyled = styled(Paper)`
   padding: 15px;
+  width: 340px;
+  position: relative;
 `;

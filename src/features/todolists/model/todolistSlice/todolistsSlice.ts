@@ -156,7 +156,7 @@ export const changeTodolistTitleTC = createAsyncThunk(
   },
 );
 
-export type FilterValuesType = 'all' | 'active' | 'completed' | 'three';
+export type FilterValuesType = 'all' | 'active' | 'completed' | 'first 3';
 
 export type TodoListDomain = TodolistType & {
   filter: FilterValuesType;

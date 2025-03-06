@@ -20,13 +20,13 @@ export const Main = memo(() => {
       <AddItemFormWrapper>
         <AddItemForm label={'new TodoList'} callBack={addNewTodoList} />
       </AddItemFormWrapper>
-      <Grid2 container spacing={2}>
+      <Grid2 container spacing={2} sx={{ overflowX: 'auto', padding: 2 }}>
         <TodoLists />
       </Grid2>
     </Container>
   );
 });
-
+/* */
 const AddItemFormWrapper = styled.div`
   & > div {
     margin-bottom: 30px;

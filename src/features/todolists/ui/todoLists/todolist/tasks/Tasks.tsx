@@ -25,7 +25,7 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
       case 'completed': {
         return tasks.filter(t => t.status === StatusTask.Completed);
       }
-      case 'three': {
+      case 'first 3': {
         return tasks.filter((_, index) => index < 3);
       }
       default: {
@@ -36,12 +36,23 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
 
   const tasksForTodoListMapped = tasksForTodoList.map(t => <Task task={t} key={t.id} />);
 
-  return <>{tasksForTodoList.length > 0 ? <List>{tasksForTodoListMapped}</List> : <h2>Задачи отсутствуют</h2>}</>;
+  return (
+    <>
+      {tasksForTodoList.length > 0 ? (
+        <List>{tasksForTodoListMapped}</List>
+      ) : (
+        <EmptyTasks>Задачи отсутствуют</EmptyTasks>
+      )}
+    </>
+  );
 });
 
 const List = styled.ul`
-  & > li {
-    display: flex;
-    align-items: center;
-  }
+  padding: 0;
+`;
+const EmptyTasks = styled.span`
+  font-size: 22px;
+  display: block;
+  font-weight: 700;
+  line-height: 3;
 `;
