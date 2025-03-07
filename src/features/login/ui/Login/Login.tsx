@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Navigate } from 'react-router';
 import type { FC } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { changeIsAuth, getIsAuth, setAppError } from 'app/appSlice';
+import { changeIsAuth, selectIsAuth, setAppError } from 'app/appSlice';
 import { useLoginMutation } from '../../api/authApi';
 import { ResultCodeStatus } from 'common/enums';
 
@@ -16,7 +16,7 @@ type HookForm = {
 };
 export const Login: FC<Props> = () => {
   const dispatch = useAppDispatch();
-  const isAuth = useAppSelector(getIsAuth);
+  const isAuth = useAppSelector(selectIsAuth);
   const [login] = useLoginMutation();
 
   /*const { errors, getFieldProps, handleSubmit, values } = useFormik({

@@ -1,4 +1,4 @@
-import { changeIsAuth, getAppError, getModeTheme } from 'app/appSlice';
+import { changeIsAuth, selectAppError, selectModeTheme } from 'app/appSlice';
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { AlertStatus, Header } from 'common/components';
@@ -11,8 +11,8 @@ import { useMeQuery } from '../features/login/api/authApi';
 import { ResultCodeStatus } from 'common/enums';
 
 export const App: FC = () => {
-  const themeMode = useAppSelector(getModeTheme);
-  const error = useAppSelector(getAppError);
+  const themeMode = useAppSelector(selectModeTheme);
+  const error = useAppSelector(selectAppError);
   const theme = getTheme(themeMode);
   const isOpen = error !== null;
 
@@ -35,7 +35,7 @@ export const App: FC = () => {
     <ThemeProvider theme={theme}>
       <div className="App">
         <CssBaseline />
-        <Header isLoading={isLoading} />
+        <Header />
 
         {isOpen && <AlertStatus />}
         {isInitialized && (

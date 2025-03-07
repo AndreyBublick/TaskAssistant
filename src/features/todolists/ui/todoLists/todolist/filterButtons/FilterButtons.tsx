@@ -1,9 +1,10 @@
 import React, { FC, memo, useCallback, useContext } from 'react';
 import { Button } from '@mui/material';
 import styled from 'styled-components';
-import { FilterValuesType, updateTodoListFilter } from '../../../../model/todolistSlice/todolistsSlice';
+import { FilterValuesType } from '../../../../model/todolistSlice/todolistsSlice';
 import { useAppDispatch } from 'common/hooks';
 import { TodolistContext } from 'common/contexts';
+import { todolistsApi } from '../../../../api/todolistsApi';
 
 type Props = {
   filter: FilterValuesType;
@@ -15,7 +16,15 @@ export const FilterButtons: FC<Props> = memo(({ filter }) => {
 
   const changeFilter = useCallback(
     (filter: FilterValuesType) => {
-      dispatch(updateTodoListFilter({ id, filter }));
+      /*dispatch(updateTodoListFilter({ id, filter }));*/
+      dispatch(
+        todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+          const index = state.findIndex(t => t.id === id);
+          if (index !== -1) {
+            state[index].filter = filter;
+          }
+        }),
+      );
     },
     [dispatch, id],
   );

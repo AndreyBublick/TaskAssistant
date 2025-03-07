@@ -2,24 +2,42 @@ import styled from 'styled-components';
 
 import React, { FC, memo, useCallback } from 'react';
 import { Delete } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import { TodoListDomain } from '../../../../model/todolistSlice/todolistsSlice';
 import { AppStatus } from 'common/enums';
 import { EditableSpan } from 'common/components';
-import { useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from '../../../../api/todolistsApi';
+import { todolistsApi, useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from '../../../../api/todolistsApi';
+import { useAppDispatch } from 'common/hooks';
 
 type Props = {
   todoList: TodoListDomain;
 };
 
 export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
+  const dispatch = useAppDispatch();
   const [deleteTodoList] = useRemoveTodolistMutation();
   const [updateTodoListTitle] = useUpdateTodolistTitleMutation();
   const isDisabled = todoList.status === AppStatus.loading;
 
+  const updateQueryData = (status: AppStatus) => {
+    dispatch(
+      todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+        const index = state.findIndex(tl => tl.id === todoList.id);
+        if (index !== -1) {
+          state[index].status = status;
+        }
+      }),
+    );
+  };
+
   const deleteTodoListHandler = useCallback(() => {
-    deleteTodoList(todoList.id);
-  }, [deleteTodoList, todoList.id]);
+    updateQueryData(AppStatus.loading);
+    deleteTodoList(todoList.id)
+      .unwrap()
+      .catch(() => {
+        updateQueryData(AppStatus.idle);
+      });
+  }, [deleteTodoList, todoList.id, updateQueryData]);
 
   const updateTodoListTitleHandler = useCallback(
     (title: string) => {

@@ -3,9 +3,10 @@ import { Grid2 } from '@mui/material';
 import { Todolist } from './todolist/Todolist';
 import { useGetTodolistsQuery } from '../../api/todolistsApi';
 import styled from 'styled-components';
+import { TodolistSkeleton } from '../skeletons/TodolistSkeleton/TodolistSkeleton';
 
 export const TodoLists = memo(() => {
-  const { data: todolists } = useGetTodolistsQuery();
+  const { data: todolists, isLoading } = useGetTodolistsQuery();
 
   const todoListsMapped = todolists?.map(todoList => {
     return <Todolist key={todoList.id} todoList={todoList} />;
@@ -14,7 +15,15 @@ export const TodoLists = memo(() => {
   return (
     <Wrapper>
       <Grid2 flexWrap={'nowrap'} alignItems={'start'} container spacing={2}>
-        {todoListsMapped}
+        {isLoading ? (
+          <>
+            <TodolistSkeleton />
+            <TodolistSkeleton />
+            <TodolistSkeleton />
+          </>
+        ) : (
+          todoListsMapped
+        )}
       </Grid2>
     </Wrapper>
   );

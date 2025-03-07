@@ -1,22 +1,22 @@
 import React, { FC, memo, useCallback, useState } from 'react';
 import { AppBar, Box, Button, IconButton, Switch, Toolbar } from '@mui/material';
-import { Menu } from '@mui/icons-material';
+import Menu from '@mui/icons-material/Menu';
+/* ⭕ => import {Menu} from '@mui/icons-material'*/
+/* ⭕ нужно импортировать без {} пример выше, вместо => */
 
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { styled } from '@mui/material/styles';
-import { changeIsAuth, changeThemeMode, getIsAuth, getModeTheme, setAppError } from 'app/appSlice';
+import { changeIsAuth, changeThemeMode, selectIsAuth, selectModeTheme, setAppError } from 'app/appSlice';
 /*import { logout } from '../../../features/login/model/authSlice/authSlice';*/
 import { MenuButton, ProgressLinear } from 'common/components';
-import { useLogoutMutation } from '../../../features/login/api/authApi';
+import { authApi, useLogoutMutation } from '../../../features/login/api/authApi';
 import { ResultCodeStatus } from 'common/enums';
 
-type Props = {
-  isLoading: boolean;
-};
-export const Header: FC<Props> = memo(({ isLoading }) => {
+type Props = {};
+export const Header: FC<Props> = memo(() => {
   const [value, setValue] = useState('1');
-  const themeMode = useAppSelector(getModeTheme);
-  const isAuth = useAppSelector(getIsAuth);
+  const themeMode = useAppSelector(selectModeTheme);
+  const isAuth = useAppSelector(selectIsAuth);
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
   const onChangeHandler = useCallback(() => {
@@ -24,14 +24,19 @@ export const Header: FC<Props> = memo(({ isLoading }) => {
   }, [dispatch, themeMode]);
 
   const onClickHandler = async () => {
-    const response = await logout();
-    const data = response.data;
-    if (data?.resultCode === ResultCodeStatus.success) {
-      localStorage.removeItem('sn-token');
-      dispatch(changeIsAuth({ isAuth: false }));
-    } else {
-      const error = data?.messages[0];
-      error && dispatch(setAppError({ error }));
+    try {
+      const response = await logout();
+      const data = response.data;
+      if (data?.resultCode === ResultCodeStatus.success) {
+        localStorage.removeItem('sn-token');
+        dispatch(changeIsAuth({ isAuth: false }));
+        dispatch(authApi.util.invalidateTags(['Todolist', 'Tasks']));
+      } else {
+        const error = data?.messages[0];
+        error && dispatch(setAppError({ error }));
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -61,7 +66,7 @@ export const Header: FC<Props> = memo(({ isLoading }) => {
           )}
         </Box>
       </ToolbarStyled>
-      <ProgressLinear isLoading={isLoading} />
+      <ProgressLinear />
     </AppBarStyled>
   );
 });

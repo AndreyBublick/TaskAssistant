@@ -12,8 +12,8 @@ const todolistsSlice = createSlice({
   name: 'todolists',
   initialState,
   selectors: {
-    getTodoLists: state => state,
-    getTodoListStatus: (state, id) => {
+    selectTodoLists: state => state,
+    selectTodoListStatus: (state, id) => {
       const todoStatus = state.find(td => td.id === id);
       if (todoStatus) {
         return todoStatus.status;
@@ -80,7 +80,7 @@ const todolistsSlice = createSlice({
 });
 export const todolistsReducer = todolistsSlice.reducer;
 export const { updateTodoListFilter, updateTodoListStatus, clearTodolists } = todolistsSlice.actions;
-export const { getTodoLists, getTodoListStatus } = todolistsSlice.selectors;
+export const { selectTodoLists, selectTodoListStatus } = todolistsSlice.selectors;
 
 export const fetchTodoListsTC = createAsyncThunk('todolists/fetchTodoLists', async (_, thunkAPI) => {
   try {

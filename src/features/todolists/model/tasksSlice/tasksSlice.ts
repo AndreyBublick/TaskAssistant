@@ -13,7 +13,7 @@ const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   selectors: {
-    getTasks: (state, todoListId: string) => state[todoListId],
+    selectTasks: (state, todoListId: string) => state[todoListId],
   },
   reducers: () => ({}),
   extraReducers: builder => {
@@ -187,7 +187,7 @@ export const removeAllTasksTC = createAsyncThunk(
 
 export const tasksReducer = tasksSlice.reducer;
 
-export const { getTasks } = tasksSlice.selectors;
+export const { selectTasks } = tasksSlice.selectors;
 /*export const { clearTasks } = tasksSlice.actions;*/
 
 export type TaskItemType = Record<string, TaskType[]>;

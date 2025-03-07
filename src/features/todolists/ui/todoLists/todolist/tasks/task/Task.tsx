@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, memo, useContext } from 'react';
 import { Checkbox, IconButton } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import type { Model, TaskType } from '../../../../../api/tasksApi.types';
-import { getTodoListStatus } from '../../../../../model/todolistSlice/todolistsSlice';
+import { selectTodoListStatus } from '../../../../../model/todolistSlice/todolistsSlice';
 import { TodolistContext } from 'common/contexts';
 import { useAppSelector } from 'common/hooks';
 import { AppStatus, StatusTask } from 'common/enums';
@@ -22,7 +22,7 @@ export const Task: FC<Props> = memo(({ task }) => {
 
   const todoListId = useContext(TodolistContext);
 
-  const todoStatus = useAppSelector(state => getTodoListStatus(state, todoListId));
+  const todoStatus = useAppSelector(state => selectTodoListStatus(state, todoListId));
 
   const changeString = (title: string) => {
     changeTaskHandler({ title });

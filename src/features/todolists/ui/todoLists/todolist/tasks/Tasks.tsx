@@ -5,6 +5,7 @@ import { StatusTask } from 'common/enums';
 import styled from 'styled-components';
 import { Task } from './task/Task';
 import { useGetTasksQuery } from '../../../../api/tasksApi';
+import { TasksSkeleton } from '../../../skeletons/TasksSkeleton/TasksSkeleton';
 
 type PropsType = {
   filter: FilterValuesType;
@@ -12,7 +13,7 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
-  const { data } = useGetTasksQuery(id);
+  const { data, isLoading } = useGetTasksQuery(id);
 
   const tasks = data?.items;
 
@@ -38,7 +39,9 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
 
   return (
     <>
-      {tasksForTodoList.length > 0 ? (
+      {isLoading ? (
+        <TasksSkeleton />
+      ) : tasksForTodoList.length > 0 ? (
         <List>{tasksForTodoListMapped}</List>
       ) : (
         <EmptyTasks>Задачи отсутствуют</EmptyTasks>

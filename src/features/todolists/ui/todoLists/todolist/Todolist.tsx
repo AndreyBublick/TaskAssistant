@@ -47,6 +47,6 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
 
 const TodolistStyled = styled(Paper)`
   padding: 15px;
-  width: 340px;
+  width: 350px;
   position: relative;
 `;
