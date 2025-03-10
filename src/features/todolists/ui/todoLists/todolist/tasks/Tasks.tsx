@@ -1,11 +1,13 @@
 import { FilterValuesType } from '../../../../model/todolistSlice/todolistsSlice';
-import React, { FC, memo, useContext, useMemo } from 'react';
+import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
 import { TodolistContext } from 'common/contexts';
 import { StatusTask } from 'common/enums';
 import styled from 'styled-components';
 import { Task } from './task/Task';
 import { useGetTasksQuery } from '../../../../api/tasksApi';
 import { TasksSkeleton } from '../../../skeletons/TasksSkeleton/TasksSkeleton';
+import { setAppError } from 'app/appSlice';
+import { useAppDispatch } from 'common/hooks';
 
 type PropsType = {
   filter: FilterValuesType;
@@ -13,10 +15,22 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
-  const { data, isLoading } = useGetTasksQuery(id);
+  const dispatch = useAppDispatch();
+  const { data, isLoading, isError, error } = useGetTasksQuery(id);
 
   const tasks = data?.items;
-
+  useEffect(() => {
+    if (error) {
+      if ('status' in error) {
+        //  FetchBaseQueryError
+        const errMsg = 'error' in error ? error.error : JSON.stringify(error.data);
+        dispatch(setAppError({ error: errMsg }));
+      } else {
+        // SerializedError
+        dispatch(setAppError({ error: error.message ? error.message : 'Some error occurred.' }));
+      }
+    }
+  }, [dispatch, error]);
   const tasksForTodoList = useMemo(() => {
     if (!tasks) return [];
     switch (filter) {
