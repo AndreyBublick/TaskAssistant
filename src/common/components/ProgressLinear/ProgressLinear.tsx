@@ -9,7 +9,6 @@ type Props = {};
 export const ProgressLinear: FC<Props> = memo(() => {
   const status = useAppSelector(selectAppStatus);
   const isLoading = status === AppStatus.loading;
-  console.log(status);
   return <ProgressWrapper>{isLoading && <LinearProgress />}</ProgressWrapper>;
 });
 

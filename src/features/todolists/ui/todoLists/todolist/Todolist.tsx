@@ -7,11 +7,10 @@ import { Tasks } from './tasks/Tasks';
 import { TodolistContext } from 'common/contexts/TodolistContext';
 import { FilterButtons } from './filterButtons/FilterButtons';
 import { TodolistTitle } from './todolistTitle/TodolistTitle';
-import { TodoListDomain } from '../../../model/todolistSlice/todolistsSlice';
-import { useTodolist } from 'common/hooks';
 import { AddItemForm } from 'common/components';
 import { AppStatus } from 'common/enums';
 import { useCreateTaskMutation } from '../../../api/tasksApi';
+import type { TodoListDomain } from '../../../lib/types/types';
 
 type PropsType = {
   todoList: TodoListDomain;
@@ -21,7 +20,7 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
   const { id, filter, status } = todoList;
   const [addNewTask] = useCreateTaskMutation();
 
-  const { removeAllTasksHandler } = useTodolist(id);
+  /* const { removeAllTasksHandler } = useTodolist(id);*/
 
   const addNewTaskHandler = (title: string) => {
     addNewTask({ todoListId: todoList.id, title });
@@ -34,7 +33,11 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
         <AddItemForm label={'New Task'} status={status === AppStatus.loading} callBack={addNewTaskHandler} />
         <Tasks filter={filter} />
         <Box sx={{ textAlign: 'right' }}>
-          <Button title={'delete all tasks'} variant={'contained'} onClick={removeAllTasksHandler}>
+          {/*TODO*/}
+          {/*TODO*/}
+          <Button title={'delete all tasks'} variant={'contained'} onClick={() => {}}>
+            {/*TODO*/}
+            {/*TODO*/}
             delete all tasks
           </Button>
         </Box>

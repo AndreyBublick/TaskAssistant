@@ -3,14 +3,14 @@ import { AppBar, Box, Button, IconButton, Switch, Toolbar } from '@mui/material'
 import Menu from '@mui/icons-material/Menu';
 /* ⭕ => import {Menu} from '@mui/icons-material'*/
 /* ⭕ нужно импортировать без {} пример выше, вместо => */
-
 import { useAppDispatch, useAppSelector } from 'common/hooks';
 import { styled } from '@mui/material/styles';
 import { changeIsAuth, changeThemeMode, selectIsAuth, selectModeTheme, setAppError } from 'app/appSlice';
-/*import { logout } from '../../../features/login/model/authSlice/authSlice';*/
+
 import { MenuButton, ProgressLinear } from 'common/components';
-import { authApi, useLogoutMutation } from '../../../features/login/api/authApi';
+import { useLogoutMutation } from '../../../features/login/api/authApi';
 import { ResultCodeStatus } from 'common/enums';
+import { baseApi } from 'app/baseApi';
 
 type Props = {};
 export const Header: FC<Props> = memo(() => {
@@ -29,8 +29,14 @@ export const Header: FC<Props> = memo(() => {
       const data = response.data;
       if (data?.resultCode === ResultCodeStatus.success) {
         localStorage.removeItem('sn-token');
+
         dispatch(changeIsAuth({ isAuth: false }));
-        dispatch(authApi.util.invalidateTags(['Todolist', 'Tasks']));
+
+        Promise.resolve(null).then(() => {
+          dispatch(baseApi.util.invalidateTags(['Tasks', 'Todolists']));
+        }); ///// Спросить
+
+        /*dispatch(baseApi.util.resetApiState());*/
       } else {
         const error = data?.messages[0];
         error && dispatch(setAppError({ error }));

@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import React, { FC, memo, useCallback } from 'react';
 import { Delete } from '@mui/icons-material';
 import IconButton from '@mui/material/IconButton';
-import { TodoListDomain } from '../../../../model/todolistSlice/todolistsSlice';
 import { AppStatus } from 'common/enums';
 import { EditableSpan } from 'common/components';
 import { todolistsApi, useRemoveTodolistMutation, useUpdateTodolistTitleMutation } from '../../../../api/todolistsApi';
 import { useAppDispatch } from 'common/hooks';
+import type { TodoListDomain } from '../../../../lib/types/types';
 
 type Props = {
   todoList: TodoListDomain;
@@ -19,16 +19,19 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
   const [updateTodoListTitle] = useUpdateTodolistTitleMutation();
   const isDisabled = todoList.status === AppStatus.loading;
 
-  const updateQueryData = (status: AppStatus) => {
-    dispatch(
-      todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
-        const index = state.findIndex(tl => tl.id === todoList.id);
-        if (index !== -1) {
-          state[index].status = status;
-        }
-      }),
-    );
-  };
+  const updateQueryData = useCallback(
+    (status: AppStatus) => {
+      dispatch(
+        todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+          const index = state.findIndex(tl => tl.id === todoList.id);
+          if (index !== -1) {
+            state[index].status = status;
+          }
+        }),
+      );
+    },
+    [dispatch, todoList.id],
+  );
 
   const deleteTodoListHandler = useCallback(() => {
     updateQueryData(AppStatus.loading);
@@ -41,9 +44,17 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
 
   const updateTodoListTitleHandler = useCallback(
     (title: string) => {
-      updateTodoListTitle({ id: todoList.id, title });
+      updateQueryData(AppStatus.loading);
+      updateTodoListTitle({ id: todoList.id, title })
+        .unwrap()
+        .then(() => {
+          updateQueryData(AppStatus.succeeded);
+        })
+        .catch(() => {
+          updateQueryData(AppStatus.idle);
+        });
     },
-    [updateTodoListTitle, todoList.id],
+    [updateTodoListTitle, todoList.id, updateQueryData],
   );
 
   return (

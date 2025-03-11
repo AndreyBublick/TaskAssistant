@@ -16,20 +16,20 @@ export const App: FC = () => {
   const theme = getTheme(themeMode);
   const isOpen = error !== null;
 
-  const { data, isLoading } = useMeQuery();
+  const { data } = useMeQuery();
 
   const [isInitialized, setIsInitialized] = useState(false);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!isLoading) {
+    if (data) {
       if (data?.resultCode === ResultCodeStatus.success) {
         dispatch(changeIsAuth({ isAuth: true }));
       }
       setIsInitialized(true);
     }
-  }, [dispatch, data, isLoading]);
+  }, [dispatch, data]);
 
   return (
     <ThemeProvider theme={theme}>
