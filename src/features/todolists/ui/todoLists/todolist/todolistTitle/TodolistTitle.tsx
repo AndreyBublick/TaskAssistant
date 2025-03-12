@@ -38,7 +38,7 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
     deleteTodoList(todoList.id)
       .unwrap()
       .catch(() => {
-        updateQueryData(AppStatus.idle);
+        updateQueryData(AppStatus.failed);
       });
   }, [deleteTodoList, todoList.id, updateQueryData]);
 
@@ -51,7 +51,7 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
           updateQueryData(AppStatus.succeeded);
         })
         .catch(() => {
-          updateQueryData(AppStatus.idle);
+          updateQueryData(AppStatus.failed);
         });
     },
     [updateTodoListTitle, todoList.id, updateQueryData],

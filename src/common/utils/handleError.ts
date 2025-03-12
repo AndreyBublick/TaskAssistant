@@ -22,9 +22,9 @@ export const handleError = (
         break;
 
       case 400:
+      case 401:
       case 500:
         if (isErrorWithMessage(result.error.data)) {
-          debugger;
           error = result.error.data.message;
         } else {
           error = JSON.stringify(result.error.data);
