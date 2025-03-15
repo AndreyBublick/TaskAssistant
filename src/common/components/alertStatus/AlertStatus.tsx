@@ -8,6 +8,7 @@ import { selectAppError, setAppError } from 'app/appSlice';
 export const AlertStatus = memo(() => {
   const error = useAppSelector(selectAppError);
   const dispatch = useAppDispatch();
+
   const onCloseHandler = useCallback(() => {
     dispatch(setAppError({ error: null }));
   }, [dispatch]);
