@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import React, { FC, memo, useCallback } from 'react';
-import { Delete } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { AppStatus } from 'common/enums';
 import { EditableSpan } from 'common/components';
@@ -20,7 +20,7 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
   const isDisabled = todoList.status === AppStatus.loading;
 
   const updateQueryData = useCallback(
-    (status: AppStatus) => {
+    (status: AppStatus) =>
       dispatch(
         todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
           const index = state.findIndex(tl => tl.id === todoList.id);
@@ -28,19 +28,14 @@ export const TodolistTitle: FC<Props> = memo(({ todoList }) => {
             state[index].status = status;
           }
         }),
-      );
-    },
+      ),
+
     [dispatch, todoList.id],
   );
 
   const deleteTodoListHandler = useCallback(() => {
-    updateQueryData(AppStatus.loading);
-    deleteTodoList(todoList.id)
-      .unwrap()
-      .catch(() => {
-        updateQueryData(AppStatus.failed);
-      });
-  }, [deleteTodoList, todoList.id, updateQueryData]);
+    deleteTodoList(todoList.id);
+  }, [deleteTodoList, todoList.id]);
 
   const updateTodoListTitleHandler = useCallback(
     (title: string) => {

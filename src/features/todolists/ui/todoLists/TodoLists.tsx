@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Grid2 } from '@mui/material';
+import Grid2 from '@mui/material/Grid2';
 import { Todolist } from './todolist/Todolist';
 import { useGetTodolistsQuery } from '../../api/todolistsApi';
 import styled from 'styled-components';

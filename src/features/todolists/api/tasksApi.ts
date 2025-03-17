@@ -3,6 +3,10 @@ import type { Model, TaskType } from './tasksApi.types';
 
 import type { ResponseType } from 'common/types';
 import { baseApi } from 'app/baseApi';
+import { StatusTask } from 'common/enums';
+import { current } from '@reduxjs/toolkit';
+
+export const PAGE_SIZE = 8;
 
 export const _tasksApi = {
   ///tasks
@@ -38,11 +42,20 @@ export const tasksApi = baseApi.injectEndpoints({
         method: 'POST',
         body: { title },
       }),
-      invalidatesTags: ['Tasks'],
+      invalidatesTags: (result, error, { todoListId }) => [{ type: 'Tasks', id: todoListId }],
     }),
-    getTasks: build.query<GetTasksType, string>({
-      query: todolistId => `todo-lists/${todolistId}/tasks`,
-      providesTags: ['Tasks'],
+    getTasks: build.query<GetTasksType, { todolistId: string; args: { page: number } }>({
+      query: ({ todolistId, args }) => ({
+        url: `todo-lists/${todolistId}/tasks`,
+        params: { ...args, count: PAGE_SIZE },
+      }),
+      providesTags: (result, error, arg, meta) =>
+        result
+          ? [
+              ...result.items.map(tsk => ({ type: 'Tasks', id: tsk.id }) as const),
+              { type: 'Tasks', id: arg.todolistId },
+            ]
+          : ['Tasks'],
     }),
 
     deleteTask: build.mutation<ResponseType, { todoListId: string; id: string }>({
@@ -50,7 +63,7 @@ export const tasksApi = baseApi.injectEndpoints({
         url: `todo-lists/${todoListId}/tasks/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Tasks'],
+      invalidatesTags: (result, error, { id }, meta) => [{ type: 'Tasks', id }],
     }),
 
     updateTask: build.mutation<ResponseType<{ item: TaskType }>, { todoListId: string; taskId: string; model: Model }>({
@@ -59,7 +72,23 @@ export const tasksApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: model,
       }),
-      invalidatesTags: ['Tasks'],
+      async onQueryStarted({ taskId, model, todoListId }, { queryFulfilled, dispatch }) {
+        const patchResult = dispatch(
+          tasksApi.util.updateQueryData('getTasks', { todolistId: todoListId, args: { page: 1 /**/ } }, state => {
+            const task = state.items.find(tsk => tsk.id === taskId);
+
+            if (task) {
+              task.status = model.status;
+            }
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, { taskId }, meta) => [{ type: 'Tasks', id: taskId }],
     }),
   }),
 });

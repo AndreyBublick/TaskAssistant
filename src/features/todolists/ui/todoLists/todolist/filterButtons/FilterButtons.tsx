@@ -95,4 +95,5 @@ const ButtonsWrapper = styled.div`
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
+  justify-content: space-between;
 `;
