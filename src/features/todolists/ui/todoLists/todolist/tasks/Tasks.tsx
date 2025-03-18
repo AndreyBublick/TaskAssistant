@@ -16,7 +16,7 @@ type PropsType = {
 
 export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(START_PAGE);
   const { data, isLoading } = useGetTasksQuery({ todolistId: id, args: { page } });
   const [deleteTask] = useDeleteTaskMutation();
   const tasks = data?.items;
