@@ -3,11 +3,12 @@ import { TodolistContext } from 'common/contexts';
 import { StatusTask } from 'common/enums';
 import styled from 'styled-components';
 import { Task } from './task/Task';
-import { PAGE_SIZE, useGetTasksQuery } from '../../../../api/tasksApi';
+import { PAGE_SIZE, useDeleteTaskMutation, useGetTasksQuery } from '../../../../api/tasksApi';
 import { TasksSkeleton } from '../../../skeletons/TasksSkeleton/TasksSkeleton';
 import type { FilterValues } from '../../../../lib/types/types';
-import { Pagination } from '@mui/material';
 import Grid2 from '@mui/material/Grid2';
+import { TasksPagination } from './tasksPagination/TasksPagination';
+import { Box, Button } from '@mui/material';
 
 type PropsType = {
   filter: FilterValues;
@@ -17,11 +18,13 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const id = useContext(TodolistContext);
   const [page, setPage] = useState(1);
   const { data, isLoading } = useGetTasksQuery({ todolistId: id, args: { page } });
-
+  const [deleteTask] = useDeleteTaskMutation();
   const tasks = data?.items;
+
   const totalCount = data?.totalCount;
 
-  const counts = totalCount ? Math.ceil(totalCount / PAGE_SIZE) : 1;
+  const count = totalCount ? Math.ceil(totalCount / PAGE_SIZE) : 1;
+  console.log(count);
 
   const tasksForTodoList = useMemo(() => {
     if (!tasks) return [];
@@ -42,9 +45,13 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
   }, [filter, tasks]);
 
   const tasksForTodoListMapped = tasksForTodoList.map(t => <Task task={t} key={t.id} />);
-
-  const onChangePaginationPage = (e: React.ChangeEvent<unknown>, page: number) => {
-    setPage(page);
+  const deleteTasksHandler = () => {
+    const results = data?.items.map(tsk => deleteTask({ todoListId: id, id: tsk.id }));
+    if (results) {
+      Promise.all([...results]).then(() => {
+        setPage(1);
+      });
+    }
   };
   return (
     <>
@@ -54,16 +61,22 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
         <>
           <List>{tasksForTodoListMapped}</List>
           <Grid2 display={'flex'} justifyContent={'center'} sx={{ marginBottom: 2 }}>
-            <Pagination
+            <TasksPagination
+              page={page}
               size={'small'}
-              count={counts}
               color={'primary'}
               variant={'text'}
               siblingCount={1}
               shape="rounded"
-              onChange={onChangePaginationPage}
+              count={count}
+              onChangePage={setPage}
             />
           </Grid2>
+          <Box sx={{ textAlign: 'right' }}>
+            <Button title={'delete all tasks'} variant={'contained'} onClick={deleteTasksHandler}>
+              delete all tasks
+            </Button>
+          </Box>
         </>
       ) : (
         <EmptyTasks>Задачи отсутствуют</EmptyTasks>

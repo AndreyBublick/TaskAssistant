@@ -3,10 +3,8 @@ import type { Model, TaskType } from './tasksApi.types';
 
 import type { ResponseType } from 'common/types';
 import { baseApi } from 'app/baseApi';
-import { StatusTask } from 'common/enums';
-import { current } from '@reduxjs/toolkit';
 
-export const PAGE_SIZE = 8;
+export const PAGE_SIZE = 2;
 
 export const _tasksApi = {
   ///tasks
@@ -72,20 +70,33 @@ export const tasksApi = baseApi.injectEndpoints({
         method: 'PUT',
         body: model,
       }),
-      async onQueryStarted({ taskId, model, todoListId }, { queryFulfilled, dispatch }) {
-        const patchResult = dispatch(
-          tasksApi.util.updateQueryData('getTasks', { todolistId: todoListId, args: { page: 1 /**/ } }, state => {
-            const task = state.items.find(tsk => tsk.id === taskId);
+      async onQueryStarted({ taskId, model, todoListId }, { queryFulfilled, dispatch, getState }) {
+        const cash = tasksApi.util.selectCachedArgsForQuery(getState(), 'getTasks');
 
-            if (task) {
-              task.status = model.status;
-            }
-          }),
-        );
+        const patchResults: any[] = [];
+
+        for (const data of cash) {
+          patchResults.push(
+            dispatch(
+              tasksApi.util.updateQueryData(
+                'getTasks',
+                { todolistId: todoListId, args: { page: data.args.page /**/ } },
+                state => {
+                  const task = state.items.find(tsk => tsk.id === taskId);
+
+                  if (task) {
+                    task.status = model.status;
+                  }
+                },
+              ),
+            ),
+          );
+        }
+
         try {
           await queryFulfilled;
         } catch {
-          patchResult.undo();
+          patchResults.forEach(patchResult => patchResult.undo());
         }
       },
       invalidatesTags: (result, error, { taskId }, meta) => [{ type: 'Tasks', id: taskId }],
