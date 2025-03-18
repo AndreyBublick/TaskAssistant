@@ -1,9 +1,9 @@
-import React, { FC, memo, useContext, useMemo, useState } from 'react';
+import React, { FC, memo, useCallback, useContext, useMemo, useState } from 'react';
 import { TodolistContext } from 'common/contexts';
 import { StatusTask } from 'common/enums';
 import styled from 'styled-components';
 import { Task } from './task/Task';
-import { PAGE_SIZE, useDeleteTaskMutation, useGetTasksQuery } from '../../../../api/tasksApi';
+import { PAGE_SIZE, START_PAGE, useDeleteTaskMutation, useGetTasksQuery } from '../../../../api/tasksApi';
 import { TasksSkeleton } from '../../../skeletons/TasksSkeleton/TasksSkeleton';
 import type { FilterValues } from '../../../../lib/types/types';
 import Grid2 from '@mui/material/Grid2';
@@ -24,7 +24,7 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
   const totalCount = data?.totalCount;
 
   const count = totalCount ? Math.ceil(totalCount / PAGE_SIZE) : 1;
-  console.log(count);
+  const isShowPagination = totalCount && totalCount > PAGE_SIZE;
 
   const tasksForTodoList = useMemo(() => {
     if (!tasks) return [];
@@ -43,16 +43,25 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
       }
     }
   }, [filter, tasks]);
-
-  const tasksForTodoListMapped = tasksForTodoList.map(t => <Task task={t} key={t.id} />);
+  const deleteTaskHandler = useCallback(() => {
+    if (totalCount) {
+      if (totalCount % PAGE_SIZE === START_PAGE) {
+        setPage(START_PAGE);
+      }
+    }
+  }, [totalCount]);
+  const tasksForTodoListMapped = tasksForTodoList.map(t => (
+    <Task onClickBasket={deleteTaskHandler} task={t} key={t.id} />
+  ));
   const deleteTasksHandler = () => {
     const results = data?.items.map(tsk => deleteTask({ todoListId: id, id: tsk.id }));
     if (results) {
-      Promise.all([...results]).then(() => {
+      Promise.all(results).then(() => {
         setPage(1);
       });
     }
   };
+
   return (
     <>
       {isLoading ? (
@@ -60,18 +69,7 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
       ) : tasksForTodoList.length > 0 ? (
         <>
           <List>{tasksForTodoListMapped}</List>
-          <Grid2 display={'flex'} justifyContent={'center'} sx={{ marginBottom: 2 }}>
-            <TasksPagination
-              page={page}
-              size={'small'}
-              color={'primary'}
-              variant={'text'}
-              siblingCount={1}
-              shape="rounded"
-              count={count}
-              onChangePage={setPage}
-            />
-          </Grid2>
+
           <Box sx={{ textAlign: 'right' }}>
             <Button title={'delete all tasks'} variant={'contained'} onClick={deleteTasksHandler}>
               delete all tasks
@@ -80,6 +78,20 @@ export const Tasks: FC<PropsType> = memo(({ filter }) => {
         </>
       ) : (
         <EmptyTasks>Задачи отсутствуют</EmptyTasks>
+      )}{' '}
+      {!!isShowPagination && (
+        <Grid2 display={'flex'} justifyContent={'center'} sx={{ marginBottom: 2, marginTop: 2 }}>
+          <TasksPagination
+            page={page}
+            size={'small'}
+            color={'primary'}
+            variant={'text'}
+            siblingCount={1}
+            shape="rounded"
+            count={count}
+            onChangePage={setPage}
+          />
+        </Grid2>
       )}
     </>
   );

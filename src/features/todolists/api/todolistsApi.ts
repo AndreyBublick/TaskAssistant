@@ -1,35 +1,15 @@
-import { instance } from 'common/instance';
 import type { TodolistType } from './todolistsApi.types';
 
 import type { ResponseType } from 'common/types';
-import { AppStatus } from 'common/enums';
 import { baseApi } from 'app/baseApi';
 import type { TodoListDomain } from '../lib/types/types';
-
-export const _todolistsApi = {
-  getTodolists() {
-    return instance.get<TodolistType[]>('todo-lists');
-  },
-
-  addTodolist(title: string) {
-    return instance.post<ResponseType<{ item: TodolistType }>>('todo-lists', { title });
-  },
-
-  changeTodolistTitle({ id, title }: { id: string; title: string }) {
-    return instance.put<ResponseType>(`todo-lists/${id}`, { title });
-  },
-
-  deleteTodolist(id: string) {
-    return instance.delete<ResponseType>(`todo-lists/${id}`);
-  },
-};
 
 export const todolistsApi = baseApi.injectEndpoints({
   endpoints: build => ({
     getTodolists: build.query<TodoListDomain[], void>({
       query: () => 'todo-lists',
       transformResponse: (todoLists: TodolistType[]): TodoListDomain[] =>
-        todoLists.map(tl => ({ ...tl, filter: 'all', status: AppStatus.idle })),
+        todoLists.map(tl => ({ ...tl, filter: 'all' })),
       providesTags: ['Todolists'],
     }),
     addTodolist: build.mutation<ResponseType<{ item: TodolistType }>, string>({

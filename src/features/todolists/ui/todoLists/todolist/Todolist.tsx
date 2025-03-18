@@ -8,7 +8,6 @@ import { TodolistContext } from 'common/contexts/TodolistContext';
 import { FilterButtons } from './filterButtons/FilterButtons';
 import { TodolistTitle } from './todolistTitle/TodolistTitle';
 import { AddItemForm } from 'common/components';
-import { AppStatus } from 'common/enums';
 import { useCreateTaskMutation } from '../../../api/tasksApi';
 import type { TodoListDomain } from '../../../lib/types/types';
 
@@ -17,7 +16,7 @@ type PropsType = {
 };
 
 export const Todolist: FC<PropsType> = memo(({ todoList }) => {
-  const { id, filter, status } = todoList;
+  const { id, filter } = todoList;
   const [addNewTask] = useCreateTaskMutation();
 
   /* const { removeAllTasksHandler } = useTodolist(id);*/
@@ -30,7 +29,7 @@ export const Todolist: FC<PropsType> = memo(({ todoList }) => {
       <TodolistStyled>
         <TodolistTitle todoList={todoList} />
 
-        <AddItemForm label={'New Task'} status={status === AppStatus.loading} callBack={addNewTaskHandler} />
+        <AddItemForm label={'New Task'} callBack={addNewTaskHandler} />
         <Tasks filter={filter} />
 
         <FilterButtons filter={filter} />

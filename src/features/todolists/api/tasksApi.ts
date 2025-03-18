@@ -1,37 +1,10 @@
-import { instance } from 'common/instance';
 import type { Model, TaskType } from './tasksApi.types';
 
 import type { ResponseType } from 'common/types';
 import { baseApi } from 'app/baseApi';
 
-export const PAGE_SIZE = 2;
-
-export const _tasksApi = {
-  ///tasks
-  getTasks(todolistId: string) {
-    return instance.get<GetTasksType>(`todo-lists/${todolistId}/tasks`);
-  },
-
-  deleteTask(payload: { todoListId: string; id: string }) {
-    const { todoListId, id } = payload;
-    return instance.delete<ResponseType>(`todo-lists/${todoListId}/tasks/${id}`);
-  },
-
-  createTask(payload: { todoListId: string; title: string }) {
-    const { todoListId, title } = payload;
-
-    return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks`, { title });
-  },
-
-  updateTask(payload: { todoListId: string; taskId: string; model: Model }) {
-    const { todoListId, taskId, model } = payload;
-
-    return instance.put<ResponseType<{ item: TaskType }>>(`todo-lists/${todoListId}/tasks/${taskId}`, model);
-  },
-};
-
-////TYPES
-
+export const PAGE_SIZE = 5;
+export const START_PAGE = 1;
 export const tasksApi = baseApi.injectEndpoints({
   endpoints: build => ({
     createTask: build.mutation<ResponseType<{ item: TaskType }>, { todoListId: string; title: string }>({
@@ -47,7 +20,8 @@ export const tasksApi = baseApi.injectEndpoints({
         url: `todo-lists/${todolistId}/tasks`,
         params: { ...args, count: PAGE_SIZE },
       }),
-      providesTags: (result, error, arg, meta) =>
+      keepUnusedDataFor: 1,
+      providesTags: (result, _, arg, __) =>
         result
           ? [
               ...result.items.map(tsk => ({ type: 'Tasks', id: tsk.id }) as const),
@@ -61,7 +35,7 @@ export const tasksApi = baseApi.injectEndpoints({
         url: `todo-lists/${todoListId}/tasks/${id}`,
         method: 'DELETE',
       }),
-      invalidatesTags: (result, error, { id }, meta) => [{ type: 'Tasks', id }],
+      invalidatesTags: (result, _, { id }, __) => [{ type: 'Tasks', id }],
     }),
 
     updateTask: build.mutation<ResponseType<{ item: TaskType }>, { todoListId: string; taskId: string; model: Model }>({
@@ -99,7 +73,7 @@ export const tasksApi = baseApi.injectEndpoints({
           patchResults.forEach(patchResult => patchResult.undo());
         }
       },
-      invalidatesTags: (result, error, { taskId }, meta) => [{ type: 'Tasks', id: taskId }],
+      invalidatesTags: (_, __, { taskId }, ___) => [{ type: 'Tasks', id: taskId }],
     }),
   }),
 });
