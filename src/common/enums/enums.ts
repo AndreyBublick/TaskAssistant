@@ -15,10 +15,11 @@ export enum TaskPriority {
 export enum ResultCodeStatus {
   success = 0,
   fail = 1,
+  captcha = 10,
 }
 export enum AppStatus {
-  idle = "idle",
-  loading = "loading",
-  succeeded = "succeeded",
-  failed = "failed",
+  idle = 'idle',
+  loading = 'loading',
+  succeeded = 'succeeded',
+  failed = 'failed',
 }

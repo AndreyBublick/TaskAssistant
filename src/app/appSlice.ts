@@ -7,6 +7,7 @@ const initialState = {
   themeMode: 'light' as ThemeModeType,
   error: null as null | string,
   status: 'idle' as AppStatus,
+  captcha: null as null | string,
 
   isAuth: false,
 };
@@ -19,6 +20,7 @@ const appSlice = createSlice({
     selectAppStatus: state => state.status,
     selectAppError: state => state.error,
     selectIsAuth: state => state.isAuth,
+    selectCaptcha: state => state.captcha,
   },
   reducers: create => ({
     changeThemeMode: create.reducer<{ themeMode: ThemeModeType }>((state, action) => {
@@ -33,6 +35,9 @@ const appSlice = createSlice({
     }),
     changeIsAuth: create.reducer<{ isAuth: boolean }>((state, action) => {
       state.isAuth = action.payload.isAuth;
+    }),
+    setCaptcha: create.reducer<{ captcha: string | null }>((state, action) => {
+      state.captcha = action.payload.captcha;
     }),
   }),
   extraReducers: builder => {
@@ -56,7 +61,7 @@ const appSlice = createSlice({
 });
 
 export const appReducer = appSlice.reducer;
-export const { selectModeTheme, selectAppError, selectIsAuth, selectAppStatus } = appSlice.selectors;
-export const { changeThemeMode, changeAppStatus, setAppError, changeIsAuth } = appSlice.actions;
+export const { selectModeTheme, selectAppError, selectIsAuth, selectAppStatus, selectCaptcha } = appSlice.selectors;
+export const { changeThemeMode, setAppError, changeIsAuth, setCaptcha } = appSlice.actions;
 
 export type ThemeModeType = 'light' | 'dark';

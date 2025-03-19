@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import styled from 'styled-components';
 
-import { Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { Tasks } from './tasks/Tasks';
 import { TodolistContext } from 'common/contexts/TodolistContext';
 import { FilterButtons } from './filterButtons/FilterButtons';

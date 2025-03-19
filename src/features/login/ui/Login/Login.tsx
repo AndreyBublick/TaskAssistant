@@ -4,49 +4,29 @@ import { styled } from '@mui/material/styles';
 import { Navigate } from 'react-router';
 import type { FC } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { changeIsAuth, selectIsAuth, setAppError } from 'app/appSlice';
+import { changeIsAuth, selectCaptcha, selectIsAuth, setCaptcha } from 'app/appSlice';
 import { useLoginMutation } from '../../api/authApi';
 import { ResultCodeStatus } from 'common/enums';
+import { useLazyGetCaptchaUrlQuery } from 'app/securityApi';
 
 type Props = {};
 type HookForm = {
   email: string;
   password: string;
   rememberMe: boolean;
+  captcha: string;
 };
 export const Login: FC<Props> = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector(selectIsAuth);
+  const captcha = useAppSelector(selectCaptcha);
   const [login] = useLoginMutation();
-
-  /*const { errors, getFieldProps, handleSubmit, values } = useFormik({
-      validate: values => {
-        const errors: any = {};
-        if (!values.email) {
-          errors.email = 'Required';
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
-          errors.email = 'Invalid email address';
-        } else if (!values.password) {
-          errors.password = 'Required';
-        } else if (values.password.length < 3) {
-          errors.password = 'Password must be at least 3 characters long';
-        }
-        return errors;
-      },
-      initialValues: {
-        email: '',
-        password: '',
-        rememberMe: false,
-      },
-      onSubmit: async (values /!*formikHelpers*!/) => {
-        await dispatch(login(values));
-      },
-    });*/
+  const [getCaptcha] = useLazyGetCaptchaUrlQuery();
 
   const {
     register,
     handleSubmit,
-    formState,
+    watch,
     formState: { errors },
     control,
     reset,
@@ -55,9 +35,11 @@ export const Login: FC<Props> = () => {
       email: '',
       password: '',
       rememberMe: true,
+      captcha: '',
     },
     mode: 'onChange',
   });
+
   const onSubmit: SubmitHandler<HookForm> = async values => {
     try {
       const response = await login(values);
@@ -70,19 +52,27 @@ export const Login: FC<Props> = () => {
         if (token) {
           localStorage.setItem('sn-token', token);
           dispatch(changeIsAuth({ isAuth: true }));
+          dispatch(setCaptcha({ captcha: null }));
         }
-      } else {
-        const error = data?.messages[0];
-        error && dispatch(setAppError({ error }));
+      } else if (data?.resultCode === ResultCodeStatus.captcha) {
+        const resCaptcha = await getCaptcha();
+        const url = resCaptcha?.data?.url;
+        if (url) {
+          dispatch(setCaptcha({ captcha: url }));
+        }
       }
-    } catch (error) {
-      console.log(error);
     } finally {
       reset();
     }
   };
 
-  const isActivate = Object.keys(formState.errors).length > 0;
+  const fieldEmail = watch('email');
+  const fieldPassword = watch('password');
+  const fieldCaptcha = watch('captcha');
+
+  const isActivate =
+    Object.keys(errors).length > 0 || !fieldEmail || !fieldPassword || (captcha ? !fieldCaptcha : false);
+
   return (
     <>
       {isAuth ? (
@@ -96,8 +86,7 @@ export const Login: FC<Props> = () => {
               </TypographyStyled>
 
               <TypographyStyled variant={'body1'}>Welcome, please sign in to continue</TypographyStyled>
-              {/*  {errors.email && <div>Email is required</div>}*/}
-              {/*{...getFieldProps('email')}*/}
+
               <TextFieldStyled
                 {...register('email', {
                   required: 'Email is required',
@@ -107,7 +96,6 @@ export const Login: FC<Props> = () => {
                   },
                 })}
                 size={'small'}
-                /* name={'email'}*/
                 label={'Email'}
                 type={'email'}
                 variant={'outlined'}
@@ -115,7 +103,6 @@ export const Login: FC<Props> = () => {
                 helperText={errors.email?.message}
               />
 
-              {/* {...getFieldProps('password')}*/}
               <TextFieldStyled
                 {...register('password', {
                   required: 'Password is required',
@@ -126,14 +113,12 @@ export const Login: FC<Props> = () => {
                 })}
                 size={'small'}
                 type={'password'}
-                /* name={'password'}*/
                 label={'Password'}
                 variant={'outlined'}
-                required={true}
                 error={!!errors.password}
                 helperText={errors.password?.message}
               />
-              {/*  {errors.password && }*/}
+
               <FormControlLabel
                 sx={{ marginBottom: '10px' }}
                 control={
@@ -147,6 +132,19 @@ export const Login: FC<Props> = () => {
                 }
                 label="Remember me"
               />
+              {captcha && (
+                <>
+                  <img src={captcha} alt={'captcha'} style={{ height: '60px', width: '160px' }} />
+                  <TextField
+                    {...register('captcha', {
+                      required: 'captcha is required',
+                    })}
+                    size={'small'}
+                    sx={{ marginBottom: 2 }}>
+                    {captcha}
+                  </TextField>
+                </>
+              )}
               <Button
                 size={'large'}
                 variant={'contained'}
@@ -171,11 +169,11 @@ const BoxStyled = styled(Box)(({ theme }) => ({
   border: `2px solid ${theme.palette.primary.main}`,
   borderRadius: '5px',
   width: '400px',
-  height: '400px',
+  minHeight: '400px',
   display: 'flex',
   flexDirection: 'column',
   padding: '50px',
-  /* alignItems: "center",*/
+
   justifyContent: 'center',
 }));
 const TextFieldStyled = styled(TextField)(() => ({
