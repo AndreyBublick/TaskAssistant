@@ -5,8 +5,8 @@ import { ProtectedRoute } from 'common/components/ProtectedRoute';
 import { ErrorPage } from 'common/components';
 
 export const PATH = {
-  LOGIN: 'login',
   DEFAULT: '/',
+  LOGIN: 'login',
   ALL: '*',
 } as const;
 
