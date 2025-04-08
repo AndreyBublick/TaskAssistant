@@ -1,6 +1,6 @@
 {
   "name": "TodoList",
-  "homepage": "https://AndreyBublick.github.io/dopTask_02_todolist",
+  "homepage": "https://AndreyBublick.github.io/TaskAssistant",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
