@@ -13,7 +13,7 @@ export const todolistsApi = baseApi.injectEndpoints({
       providesTags: ['Todolists'],
     }),
     addTodolist: build.mutation<ResponseType<{ item: TodolistType }>, string>({
-      query: (title: string) => ({
+      query: (title) => ({
         url: 'todo-lists',
         method: 'POST',
         body: { title },
@@ -30,10 +30,11 @@ export const todolistsApi = baseApi.injectEndpoints({
       invalidatesTags: ['Todolists'],
     }),
     removeTodolist: build.mutation<ResponseType, string>({
-      query: (id: string) => ({
+      query: (id) => ({
         url: `todo-lists/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Todolists'],
       async onQueryStarted(id: string, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
@@ -49,7 +50,7 @@ export const todolistsApi = baseApi.injectEndpoints({
           patchResult.undo();
         }
       },
-      invalidatesTags: ['Todolists'],
+
     }),
   }),
 });
