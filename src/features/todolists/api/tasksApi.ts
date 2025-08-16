@@ -48,7 +48,7 @@ export const tasksApi = baseApi.injectEndpoints({
         const cash = tasksApi.util.selectCachedArgsForQuery(getState(), 'getTasks');
 
         const patchResults: any[] = [];
-
+        /**/
         for (const data of cash) {
           patchResults.push(
             dispatch(
